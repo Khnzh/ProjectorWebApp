@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
+
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  height: 300vh;
+}
+
+.nav-link {
+  color: #bd9e6f;
+  font-family: "Overpass Mono", monospace;
+  font-size: 1.5rem;
+  animation: return-to-original 300ms ease-in-out;
+  white-space: nowrap;
+}
+
+.sign {
+  color: #fff5da;
+  font-family: "Overpass Mono", monospace;
+  font-size: 1.5rem;
+  white-space: nowrap;
+  padding-left: 30%;
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  animation: stretch-color 300ms ease-in-out forwards;
+  white-space: nowrap;
+}
+
+.header {
+  position: relative;
+}
+.big-header {
+  width: 85%;
+  padding-top: 170px;
+  padding-left: 40px;
+}
+
+.nav-bar {
+  position: absolute;
+  left: 220px;
+  padding: 0 5px;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.landing-cmps {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  position: relative;
+}
+
+.landing-cmps img {
+  width: 40%;
+}
+
+.cloud-text {
+  color: #fff5da99;
+  font-family: "Overpass Mono", monospace;
+  font-size: 1.4rem;
+  font-weight: 100;
+  white-space: nowrap;
+  position: absolute;
+  left: 8%;
+  top: 43%;
+  text-align: left;
+}
+/* Define keyframes */
+@keyframes stretch-color {
+  0% {
+    color: #bd9e6f; /* Initial color */
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    color: rgb(236, 174, 31); /* End color */
+    transform: scale(1.05) translate(-5%, -5%);
+  }
+}
+
+@keyframes return-to-original {
+  from {
+    color: rgb(236, 174, 31); /* End color */
+    transform: scale(1.05) translate(-5%, -5%);
+  }
+  to {
+    color: #bd9e6f; /* Initial color */
+    transform: scale(1) translate(0, 0);
+  }
+}

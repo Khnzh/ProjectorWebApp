@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  background-color: black;
+  color: white;
+  background-image: url(../public/Noise&Texture.png), url(../public/lamp.svg),
+    url(../public/sidesFrame.svg), url(../public/lightTriangle.svg),
+    url(../public/lightRect.svg);
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-size: 100%, 20%, calc(100% - 40px) auto, 100vw, 100%;
+  background-position: 0% 0%, -2px 16px, center, 2% 1.5%, 0% 63.3vw;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
