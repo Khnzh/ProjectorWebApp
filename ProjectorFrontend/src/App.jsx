@@ -1,30 +1,39 @@
-import { useState } from 'react'
-import './App.css'
+import supabase from './config/supabaseClient';
+import {BrowserRouter, Router, Link, Route, Routes} from 'react-router-dom';
+import Landing from './Landing';
+import Login from './Login';
+import Signup from './Signup';
+import { useAppContext } from './context/AuthContext';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { isLoggedIn, setIsLoggedIn } = useAppContext();
 
-  return (
-    <>
-      <div className='container'>
-        <div className="header">
-          <ul className="nav-bar">
-            <li className="nav-link">О НАС</li>
-            <li className="nav-link">ПОЛЬЗОВАТЕЛЯМ</li>
-            <li className="nav-link">ПАРТНЕРАМ</li>
-            <li className="nav-link">КОНТАКТЫ</li>
-            <li className="sign">ВОЙТИ в аккаунт</li>
-          </ul>
-        </div>
-        <img src="../public/projector.svg" alt="" className="big-header" />
-        <div className="landing-cmps">
-        <img src="../public/cloudFrame.svg" alt="" className="cloud" />
-        <img src="../public/circlesComponent.svg" alt="" className="circles" />
-        <p className="cloud-text">Камера, мотор… ПРОЖЕКТОР!<br/>Найди подходящего специалиста сейчас!</p>
-        </div>
+  const logoutUser = async (e) =>  {
+    e.preventDefault();
+    let { error } = await supabase.auth.signOut();
+    setIsLoggedIn(false);
+  }
+
+return (
+    <BrowserRouter>
+      <div className="header">
+        <ul className="nav-bar">
+          <li className="nav-link"><Link to='/'>О НАС</Link></li>
+          <li className="nav-link"><Link to='/'>ПОЛЬЗОВАТЕЛЯМ</Link></li>
+          <li className="nav-link"><Link to='/'>ПАРТНЕРАМ</Link></li>
+          <li className="nav-link"><Link to='/'>КОНТАКТЫ</Link></li>
+          {isLoggedIn?(
+            <li className="sign"><a onClick={logoutUser} href="#">ВЙТИ</a></li>
+          ):(
+            <li className="sign"><Link to='/login'>ВОЙТИ В АККАУНТ</Link></li>
+          )}
+        </ul>
       </div>
-    </>
-  )
+      <Routes>
+        <Route path='/' element={<Landing/>}></Route>
+        <Route path='/login' element={<Login/>}></Route>
+        <Route path='/signup' element={<Signup/>}></Route>
+      </Routes>
+    </BrowserRouter>
+)
 }
-
-export default App
