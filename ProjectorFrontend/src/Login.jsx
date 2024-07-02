@@ -51,7 +51,7 @@ function Login() {
     
 
   return (
-    <div className='login__cnt'>
+    <div className='login__cnt blurred_bg'>
         <h1 className='login__header'>ПРИВЕТСТВУЕМ ТЕБЯ В ПРОЖЕКТОРЕ!</h1>
         <h2 className='login__header2'>Первый раз тут?</h2>
         <h2 className='login__header2 underlined-bold'><Link to="/signup">ЗАРЕГИСТРИРОВАТЬСЯ</Link></h2>
@@ -60,9 +60,6 @@ function Login() {
         <h2 className='login__header2 underlined-bold'><a href="#">Забыли пароль?</a></h2>
 
         <button onClick={loginUser} className="svg-border-button">
-            
-        </button>
-        <button onClick={logoutUser} className="svg-border-button">
             
         </button>
     </div>
