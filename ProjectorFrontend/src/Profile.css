@@ -1,0 +1,97 @@
+.tab-container {
+  width: 60%;
+  margin: 10vh 20% 0 20%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.tab-toggle {
+  height: 5vh;
+  width: calc(1 / 3 * 100%);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.active-tab {
+  color: var(--HIGHLIGHT);
+  text-decoration: underline;
+}
+
+.tab-content {
+  padding-top: 5vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: start;
+  padding-left: 5%;
+  padding-bottom: 5%;
+}
+
+.tab-content input {
+  border: 2px solid var(--HIGHLIGHT);
+  font-family: var(--FONT);
+  background-color: transparent;
+  color: var(--COLOR);
+  border-radius: 5px;
+  padding: 1em;
+  width: 90%;
+  font-size: 1em;
+}
+
+.tab-content textarea {
+  border: 2px solid var(--HIGHLIGHT);
+  background-color: transparent;
+  border-radius: 5px;
+  width: 90%;
+  height: 5rem;
+  overflow: hidden;
+  resize: none;
+  font-size: 1em;
+  padding: 1em;
+}
+
+.tab-content input::placeholder {
+  color: var(--COLOR);
+  opacity: 40%;
+}
+
+.tab-content h1 {
+  align-self: center;
+  margin-bottom: 1em;
+  text-transform: uppercase;
+}
+
+.tab-content label,
+p {
+  text-transform: uppercase;
+  font-size: 1.5em;
+  color: var(--HIGHLIGHT);
+}
+
+.tab-positioning {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+label .sign__svg {
+  width: 1em;
+  stroke: var(--HIGHLIGHT);
+}
+
+label .radio__label {
+  margin: 1em;
+  font-size: 1em;
+  color: var(--COLOR);
+}
+
+div .no-underline {
+  display: flex;
+  justify-items: start;
+  border: none;
+  padding: 0;
+  margin: 0;
+}

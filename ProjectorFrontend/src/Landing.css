@@ -25,8 +25,11 @@
   font-family: "Overpass Mono", monospace;
   font-size: 1.5rem;
   white-space: nowrap;
-  padding-left: 30%;
   text-transform: uppercase;
+}
+
+.margin-30 {
+  margin-left: 10%;
 }
 
 .nav-link:hover {
@@ -45,12 +48,13 @@
 
 .nav-bar {
   position: absolute;
-  left: 220px;
+  left: 15%;
   padding: 0 5px;
   list-style-type: none;
   display: flex;
   justify-content: space-evenly;
   gap: 1rem;
+  width: 85%;
 }
 
 .landing-cmps {

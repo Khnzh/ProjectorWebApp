@@ -10,22 +10,33 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--FONT);
 }
 
-/* input,
+input,
 button,
 textarea {
   color: inherit;
   font-family: inherit;
-  margin: inherit;
-  padding: inherit;
   box-sizing: inherit;
-} */
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
+}
 
 #root {
   position: absolute;
   top: 0;
   padding-bottom: inherit;
+  width: 100%;
+  padding-bottom: 5vh;
 }
 
 body {
@@ -148,20 +159,21 @@ a {
   border-color: var(--COLOR);
   outline: none;
 }
-
-.login__cnt {
-  text-align: left;
+.blurred_bg {
   background-color: rgba(0, 0, 0, 0.4);
   border-radius: 25px;
-  width: 88%;
   position: relative;
-  margin: 7vh 6% 0 6%;
-  padding: 2% 0 5vh 5%;
   background: inherit;
   z-index: 1;
 }
+.login__cnt {
+  text-align: left;
+  width: 88%;
+  margin: 7vh 6% 0 6%;
+  padding: 2% 0 5vh 5%;
+}
 
-.login__cnt::before {
+.blurred_bg::before {
   content: "";
   position: absolute;
   top: 0;
@@ -200,6 +212,10 @@ input[type="checkbox"] {
 input[type="radio"] {
   display: none;
   margin-left: 5em;
+}
+
+input:disabled {
+  background: linear-gradient(to top, #fff6de2a, #fff6de00);
 }
 
 input[type="radio"]:checked + label {
