@@ -68,7 +68,8 @@ a {
   color: inherit;
 }
 
-.svg-border-button {
+.svg-border-button,
+.change-button {
   position: relative;
   display: block;
   width: 20%;
@@ -91,7 +92,8 @@ a {
   transform: rotate(0deg);
 }
 
-.svg-border-button::after {
+.svg-border-button::after,
+.change-button::after {
   content: "";
   position: absolute;
   top: 0;
@@ -105,7 +107,8 @@ a {
   transition: transform 0.5s;
 }
 
-.svg-border-button::before {
+.svg-border-button::before,
+.change-button::before {
   content: "ВОЙТИ";
   font-size: 0.7em;
   color: var(--COLOR);
@@ -117,24 +120,29 @@ a {
   transition: transform 0.5s;
 }
 
-.svg-border-button::after {
+.svg-border-button::after,
+.change-button::after {
   background-image: url("/outter-border.svg");
   transform: rotate(0deg);
 }
 
-.svg-border-button:hover::after {
+.svg-border-button:hover::after,
+.change-button:hover::after {
   transform: rotate(-1deg);
 }
 
-.svg-border-button:hover::before {
+.svg-border-button:hover::before,
+.change-button:hover::before {
   transform: translate(-50%, -50%) rotate(-3deg) scale(1.1);
 }
 
-.svg-border-button:hover {
+.svg-border-button:hover,
+.change-button:hover {
   transform: rotate(3deg);
 }
 
-.svg-border-button span {
+.svg-border-button span,
+.change-button span {
   position: relative;
   z-index: 1;
 }
@@ -214,7 +222,8 @@ input[type="radio"] {
   margin-left: 5em;
 }
 
-input:disabled {
+input:disabled,
+textarea:disabled {
   background: linear-gradient(to top, #fff6de2a, #fff6de00);
 }
 
