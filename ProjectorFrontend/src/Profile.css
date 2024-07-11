@@ -1,4 +1,5 @@
 .tab-container {
+  padding-top: 1%;
   width: 60%;
   margin: 10vh 20% 0 20%;
   display: flex;
@@ -29,6 +30,7 @@
   align-items: start;
   padding-left: 5%;
   padding-bottom: 5%;
+  width: 100%;
 }
 
 .tab-content input {
@@ -94,4 +96,161 @@ div .no-underline {
   border: none;
   padding: 0;
   margin: 0;
+}
+
+.tab-container .svg-border-button,
+.tab-container .change-button {
+  align-self: center;
+  width: 50%;
+  margin-bottom: 2%;
+}
+
+.tab-container .svg-border-button::before {
+  content: "СОХРАНИТЬ";
+}
+
+.tab-container .change-button::before {
+  content: "ИЗМЕНИТЬ";
+}
+
+.additional_edu {
+  padding-top: 5%;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1em;
+  align-items: start;
+  padding-right: 10%;
+}
+.additional_edu input,
+.additional_edu textarea {
+  width: 100%;
+}
+
+hr {
+  width: 100%;
+  background-color: var(--COLOR);
+  height: 2px;
+  border: none;
+}
+
+.cross {
+  height: 40px;
+  width: 40px;
+  background-color: transparent;
+  border: none;
+  background-image: url(../cross.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 0.5s ease-in-out;
+}
+
+.add {
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+  background-color: transparent;
+  border: none;
+  color: var(--HIGHLIGHT);
+  position: relative;
+  align-self: center;
+}
+
+.add::before {
+  content: "";
+  background-image: url(../cross.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: rotate(45deg);
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: 150%;
+  left: -100%;
+}
+
+.add:hover {
+  cursor: pointer;
+}
+.cross:hover {
+  cursor: pointer;
+  transform: rotate(70deg);
+}
+
+.edu_header {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.specialty {
+  z-index: 2;
+  background-color: var(--COLOR);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 1em;
+  color: var(--HIGHLIGHT);
+}
+
+.tab-content .specialty-input:focus-visible {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  outline: none;
+}
+
+.horizontal-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1em;
+}
+
+.list-item {
+  background-color: #ffffff;
+  border: 2px solid #cccccc;
+  color: var(--HIGHLIGHT);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  padding: 0.5em 1em;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cross-button {
+  background: none;
+  border: none;
+  color: #ff4c4c;
+  font-size: 1.2em;
+  margin-right: 0.5em;
+  cursor: pointer;
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.cross-button:hover {
+  background-color: #ffcccc;
+}
+
+.cross-button:focus {
+  outline: none;
+}
+
+.validation-message {
+  text-align: left;
+  margin-right: 5%;
+  text-transform: none;
+  color: rgb(129, 22, 22);
+  font-size: 1em;
 }

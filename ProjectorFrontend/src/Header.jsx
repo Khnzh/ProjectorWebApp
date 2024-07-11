@@ -33,7 +33,7 @@ export default function Header() {
         <li className="nav-link"><Link to='/'>КОНТАКТЫ</Link></li>
         {isLoggedIn ? (
           <>
-            <li className="sign margin-30"><Link to='/profile'>ПРОФИЛЬ</Link></li>
+            <li className="sign margin-30"><Link to='/profile/0'>ПРОФИЛЬ</Link></li>
             <li className="sign"><a onClick={logoutUser}>ВЫЙТИ</a></li>
           </>
         ) : (
