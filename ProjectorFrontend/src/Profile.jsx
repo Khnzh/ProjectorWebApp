@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import supabase from './config/supabaseClient';
 import Multiselect from './MultiselectSpecialty';
 import MultiselectLang from './MultiselectLanguage';
-import { profileValidation, portfolioValidation, educationValidation } from './Validation';
+import { profileValidation, portfolioValidation, educationValidation, hasOnlySpecificStrings } from './Validation';
 
 export default function Profile(){
 //FETCHING PARAMS
@@ -179,9 +179,9 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
 }
 
 // TEST OUTPUTS
-    // useEffect(()=>{console.log(project)}, [project])
+    useEffect(()=>{console.log(project)}, [project])
     // useEffect(()=>{console.log(education)}, [education])
-    // useEffect(()=>{console.log(errors)}, [errors])
+    // useEffect(()=>{console.log(profile.langs)}, [profile])
 
     useEffect(()=>{if (emode!=='0') setMode(false);}, [emode])
     // useEffect(()=>{console.log(profile)}, [profile])
@@ -207,34 +207,162 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
         const info = JSON.parse(localStorage.getItem(localKey));
         setUId((u) => info.user.id);
         setEmail((e) => info.user.email);
-        const fetchGifts = async() => {
+
+        const fetchProfile = async() => {
             let { data: Profile, error } = await supabase
             .from('Profile')
             .select("*")
             // Filters
             .eq('user_id', uId)
-            // console.log(Profile[0])
             setProfile((p) => {return {...p, name: Profile[0].name}})
             setProfile((p) => {return {...p, lastName: Profile[0].lastName}})
             setProfile((p) => {return {...p, bio: Profile[0].bio}})
-            setProfile((p) => {return {...p, langs: Profile[0].languages}})
             setProfile((p) => {return {...p, phNumber: Profile[0].phoneNumber}})
             setProfile((p) => {return {...p, socials: Profile[0].socials}})
             setProfile((p) => {return {...p, tg: Profile[0].telegram}})
         };
-        if (uId && email) fetchGifts();
+
+        const fetchPortfolio = async() => {
+            let { data: Portfolio, error } = await supabase
+            .from('Portfolio')
+            .select("*")
+            // Filters
+            .eq('user_id', uId)
+
+            if (error) { console.log(error) } else {
+                setProjectCells((p) => Portfolio.length-1)
+                for (let i=0; i < Portfolio.length; i++){
+                    for (const key in Portfolio[i]){
+                        if (key!='user_id' && key!='id'){
+                            setProject((p) =>{
+                                const updated = p[key].map((name, index) => (index === i ? Portfolio[i][key] : name));
+                                let obj = {...p};
+                                obj[key] = updated;
+                                return obj
+                            });
+                        }
+                    }
+                }
+            }
+        };
+
+        const fetchLangs = async () =>{
+            const { data, error } = await supabase
+            .from('user_languages')
+            .select('language_id(*)')
+            .eq('user_id', uId)
+            if (error) {console.log(error)} else
+            {
+                const langsData = data.map((item) => item.language_id)
+                setProfile((p) => {return {...p, langs: langsData}})
+            };
+        }
+
+        const fetchSpecs = async () => {
+            const { data, error } = await supabase
+            .from('user_qualifications')
+            .select('qualification_id(*)')
+            .eq('user_id', uId)
+            if (error) {console.log(error)} else
+            {
+                const specsData = data.map((item) => item.qualification_id)
+                setProfile((p) => {return {...p, specialties: specsData}})
+            };
+        }
+
+        if (uId && email){
+            fetchProfile();
+            fetchLangs();
+            fetchSpecs();
+            fetchPortfolio();
+        }
 }
 , [uId])
 
-// const testPortfolio = async () => {
-//     const { data, error } = await supabase
+const updateProfile = async () => {
+
+    const { data, error } = await supabase
+    .from('Profile')
+    .update([
+        {
+         name: profile.name,
+         lastName: profile.lastName,
+         bio: profile.bio,
+         phoneNumber: profile.phNumber,
+         telegram: profile.tg,
+         socials: profile.socials
+        }
+    ])
+    .eq('user_id', uId)
+    .select()
+    error ? console.log(error) : console.log(data);
+
+
+    const multiSelectQuery = (value, specification) =>{
+        let list = '['
+
+        for (let o = 0; o < value.length; o++) {
+            if (o == value.length-1) {
+                list = list + `{"user_id": "${uId}","${specification}_id": ${value[o].id}}]`
+            } else {
+                list = list + `{"user_id": "${uId}","${specification}_id": ${value[o].id}},`
+            }
+        }
+        return list
+    }
+    
+    const langsList = multiSelectQuery(profile.langs, "language")
+
+    const { error:langsErr } = await supabase
+    .from('user_languages')
+    .delete()
+    .eq('user_id', uId)
+    .select()
+    if (langsErr) console.log(langsErr);
+    
+    const { error:langsInsErr } = await supabase
+    .from('user_languages')
+    .insert(JSON.parse(langsList))
+    .select()
+    if (langsInsErr) console.log(langsInsErr);
+    
+    const specsList = multiSelectQuery(profile.specialties, "qualification")
+    
+    const { error:specsErr } = await supabase
+    .from('user_qualifications')
+    .delete()
+    .eq('user_id', uId)
+    .select()
+    if (specsErr) console.log(specsErr);
+    
+    const { error:specsInsErr } = await supabase
+    .from('user_qualifications')
+    .insert(JSON.parse(specsList))
+    .select()
+    if (specsInsErr) console.log(specsInsErr);
+    
+}
+
+    const updatePr = async (value, count) =>{
+        let list = []
+        for (let o = 0; o <= count; o++){
+            let obj = {user_id: uId}
+            for (const key in value){
+                if (value[key][o]) obj[key] = value[key][o];
+            }
+            list.push(obj)
+        }
+
+        const { error:specsInsErr } = await supabase
+        .from('Portfolio')
+        .insert(list)
+        .select()
+        if (specsInsErr) console.log(specsInsErr);
+    }
+
+const testPortfolio = async () => {
+//     const { data: Portf, error } = await supabase
 //     .from('Portfolio')
-//     .insert([
-//       { name: name ,
-//       user_id: uId,
-//       year: name,
-//       role: name },
-//     ])
 //     .select()
 
 //     // let { data: Portfolio, error } = await supabase
@@ -245,9 +373,10 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
     
 //   if (error){
 //   console.log(error)} else {
-//     console.log(data)
+//     console.log(JSON.parse(Portf[5].name))
 //   }
-// }
+
+}
 
 // const testEducation = async () => {
 //     // const { data, error } = await supabase
@@ -274,19 +403,8 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
 //   }
 // }
 
-function hasOnlyEmptyStrings(obj) {
-    return Object.values(obj).every(value => {
-        if (typeof value === 'string' && value === '') {
-            return true;
-        } else if (Array.isArray(value) && value.every(item => item === '')) {
-            return true;
-        }
-        return false;
-    });
-}
-
 const [active, setActive] = useState(1)
-const changeActive = (n) => {
+const changeActiveChangable = (n) => {
     let errs;
     switch(active) {
         case 1:
@@ -300,16 +418,19 @@ const changeActive = (n) => {
             break;
       }
       setErrors(errs);
-      if (hasOnlyEmptyStrings(errs)) setActive((a)=>n); 
+      if (hasOnlySpecificStrings(errs, '') || !errs) setActive((a)=>n); 
 }
+
+
+const changeActive = (n) => { setActive((a)=>n) }
 
     return(
         <>
         <div className="tab-container blurred_bg">
             <div className="tab-positioning">
-                <div onClick={()=>changeActive(1)} className={active===1 ?"tab-toggle active-tab" : "tab-toggle"}><p>О себе</p></div>
-                <div onClick={()=>changeActive(2)} className={active===2 ?"tab-toggle active-tab" : "tab-toggle"}><p>Портфолио</p></div>
-                <div onClick={()=>changeActive(3)} className={active===3 ?"tab-toggle active-tab" : "tab-toggle"}><p>Образование</p></div>
+                <div onClick={mode ? ()=>changeActive(1) : () => changeActiveChangable(1)} className={active===1 ?"tab-toggle active-tab" : "tab-toggle"}><p>О себе</p></div>
+                <div onClick={mode ? ()=>changeActive(2) : () => changeActiveChangable(2)} className={active===2 ?"tab-toggle active-tab" : "tab-toggle"}><p>Портфолио</p></div>
+                <div onClick={mode ? ()=>changeActive(3) : () => changeActiveChangable(3)} className={active===3 ?"tab-toggle active-tab" : "tab-toggle"}><p>Образование</p></div>
             </div>
 
 {/* PROFILE */}
@@ -460,19 +581,19 @@ const changeActive = (n) => {
             <div className="tab-content" style={{display:  (active===2) ? 'flex' : 'none' }}>
                 <h1>Projects</h1>
                 <label htmlFor="prName">Name*</label>
-                <input onChange={(e)=>inputPrName(0, e)} disabled={mode} type="text" name="prName" id="prName" />
+                <input onChange={(e)=>inputPrName(0, e)} disabled={mode} type="text" name="prName" id="prName" defaultValue={project.name[0]} />
                 {Array.isArray(errors.prName) && errors.prName[0] && (<p className="validation-message">{errors.prName[0]}</p>)}
                 <label htmlFor="prDesc">Description</label>
-                <textarea onChange={(e) => inputPrDesc(0, e)} disabled={mode} name="prDesc" id="prDesc"></textarea>
+                <textarea onChange={(e) => inputPrDesc(0, e)} disabled={mode} name="prDesc" id="prDesc" defaultValue={project.desc[0]}></textarea>
                 {Array.isArray(errors.desc) && errors.desc[0] && (<p className="validation-message">{errors.desc[0]}</p>)}
                 <label htmlFor="prRole">Your role*</label>
-                <input onChange={(e) => inputPrRole(0, e)} disabled={mode} type="text" name="prRole" id="prRole" />
+                <input onChange={(e) => inputPrRole(0, e)} disabled={mode} type="text" name="prRole" id="prRole" defaultValue={project.role[0]}/>
                 {Array.isArray(errors.role) && errors.role[0] && (<p className="validation-message">{errors.role[0]}</p>)}
                 <label htmlFor="prLink">Project link</label>
-                <input onChange={(e) => inputPrLink(0, e)} disabled={mode} type="text" name="prLink" id="prLink" />
+                <input onChange={(e) => inputPrLink(0, e)} disabled={mode} type="text" name="prLink" id="prLink" defaultValue={project.link[0]}/>
                 {Array.isArray(errors.link) && errors.link[0] && (<p className="validation-message">{errors.link[0]}</p>)}
                 <label htmlFor="prYear">Year*</label>
-                <input onChange={(e) => inputPrYear(0, e)} disabled={mode} type="number" name="prYear" id="prYear" />
+                <input onChange={(e) => inputPrYear(0, e)} disabled={mode} type="number" name="prYear" id="prYear" defaultValue={project.year[0]}/>
                 {Array.isArray(errors.year) && errors.year[0] && (<p className="validation-message">{errors.year[0]}</p>)}
 
 
@@ -482,19 +603,19 @@ const changeActive = (n) => {
                         <label htmlFor="prName">Name*</label>
                         <button onClick={decrementProjectCells} className="cross"></button>
                     </div>
-                    <input onChange={(e)=>inputPrName(1, e)} disabled={mode} type="text" name="prName" id="1prName" />
+                    <input onChange={(e)=>inputPrName(1, e)} disabled={mode} type="text" name="prName" id="1prName" defaultValue={project.name[1]}/>
                     {Array.isArray(errors.prName) && errors.prName[1] && (<p className="validation-message">{errors.prName[1]}</p>)}
                     <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(1, e)} disabled={mode} name="prDesc" id="1prDesc"></textarea>
+                    <textarea onChange={(e) => inputPrDesc(1, e)} disabled={mode} name="prDesc" id="1prDesc" defaultValue={project.desc[1]}></textarea>
                     {Array.isArray(errors.desc) && errors.desc[1] && (<p className="validation-message">{errors.desc[1]}</p>)}
                     <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(1, e)} disabled={mode} type="text" name="prRole" id="1prRole" />
+                    <input onChange={(e) => inputPrRole(1, e)} disabled={mode} type="text" name="prRole" id="1prRole" defaultValue={project.role[1]}/>
                     {Array.isArray(errors.role) && errors.role[1] && (<p className="validation-message">{errors.role[1]}</p>)}
                     <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(1, e)} disabled={mode} type="text" name="prLink" id="1prLink" />
+                    <input onChange={(e) => inputPrLink(1, e)} disabled={mode} type="text" name="prLink" id="1prLink" defaultValue={project.link[1]}/>
                     {Array.isArray(errors.link) && errors.link[1] && (<p className="validation-message">{errors.link[1]}</p>)}
                     <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(1, e)} disabled={mode} type="number" name="prYear" id="1prYear" />
+                    <input onChange={(e) => inputPrYear(1, e)} disabled={mode} type="number" name="prYear" id="1prYear" defaultValue={project.year[1]}/>
                     {Array.isArray(errors.year) && errors.year[1] && (<p className="validation-message">{errors.year[1]}</p>)}
                 </div>
 
@@ -505,19 +626,19 @@ const changeActive = (n) => {
                         <label htmlFor="prName">Name*</label>
                         <button onClick={decrementProjectCells} className="cross"></button>
                     </div>
-                    <input onChange={(e)=>inputPrName(2, e)} disabled={mode} type="text" name="prName" id="2prName" />
+                    <input onChange={(e)=>inputPrName(2, e)} disabled={mode} type="text" name="prName" id="2prName" defaultValue={project.name[2]}/>
                     {Array.isArray(errors.prName) && errors.prName[2] && (<p className="validation-message">{errors.prName[2]}</p>)}
                     <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(2, e)} disabled={mode} name="prDesc" id="2prDesc"></textarea>
+                    <textarea onChange={(e) => inputPrDesc(2, e)} disabled={mode} name="prDesc" id="2prDesc" defaultValue={project.desc[2]}></textarea>
                     {Array.isArray(errors.desc) && errors.desc[2] && (<p className="validation-message">{errors.desc[2]}</p>)}
                     <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(2, e)} disabled={mode} type="text" name="prRole" id="2prRole" />
+                    <input onChange={(e) => inputPrRole(2, e)} disabled={mode} type="text" name="prRole" id="2prRole" defaultValue={project.role[2]}/>
                     {Array.isArray(errors.role) && errors.role[2] && (<p className="validation-message">{errors.role[2]}</p>)}
                     <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(2, e)} disabled={mode} type="text" name="prLink" id="2prLink" />
+                    <input onChange={(e) => inputPrLink(2, e)} disabled={mode} type="text" name="prLink" id="2prLink" defaultValue={project.link[2]}/>
                     {Array.isArray(errors.link) && errors.link[2] && (<p className="validation-message">{errors.link[2]}</p>)}
                     <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(2, e)} disabled={mode} type="number" name="prYear" id="2prYear" />
+                    <input onChange={(e) => inputPrYear(2, e)} disabled={mode} type="number" name="prYear" id="2prYear" defaultValue={project.year[2]}/>
                     {Array.isArray(errors.year) && errors.year[2] && (<p className="validation-message">{errors.year[2]}</p>)}
                 </div>
 
@@ -528,19 +649,19 @@ const changeActive = (n) => {
                         <label htmlFor="prName">Name*</label>
                         <button onClick={decrementProjectCells} className="cross"></button>
                     </div>
-                    <input onChange={(e)=>inputPrName(3, e)} disabled={mode} type="text" name="prName" id="3prName" />
+                    <input onChange={(e)=>inputPrName(3, e)} disabled={mode} type="text" name="prName" id="3prName" defaultValue={project.name[3]}/>
                     {Array.isArray(errors.prName) && errors.prName[3] && (<p className="validation-message">{errors.prName[3]}</p>)}
                     <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(3, e)} disabled={mode} name="prDesc" id="3prDesc"></textarea>
+                    <textarea onChange={(e) => inputPrDesc(3, e)} disabled={mode} name="prDesc" id="3prDesc" defaultValue={project.desc[3]}></textarea>
                     {Array.isArray(errors.desc) && errors.desc[3] && (<p className="validation-message">{errors.desc[3]}</p>)}
                     <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(3, e)} disabled={mode} type="text" name="prRole" id="3prRole" />
+                    <input onChange={(e) => inputPrRole(3, e)} disabled={mode} type="text" name="prRole" id="3prRole" defaultValue={project.role[3]}/>
                     {Array.isArray(errors.role) && errors.role[3] && (<p className="validation-message">{errors.role[3]}</p>)}
                     <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(3, e)} disabled={mode} type="text" name="prLink" id="3prLink" />
+                    <input onChange={(e) => inputPrLink(3, e)} disabled={mode} type="text" name="prLink" id="3prLink" defaultValue={project.link[3]}/>
                     {Array.isArray(errors.link) && errors.link[3] && (<p className="validation-message">{errors.link[3]}</p>)}
                     <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(3, e)} disabled={mode} type="number" name="prYear" id="3prYear" />
+                    <input onChange={(e) => inputPrYear(3, e)} disabled={mode} type="number" name="prYear" id="3prYear" defaultValue={project.year[3]}/>
                     {Array.isArray(errors.year) && errors.year[3] && (<p className="validation-message">{errors.year[3]}</p>)}
                 </div>
 
@@ -551,19 +672,19 @@ const changeActive = (n) => {
                         <label htmlFor="prName">Name*</label>
                         <button onClick={decrementProjectCells} className="cross"></button>
                     </div>
-                    <input onChange={(e)=>inputPrName(4, e)} disabled={mode} type="text" name="prName" id="4prName" />
+                    <input onChange={(e)=>inputPrName(4, e)} disabled={mode} type="text" name="prName" id="4prName" defaultValue={project.name[4]}/>
                     {Array.isArray(errors.prName) && errors.prName[4] && (<p className="validation-message">{errors.prName[4]}</p>)}
                     <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(4, e)} disabled={mode} name="prDesc" id="4prDesc"></textarea>
+                    <textarea onChange={(e) => inputPrDesc(4, e)} disabled={mode} name="prDesc" id="4prDesc" defaultValue={project.desc[4]}></textarea>
                     {Array.isArray(errors.desc) && errors.desc[4] && (<p className="validation-message">{errors.desc[4]}</p>)}
                     <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(4, e)} disabled={mode} type="text" name="prRole" id="4prRole" />
+                    <input onChange={(e) => inputPrRole(4, e)} disabled={mode} type="text" name="prRole" id="4prRole" defaultValue={project.role[4]}/>
                     {Array.isArray(errors.role) && errors.role[4] && (<p className="validation-message">{errors.role[4]}</p>)}
                     <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(4, e)} disabled={mode} type="text" name="prLink" id="4prLink" />
+                    <input onChange={(e) => inputPrLink(4, e)} disabled={mode} type="text" name="prLink" id="4prLink" defaultValue={project.link[4]}/>
                     {Array.isArray(errors.link) && errors.link[4] && (<p className="validation-message">{errors.link[4]}</p>)}
                     <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(4, e)} disabled={mode} type="number" name="prYear" id="4prYear" />
+                    <input onChange={(e) => inputPrYear(4, e)} disabled={mode} type="number" name="prYear" id="4prYear" defaultValue={project.year[4]}/>
                     {Array.isArray(errors.year) && errors.year[4] && (<p className="validation-message">{errors.year[4]}</p>)}
                 </div>
                 <p className="add" onClick={incrementProjectCells}>Добавить</p>
@@ -571,9 +692,9 @@ const changeActive = (n) => {
             </div>
 
 
-            <button className="svg-border-button">
+            <button onClick={() => updatePr(project, projectCells)} className="svg-border-button">
         </button>
-            {/* <button onClick={testEducation} className="change-button">
+            {/* <button onClick={updateProfile} className="change-button">
             
         </button> */}
         </div>

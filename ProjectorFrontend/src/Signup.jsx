@@ -1,9 +1,11 @@
 import './Signup.css';
 import supabase from './config/supabaseClient';
 import {useState} from "react";
-import {useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom";
+import { useAppContext } from './context/AuthContext';
 
 function Signup() {
+  const { isLoggedIn, setIsLoggedIn } = useAppContext(); 
   const navigate = useNavigate();
   const [mail, setMail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -65,7 +67,8 @@ function Signup() {
   .select()
   if (data){ 
     console.log( data);
-    navigate('/')
+    setIsLoggedIn(true);
+    navigate('/');
 } else {console.log(error)}
         }
     }

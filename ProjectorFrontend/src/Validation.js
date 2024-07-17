@@ -27,48 +27,61 @@ const urlPattern = new RegExp(
   );
 
 
+export function hasOnlySpecificStrings(obj, string) {
+    return Object.values(obj).every(value => {
+        if (typeof value === 'string' && value === string) {
+            return true;
+        } else if (Array.isArray(value) && value.every(item => item === string)) {
+            return true;
+        }
+        return false;
+    });
+}
+
 export function profileValidation(value){
     const errors = {};
 
-    if (value.name.length > 0){
+    if (hasOnlySpecificStrings(value, '')) return errors;
+
+    if (value.name && value.name.length > 0){
         if (!nameRegex.test(value.name)) errors.name = 'Name must contain only alphabetic symbols and not exceed 10 cahracters'
     } else {
         errors.name = 'Cannot be empty'
     }
 
-    if (value.lastName.length > 0){
+    if (value.lastName && value.lastName.length > 0){
         if (!lastNameRegex.test(value.lastName)) errors.lastName = 'Last name must contain only alphabetic symbols and not exceed 20 characters'
     } else {
         errors.lastName = 'Cannot be empty'
     }
 
-    if (value.bio.length > 0){
+    if (value.bio && value.bio.length > 0){
         if (whitelistRegex.test(value.bio) && !blacklistRegex.test(value.bio)) {
             if (value.bio.length > 250) {errors.bio = 'Can not exceed 250 characters'}
         } else errors.bio = `Only alphabetic and special symbols(.,!?'"();:_@#\-) are allowed`;
     }
     
-    if (value.langs.length > 5) errors.langs = 'Choose up to 5 languages';
+    if (value.langs && value.langs.length > 5) errors.langs = 'Choose up to 5 languages';
 
-    if (value.phNumber.length > 0){
+    if (value.phNumber && value.phNumber.length > 0){
         if (!phonePatterns.some(pattern => pattern.test(value.phNumber))) {
             errors.phNumber = `Input valid phode number, only russian region is accepted`
         }
     }
 
-    if (value.socials.length > 0){
+    if (value.socials && value.socials.length > 0){
         if (!socialsPatterns.some(pattern => pattern.test(value.socials))) {
             errors.socials = `Input valid profile link`
         }
     }
 
-    if (value.specialties.length > 0){
+    if (value.specialties && value.specialties.length > 0){
         if (value.specialties.length > 5) errors.specialties = 'Can not exceed 5'
     } else {
         errors.specialties = 'Can not be empty'
     }
 
-    if (value.tg.length>0){
+    if (value.tg && value.tg.length>0){
         if (!telegramPattern.test(value.tg)){
             errors.tg = `Input valid profile link`
         }
@@ -78,6 +91,7 @@ export function profileValidation(value){
 }
 
 export function portfolioValidation(value, i){
+    
     const errors = {
         prName: [],
         desc: [],
@@ -85,6 +99,8 @@ export function portfolioValidation(value, i){
         link: [],
         year: [],
     };
+
+    if (hasOnlySpecificStrings(value, '')) return errors;
 
     for (let iteration = 0; iteration <= i; iteration++) {
         if (value.name[iteration].length > 0){
@@ -131,6 +147,8 @@ export function portfolioValidation(value, i){
 }
 
 export function educationValidation(value, i){
+
+    
     const errors = {
         mastery: [],
         eduType: [],
@@ -139,6 +157,8 @@ export function educationValidation(value, i){
         faculty: [],
         grad: [],
     };
+
+    if (hasOnlySpecificStrings(value, '')) return errors;
 
     for (let iteration = 0; iteration <= i; iteration++){
         if (value.eduType[iteration]!=='additional' && value.eduType[iteration]!=='general') {
