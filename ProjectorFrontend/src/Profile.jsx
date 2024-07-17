@@ -12,6 +12,8 @@ export default function Profile(){
     const { emode } = useParams();
     const [eduCells, setEduCells] = useState(0);
     const [projectCells, setProjectCells] = useState(0);
+    const [activeEdu, setActiveEdu] = useState(0);
+    const [activeProjects, setActiveProjects] = useState(0);
     const [selectedPeople, setSelectedPeople] = useState([])
     const [selectedLanguage, setSelectedLanguage] = useState([])
 
@@ -71,6 +73,7 @@ const inputTg = (e)=>setProfile((prev)=>{
         role: ['', '', '', '', '',],
         link: ['', '', '', '', '',],
         year: ['', '', '', '', '',],
+        id: ['', '', '', '', '',]
     }) 
     
     
@@ -124,6 +127,7 @@ const inputTg = (e)=>setProfile((prev)=>{
         facility: ['', '', ''],
         faculty: ['', '', ''],
         grad: ['', '', ''],
+        id: ['','','']
     }) 
 
 // EDUCATION INPUT DATA FETCHING
@@ -179,8 +183,8 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
 }
 
 // TEST OUTPUTS
-    useEffect(()=>{console.log(project)}, [project])
-    // useEffect(()=>{console.log(education)}, [education])
+    // useEffect(()=>{console.log(project)}, [project])
+    useEffect(()=>{console.log(education)}, [education])
     // useEffect(()=>{console.log(profile.langs)}, [profile])
 
     useEffect(()=>{if (emode!=='0') setMode(false);}, [emode])
@@ -230,12 +234,38 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
             .eq('user_id', uId)
 
             if (error) { console.log(error) } else {
+                setActiveProjects(Portfolio.length)
                 setProjectCells((p) => Portfolio.length-1)
                 for (let i=0; i < Portfolio.length; i++){
                     for (const key in Portfolio[i]){
-                        if (key!='user_id' && key!='id'){
+                        if (key!='user_id'){
                             setProject((p) =>{
                                 const updated = p[key].map((name, index) => (index === i ? Portfolio[i][key] : name));
+                                let obj = {...p};
+                                obj[key] = updated;
+                                return obj
+                            });
+                        }
+                    }
+                }
+            }
+        };
+
+        const fetchEducation = async() => {
+            let { data: Education, error } = await supabase
+            .from('Education')
+            .select("*")
+            // Filters
+            .eq('user_id', uId)
+
+            if (error) { console.log(error) } else {
+                setActiveEdu(Education.length)
+                setEduCells((p) => Education.length-1)
+                for (let i=0; i < Education.length; i++){
+                    for (const key in Education[i]){
+                        if (key!='user_id'){
+                            setEducation((p) =>{
+                                const updated = p[key].map((name, index) => (index === i ? Education[i][key] : name));
                                 let obj = {...p};
                                 obj[key] = updated;
                                 return obj
@@ -275,6 +305,7 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
             fetchLangs();
             fetchSpecs();
             fetchPortfolio();
+            fetchEducation();
         }
 }
 , [uId])
@@ -343,18 +374,45 @@ const updateProfile = async () => {
     
 }
 
-    const updatePr = async (value, count) =>{
-        let list = []
-        for (let o = 0; o <= count; o++){
-            let obj = {user_id: uId}
-            for (const key in value){
-                if (value[key][o]) obj[key] = value[key][o];
-            }
-            list.push(obj)
+const createQueryFormat = (value, count, base) => {
+    let list = [];
+    for (let o = base; o <= count; o++){
+        let obj = {user_id: uId}
+        for (const key in value){
+            if (key!='id' && value[key][o]) obj[key] = value[key][o];
         }
+        list.push(obj)
+    }
+    return list;
+}
+
+const updateQueryFormat = (value, count, top) => {
+    let list = [];
+    for (let o = 0; o < top; o++){
+        let obj = {user_id: uId}
+        for (const key in value){
+            if (value[key][o]) obj[key] = value[key][o];
+        }
+        list.push(obj)
+    }
+    return list;
+}
+
+    const createProject = async (value, count, base) =>{
+        let list = createQueryFormat(value, count, base)
 
         const { error:specsInsErr } = await supabase
         .from('Portfolio')
+        .insert(list)
+        .select()
+        if (specsInsErr) console.log(specsInsErr);
+    }
+
+    const createEducation = async (value, count) =>{
+        let list = createQueryFormat(value, count)
+
+        const { error:specsInsErr } = await supabase
+        .from('Education')
         .insert(list)
         .select()
         if (specsInsErr) console.log(specsInsErr);
@@ -692,7 +750,7 @@ const changeActive = (n) => { setActive((a)=>n) }
             </div>
 
 
-            <button onClick={() => updatePr(project, projectCells)} className="svg-border-button">
+            <button onClick={() => createProject(project, projectCells, activeProjects)} className="svg-border-button">
         </button>
             {/* <button onClick={updateProfile} className="change-button">
             
