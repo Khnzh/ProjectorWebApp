@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import { useAppContext } from './context/AuthContext';
 
 function Signup() {
-  const { isLoggedIn, setIsLoggedIn } = useAppContext(); 
+  const { setIsLoggedIn } = useAppContext(); 
   const navigate = useNavigate();
   const [mail, setMail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -68,7 +68,7 @@ function Signup() {
   if (data){ 
     console.log( data);
     setIsLoggedIn(true);
-    navigate('/');
+    navigate('/profile/1');
 } else {console.log(error)}
         }
     }

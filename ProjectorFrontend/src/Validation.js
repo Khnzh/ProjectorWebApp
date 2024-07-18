@@ -44,46 +44,46 @@ export function profileValidation(value){
     if (hasOnlySpecificStrings(value, '')) return errors;
 
     if (value.name && value.name.length > 0){
-        if (!nameRegex.test(value.name)) errors.name = 'Name must contain only alphabetic symbols and not exceed 10 cahracters'
+        if (!nameRegex.test(value.name)) errors.name = 'Имя должно содержать не больше 10 букв'
     } else {
-        errors.name = 'Cannot be empty'
+        errors.name = 'Заполните поле'
     }
 
     if (value.lastName && value.lastName.length > 0){
-        if (!lastNameRegex.test(value.lastName)) errors.lastName = 'Last name must contain only alphabetic symbols and not exceed 20 characters'
+        if (!lastNameRegex.test(value.lastName)) errors.lastName = 'Фамилия должна содержать не больше 20 букв'
     } else {
-        errors.lastName = 'Cannot be empty'
+        errors.lastName = 'Заполните поле'
     }
 
     if (value.bio && value.bio.length > 0){
         if (whitelistRegex.test(value.bio) && !blacklistRegex.test(value.bio)) {
-            if (value.bio.length > 250) {errors.bio = 'Can not exceed 250 characters'}
-        } else errors.bio = `Only alphabetic and special symbols(.,!?'"();:_@#\-) are allowed`;
+            if (value.bio.length > 250) {errors.bio = 'Используйте не больше 250 символов'}
+        } else errors.bio = `Используйте только буквы и специальные символы`;
     }
     
-    if (value.langs && value.langs.length > 5) errors.langs = 'Choose up to 5 languages';
+    if (value.langs && value.langs.length > 5) errors.langs = 'Выберите не больше пяти';
 
     if (value.phNumber && value.phNumber.length > 0){
         if (!phonePatterns.some(pattern => pattern.test(value.phNumber))) {
-            errors.phNumber = `Input valid phode number, only russian region is accepted`
+            errors.phNumber = `Некорректный номер`
         }
     }
 
     if (value.socials && value.socials.length > 0){
         if (!socialsPatterns.some(pattern => pattern.test(value.socials))) {
-            errors.socials = `Input valid profile link`
+            errors.socials = `Некорректная ссылка профиля`
         }
     }
 
     if (value.specialties && value.specialties.length > 0){
-        if (value.specialties.length > 5) errors.specialties = 'Can not exceed 5'
+        if (value.specialties.length > 5) errors.specialties = 'Выберите не больше пяти'
     } else {
-        errors.specialties = 'Can not be empty'
+        errors.specialties = 'Заполните поле'
     }
 
     if (value.tg && value.tg.length>0){
         if (!telegramPattern.test(value.tg)){
-            errors.tg = `Input valid profile link`
+            errors.tg = `Некорректная ссылка профиля`
         }
     }
 
@@ -104,42 +104,42 @@ export function portfolioValidation(value, i){
 
     for (let iteration = 0; iteration <= i; iteration++) {
         if (value.name[iteration].length > 0){
-            if (!nameRegex.test(value.name[iteration])) {errors.prName = [...errors.prName, 'Name must contain only alphabetic symbols and not exceed 10 cahracters']}
+            if (!nameRegex.test(value.name[iteration])) {errors.prName = [...errors.prName, 'Имя должно содержать не больше 10 букв']}
             else {errors.prName = [...errors.prName, '']}
         } else {
-            errors.prName = [...errors.prName, 'Cannot be empty']
+            errors.prName = [...errors.prName, 'Заполните поле']
         }
 
         if (value.desc[iteration].length > 0){
             if (whitelistRegex.test(value.desc[iteration]) && !blacklistRegex.test(value.desc[iteration])) {
-                if (value.desc[iteration].length > 250) {errors.desc = [...errors.desc, 'Can not exceed 250 characters']}
+                if (value.desc[iteration].length > 250) {errors.desc = [...errors.desc, 'Используйте не больше 250 символов']}
                 else {errors.desc = [...errors.desc, '']}
-            } else errors.desc = [...errors.desc, `Only alphabetic and special symbols(.,!?'"();:_@#\-) are allowed`];
+            } else errors.desc = [...errors.desc, `Используйте только буквы и специальные символы`];
         } else {errors.desc = [...errors.desc, '']}
 
         if (value.role[iteration].length > 0){
             if (whitelistRegex.test(value.role[iteration]) && !blacklistRegex.test(value.role[iteration])) {
-                if (value.role[iteration].length > 30) {errors.role = [...errors.role, 'Can not exceed 30 characters']}
+                if (value.role[iteration].length > 30) {errors.role = [...errors.role, 'Используйте не больше 300 символов']}
                 else {errors.role = [...errors.role, '']}
-            } else errors.role= [...errors.role, `Only alphabetic and special symbols(.,!?'"();:_@#\-) are allowed`];
+            } else errors.role= [...errors.role, `Используйте только буквы и специальные символы`];
         } else {
-            errors.role = [...errors.role, 'Cannot be empty']
+            errors.role = [...errors.role, 'Заполните поле']
         }
 
         if (value.link[iteration].length > 0){
             if (urlPattern.test(value.link[iteration])) {
-                if (value.link[iteration].length > 50) {errors.link = [...errors.link, 'Can not exceed 50 characters']}
+                if (value.link[iteration].length > 50) {errors.link = [...errors.link, 'Используйте не больше 50 символов']}
                 else {errors.link = [...errors.link, '']}
-            } else errors.link = [...errors.link, `Invalid link`];
+            } else errors.link = [...errors.link, `Некорректная ссылка`];
         } else {
             errors.link = [...errors.link, '']
         }
 
         if (value.year[iteration].length >0){
-            if (value.year[iteration]<1950 || value.year[iteration]> new Date().getFullYear()) {errors.year = [...errors.year, 'Input valid year in YYYY format']}
+            if (value.year[iteration]<1950 || value.year[iteration]> new Date().getFullYear()) {errors.year = [...errors.year, 'Введите корректную дату в формате ГГГГ']}
             else {errors.year = [...errors.year, '']}
         } else {
-            errors.year = [...errors.year,'Cannot be empty']
+            errors.year = [...errors.year,'Заполните поле']
         }
     }
 
@@ -162,48 +162,48 @@ export function educationValidation(value, i){
 
     for (let iteration = 0; iteration <= i; iteration++){
         if (value.eduType[iteration]!=='additional' && value.eduType[iteration]!=='general') {
-            errors.eduType = [...errors.eduType, 'Cannot be empty']
+            errors.eduType = [...errors.eduType, 'Заполните поле']
         }
 
         if (value.mastery[iteration].length > 0){
             if (whitelistRegex.test(value.mastery[iteration]) && !blacklistRegex.test(value.mastery[iteration])) {
-                if (value.mastery[iteration].length > 50) {errors.mastery = [...errors.mastery, 'Can not exceed 50 characters']}
+                if (value.mastery[iteration].length > 50) {errors.mastery = [...errors.mastery, 'Используйте не больше 50 символов']}
                 else {errors.mastery = [...errors.mastery, '']}
-            } else errors.mastery = [...errors.mastery, `Only alphabetic and special symbols can be used`];
+            } else errors.mastery = [...errors.mastery, `Используйте только буквы и специальные символы`];
         } else {
             errors.mastery = [...errors.mastery, '']
         }
 
         if (value.faculty[iteration].length > 0){
             if (whitelistRegex.test(value.faculty[iteration]) && !blacklistRegex.test(value.faculty[iteration])) {
-                if (value.faculty[iteration].length > 50) {errors.faculty = [...errors.faculty, 'Can not exceed 50 characters']}
+                if (value.faculty[iteration].length > 50) {errors.faculty = [...errors.faculty, 'Используйте не больше 50 символов']}
                 else {errors.faculty = [...errors.faculty, '']}
-            } else errors.faculty = [...errors.faculty, `Only alphabetic and special symbols can be used`];
+            } else errors.faculty = [...errors.faculty, `Используйте только буквы и специальные символы`];
         } else {
-            errors.faculty = [...errors.faculty, 'Cannot be empty']
+            errors.faculty = [...errors.faculty, 'Заполните поле']
         }
 
         if (value.facility[iteration].length > 0){
             if (whitelistRegex.test(value.facility[iteration]) && !blacklistRegex.test(value.facility[iteration])) {
-                if (value.facility[iteration].length > 50) {errors.facility = [...errors.facility, 'Can not exceed 50 characters']}
+                if (value.facility[iteration].length > 50) {errors.facility = [...errors.facility, 'Используйте не больше 50 символов']}
                 else {errors.facility = [...errors.facility, '']}
-            } else errors.facility = [...errors.facility, `Only alphabetic and special symbols can be used`];
+            } else errors.facility = [...errors.facility, `Испольйте буквы и специальные символы`];
         } else {
-            errors.facility = [...errors.facility, 'Cannot be empty']
+            errors.facility = [...errors.facility, 'Заполните поле']
         }
 
         if (value.grad[iteration].length >0){
-            if (value.grad[iteration]<1950 || value.grad[iteration]> new Date().getFullYear()) {errors.grad = [...errors.grad, 'Input valid grad in YYYY format']}
+            if (value.grad[iteration]<1950 || value.grad[iteration]> new Date().getFullYear()) {errors.grad = [...errors.grad, 'Введите корректную дату в формате ГГГГ']}
             else {errors.grad = [...errors.grad, '']}
         } else {
-            errors.grad = [...errors.grad,'Cannot be empty']
+            errors.grad = [...errors.grad,'Заполните поле']
         }
 
         if (value.enrollment[iteration].length >0){
-            if (value.enrollment[iteration]<1950 || value.enrollment[iteration]> new Date().getFullYear()) {errors.enrollment = [...errors.enrollment, 'Input valid enrollment in YYYY format']}
+            if (value.enrollment[iteration]<1950 || value.enrollment[iteration]> new Date().getFullYear()) {errors.enrollment = [...errors.enrollment, 'Введите корректную дату в формате ГГГГ']}
             else {errors.enrollment = [...errors.enrollment, '']}
         } else {
-            errors.enrollment = [...errors.enrollment,'Cannot be empty']
+            errors.enrollment = [...errors.enrollment,'Заполните поле']
         }
     }
 
