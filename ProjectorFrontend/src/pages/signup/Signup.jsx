@@ -1,4 +1,4 @@
-import './Signup.css';
+import './Signup.module.scss';
 import supabase from '../../config/supabaseClient';
 import {useState, useEffect} from "react";
 import { signupValidation } from '../../utilityFunctions/Validation';
