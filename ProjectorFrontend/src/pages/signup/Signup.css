@@ -1,0 +1,15 @@
+:root {
+  --COLOR: #fff6de;
+  --HIGHLIGHT: #dd9e28;
+  --FONT: "Overpass Mono", monospace;
+}
+
+.signup {
+  margin-bottom: 5em;
+}
+
+.sign__label {
+  margin-left: 0.5em;
+  text-decoration: underline;
+  font-size: 1.5em;
+}
