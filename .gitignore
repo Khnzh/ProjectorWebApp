@@ -1,0 +1,6 @@
+./ProjectorFrontend/node_modules
+./ProjectorFrontend/node_modules/*
+./ProjectorFrontend/node_modules/
+/ProjectorFrontend/node_modules
+/ProjectorFrontend/node_modules/*
+/ProjectorFrontend/node_modules/
