@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './Landing.css'
+import './Landing.module.scss'
 import.meta.env.VITE_SUPABASE_KEY
 
 function Landing() {

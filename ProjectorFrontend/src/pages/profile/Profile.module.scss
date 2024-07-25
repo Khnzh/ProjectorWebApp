@@ -1,0 +1,265 @@
+@import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
+
+:root {
+  --COLOR: #fff6de;
+  --HIGHLIGHT: #dd9e28;
+  --FONT: "Overpass Mono", monospace;
+}
+
+$color: #fff6de;
+$highlight: #dd9e28;
+$font: "Overpass Mono", monospace;
+
+.tab-container {
+  padding-top: 1%;
+  width: 60%;
+  margin: 10vh 20% 0 20%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .svg-border-button,
+  .change-button {
+    align-self: center;
+    width: 50%;
+    margin-bottom: 2%;
+
+    &::before {
+      content: attr(data-content);
+    }
+  }
+}
+
+.tab-toggle {
+  height: 5vh;
+  width: calc(1 / 3 * 100%);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.active-tab {
+  color: $highlight;
+  text-decoration: underline;
+}
+
+.tab-content {
+  padding-top: 5vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: start;
+  padding-left: 5%;
+  padding-bottom: 5%;
+  width: 100%;
+
+  input,
+  textarea {
+    border: 2px solid $highlight;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 1em;
+    width: 90%;
+    font-size: 1em;
+    font-family: $font;
+
+    &::placeholder {
+      color: $color;
+      opacity: 40%;
+    }
+  }
+
+  textarea {
+    height: 5rem;
+    overflow: hidden;
+    resize: none;
+  }
+
+  h1 {
+    align-self: center;
+    margin-bottom: 1em;
+    text-transform: uppercase;
+  }
+
+  label,
+  p {
+    text-transform: uppercase;
+    font-size: 1.5em;
+    color: $highlight;
+  }
+
+  .specialty-input:focus-visible {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    outline: none;
+  }
+}
+
+.tab-positioning {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+label {
+  .sign__svg {
+    width: 1em;
+    stroke: $highlight;
+  }
+
+  .radio__label {
+    margin: 1em;
+    font-size: 1em;
+    color: $color;
+  }
+}
+
+div .no-underline {
+  display: flex;
+  justify-items: start;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.additional_edu {
+  padding-bottom: 5%;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1em;
+  align-items: start;
+  padding-right: 10%;
+
+  input,
+  textarea {
+    width: 100%;
+  }
+}
+
+hr {
+  width: 100%;
+  background-color: $color;
+  height: 2px;
+  border: none;
+}
+
+.cross {
+  height: 40px;
+  width: 40px;
+  background-color: transparent;
+  border: none;
+  background-image: url(../cross.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 0.5s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+    transform: rotate(70deg);
+  }
+}
+
+.add {
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+  background-color: transparent;
+  border: none;
+  color: $highlight;
+  position: relative;
+  align-self: center;
+
+  &::before {
+    content: "";
+    background-image: url(../cross.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(45deg);
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 150%;
+    left: -100%;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.edu_header {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.specialty {
+  z-index: 2;
+  background-color: $color;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 1em;
+  color: $highlight;
+}
+
+.horizontal-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1em;
+}
+
+.list-item {
+  background-color: #ffffff;
+  border: 2px solid #cccccc;
+  color: $highlight;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  padding: 0.5em 1em;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cross-button {
+  background: none;
+  border: none;
+  color: #ff4c4c;
+  font-size: 1.2em;
+  margin-right: 0.5em;
+  cursor: pointer;
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: #ffcccc;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  .validation-message {
+    text-align: left;
+    margin-right: 5%;
+    text-transform: none;
+    color: rgb(129, 22, 22);
+    font-size: 1em;
+  }
+  
+  .delete-cell:hover{
+   cursor: pointer;
+   text-decoration: underline;
+  }
+}

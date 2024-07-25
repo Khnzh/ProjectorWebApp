@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
 
+$font-family: "Overpass Mono", monospace;
+$color-nav-link: #bd9e6f;
+$color-sign: #fff5da;
+$color-cloud-text: #fff5da99;
+$color-stretch-end: rgb(236, 174, 31);
+
 #root {
   width: 100%;
   margin: 0;
@@ -13,16 +19,21 @@
 }
 
 .nav-link {
-  color: #bd9e6f;
-  font-family: "Overpass Mono", monospace;
+  color: $color-nav-link;
+  font-family: $font-family;
   font-size: 1.5rem;
   animation: return-to-original 300ms ease-in-out;
   white-space: nowrap;
+
+  &:hover {
+    animation: stretch-color 300ms ease-in-out forwards;
+    white-space: nowrap;
+  }
 }
 
 .sign {
-  color: #fff5da;
-  font-family: "Overpass Mono", monospace;
+  color: $color-sign;
+  font-family: $font-family;
   font-size: 1.5rem;
   white-space: nowrap;
   text-transform: uppercase;
@@ -32,14 +43,10 @@
   margin-left: 10%;
 }
 
-.nav-link:hover {
-  animation: stretch-color 300ms ease-in-out forwards;
-  white-space: nowrap;
-}
-
 .header {
   position: relative;
 }
+
 .big-header {
   width: 85%;
   padding-top: 170px;
@@ -63,15 +70,15 @@
   flex-wrap: nowrap;
   justify-content: space-around;
   position: relative;
-}
 
-.landing-cmps img {
-  width: 40%;
+  img {
+    width: 40%;
+  }
 }
 
 .cloud-text {
-  color: #fff5da99;
-  font-family: "Overpass Mono", monospace;
+  color: $color-cloud-text;
+  font-family: $font-family;
   font-size: 1.4rem;
   font-weight: 100;
   white-space: nowrap;
@@ -80,25 +87,25 @@
   top: 43%;
   text-align: left;
 }
-/* Define keyframes */
+
 @keyframes stretch-color {
   0% {
-    color: #bd9e6f; /* Initial color */
+    color: $color-nav-link; // Initial color
     transform: scale(1) translate(0, 0);
   }
   100% {
-    color: rgb(236, 174, 31); /* End color */
+    color: $color-stretch-end; // End color
     transform: scale(1.05) translate(-5%, -5%);
   }
 }
 
 @keyframes return-to-original {
   from {
-    color: rgb(236, 174, 31); /* End color */
+    color: $color-stretch-end; // End color
     transform: scale(1.05) translate(-5%, -5%);
   }
   to {
-    color: #bd9e6f; /* Initial color */
+    color: $color-nav-link; // Initial color
     transform: scale(1) translate(0, 0);
   }
 }
