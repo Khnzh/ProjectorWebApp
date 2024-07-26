@@ -62,12 +62,6 @@ body {
   background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat;
 }
 
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -262,4 +256,12 @@ input[type="checkbox"]:checked + label {
 
 .radio {
   stroke: var(--HIGHLIGHT);
+}
+
+div .validation-message {
+  text-align: left;
+  margin-right: 5%;
+  text-transform: none;
+  color: rgb(129, 22, 22);
+  font-size: 1em;
 }

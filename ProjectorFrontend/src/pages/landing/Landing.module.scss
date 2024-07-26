@@ -1,10 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
 
-$font-family: "Overpass Mono", monospace;
-$color-nav-link: #bd9e6f;
-$color-sign: #fff5da;
+$font: "Overpass Mono", monospace;
 $color-cloud-text: #fff5da99;
-$color-stretch-end: rgb(236, 174, 31);
 
 #root {
   width: 100%;
@@ -18,53 +15,13 @@ $color-stretch-end: rgb(236, 174, 31);
   height: 300vh;
 }
 
-.nav-link {
-  color: $color-nav-link;
-  font-family: $font-family;
-  font-size: 1.5rem;
-  animation: return-to-original 300ms ease-in-out;
-  white-space: nowrap;
-
-  &:hover {
-    animation: stretch-color 300ms ease-in-out forwards;
-    white-space: nowrap;
-  }
-}
-
-.sign {
-  color: $color-sign;
-  font-family: $font-family;
-  font-size: 1.5rem;
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.margin-30 {
-  margin-left: 10%;
-}
-
-.header {
-  position: relative;
-}
-
-.big-header {
+.big_header {
   width: 85%;
   padding-top: 170px;
   padding-left: 40px;
 }
 
-.nav-bar {
-  position: absolute;
-  left: 15%;
-  padding: 0 5px;
-  list-style-type: none;
-  display: flex;
-  justify-content: space-evenly;
-  gap: 1rem;
-  width: 85%;
-}
-
-.landing-cmps {
+.landing_cmps {
   display: flex;
   flex-flow: row;
   flex-wrap: nowrap;
@@ -76,9 +33,9 @@ $color-stretch-end: rgb(236, 174, 31);
   }
 }
 
-.cloud-text {
+.cloud_text {
   color: $color-cloud-text;
-  font-family: $font-family;
+  font-family: $font;
   font-size: 1.4rem;
   font-weight: 100;
   white-space: nowrap;
@@ -86,26 +43,4 @@ $color-stretch-end: rgb(236, 174, 31);
   left: 8%;
   top: 43%;
   text-align: left;
-}
-
-@keyframes stretch-color {
-  0% {
-    color: $color-nav-link; // Initial color
-    transform: scale(1) translate(0, 0);
-  }
-  100% {
-    color: $color-stretch-end; // End color
-    transform: scale(1.05) translate(-5%, -5%);
-  }
-}
-
-@keyframes return-to-original {
-  from {
-    color: $color-stretch-end; // End color
-    transform: scale(1.05) translate(-5%, -5%);
-  }
-  to {
-    color: $color-nav-link; // Initial color
-    transform: scale(1) translate(0, 0);
-  }
 }
