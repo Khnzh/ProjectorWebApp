@@ -1,4 +1,4 @@
-import './Profile.module.scss'
+import styles from './Profile.module.scss'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import supabase from '../../config/supabaseClient';
@@ -480,68 +480,68 @@ const fetchEducation = async(uId) => {
     const changeActive = (n) => { setActive((a)=>n) }
 
     const [eduCellsContent, setEduCellsContent] = useState([])
-    const eduCellsRender = () => {
-        let list = [];
-        for (let i = 0; i <= eduCells; i++){
-            list.push(<div className="additional_edu">
-                <div className='edu_header'>
-                        <p>ВИД ОБРАЗОВАНИЯ*</p>
-                        {(i==0) && (activeEdu>i) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>)}
-                        {(i!=0) && ((activeEdu>i) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>))}
-                    </div>
-                <div className="signup__radio__cnt no-underline">
-                    {(education.eduType=='general') ?
-                    <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general" defaultChecked/>
-                    :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general"/>}
-                    <label htmlFor="general"><svg className="sign__svg" viewBox="0 0 40 38" >
-                        <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                            c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                        <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                        </svg><span className="radio__label">Основное</span></label>
-                    {(education.eduType=='general') ?
-                    <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" defaultChecked/>
-                    :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" />}
-                    <label htmlFor="additional"><svg className="sign__svg" viewBox="0 0 40 38" >
-                        <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                            c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                        <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                        </svg><span className="radio__label">Дополнительное</span></label>
-                </div>
-                {Array.isArray(errors.eduType) && errors.eduType[i] && (<p className="validation-message">{errors.eduType[i]}</p>)}
-                <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
-                <input onChange={(e) => inputFacility(i,e)} disabled={mode} type="text" name="edFacility" id={`${i}edFacility`} defaultValue={education.facility[i]} placeholder='Введите...'/>
-                {Array.isArray(errors.facility) && errors.facility[i] && (<p className="validation-message">{errors.facility[i]}</p>)}
-                <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
-                <input onChange={(e) => inputFaculty(i,e)} disabled={mode} type="text" name="faculty" id={`${i}faculty`} defaultValue={education.faculty[i]} placeholder='Введите...'/>
-                {Array.isArray(errors.faculty) && errors.faculty[i] && (<p className="validation-message">{errors.faculty[i]}</p>)}
-                <label htmlFor="mastery">МАСТЕР</label>
-                <input onChange={(e) => inputMastery(i,e)} disabled={mode} type="text" name="mastery" id={`${i}mastery`} defaultValue={education.mastery[i]} placeholder='Введите...'/>
-                {Array.isArray(errors.mastery) && errors.mastery[i] && (<p className="validation-message">{errors.mastery[i]}</p>)}
-                <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
-                <input onChange={(e) => inputEnrollment(i,e)} disabled={mode} type="number" name="enYear" id={`${i}enYear`} defaultValue={education.enrollment[i]} placeholder='Введите...'/>
-                {Array.isArray(errors.enrollment) && errors.enrollment[i] && (<p className="validation-message">{errors.enrollment[i]}</p>)}
-                <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
-                <input onChange={(e) => inputGrad(i,e)} disabled={mode} type="number" name="gradYear" id={`${i}gradYear`} defaultValue={education.grad[i]} placeholder='Введите...'/>
-                {Array.isArray(errors.grad) && errors.grad[i] && (<p className="validation-message">{errors.grad[i]}</p>)}
-            </div>)
-            console.log(list)
-            return list
-                }}
-    useEffect(()=> setEduCellsContent(eduCellsRender), [eduCells])
+    // const eduCellsRender = () => {
+    //     let list = [];
+    //     for (let i = 0; i <= eduCells; i++){
+    //         list.push(<div className="additional_edu">
+    //             <div className='edu_header'>
+    //                     <p>ВИД ОБРАЗОВАНИЯ*</p>
+    //                     {(i==0) && (activeEdu>i) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>)}
+    //                     {(i!=0) && ((activeEdu>i) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>))}
+    //                 </div>
+    //             <div className="signup__radio__cnt no-underline">
+    //                 {(education.eduType=='general') ?
+    //                 <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general" defaultChecked/>
+    //                 :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general"/>}
+    //                 <label htmlFor="general"><svg className="sign__svg" viewBox="0 0 40 38" >
+    //                     <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
+    //                         c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
+    //                     <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
+    //                     </svg><span className="radio__label">Основное</span></label>
+    //                 {(education.eduType=='general') ?
+    //                 <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" defaultChecked/>
+    //                 :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" />}
+    //                 <label htmlFor="additional"><svg className="sign__svg" viewBox="0 0 40 38" >
+    //                     <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
+    //                         c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
+    //                     <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
+    //                     </svg><span className="radio__label">Дополнительное</span></label>
+    //             </div>
+    //             {Array.isArray(errors.eduType) && errors.eduType[i] && (<p className="validation-message">{errors.eduType[i]}</p>)}
+    //             <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
+    //             <input onChange={(e) => inputFacility(i,e)} disabled={mode} type="text" name="edFacility" id={`${i}edFacility`} defaultValue={education.facility[i]} placeholder='Введите...'/>
+    //             {Array.isArray(errors.facility) && errors.facility[i] && (<p className="validation-message">{errors.facility[i]}</p>)}
+    //             <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
+    //             <input onChange={(e) => inputFaculty(i,e)} disabled={mode} type="text" name="faculty" id={`${i}faculty`} defaultValue={education.faculty[i]} placeholder='Введите...'/>
+    //             {Array.isArray(errors.faculty) && errors.faculty[i] && (<p className="validation-message">{errors.faculty[i]}</p>)}
+    //             <label htmlFor="mastery">МАСТЕР</label>
+    //             <input onChange={(e) => inputMastery(i,e)} disabled={mode} type="text" name="mastery" id={`${i}mastery`} defaultValue={education.mastery[i]} placeholder='Введите...'/>
+    //             {Array.isArray(errors.mastery) && errors.mastery[i] && (<p className="validation-message">{errors.mastery[i]}</p>)}
+    //             <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
+    //             <input onChange={(e) => inputEnrollment(i,e)} disabled={mode} type="number" name="enYear" id={`${i}enYear`} defaultValue={education.enrollment[i]} placeholder='Введите...'/>
+    //             {Array.isArray(errors.enrollment) && errors.enrollment[i] && (<p className="validation-message">{errors.enrollment[i]}</p>)}
+    //             <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
+    //             <input onChange={(e) => inputGrad(i,e)} disabled={mode} type="number" name="gradYear" id={`${i}gradYear`} defaultValue={education.grad[i]} placeholder='Введите...'/>
+    //             {Array.isArray(errors.grad) && errors.grad[i] && (<p className="validation-message">{errors.grad[i]}</p>)}
+    //         </div>)
+    //         console.log(list)
+    //         return list
+    //             }}
+    // useEffect(()=> setEduCellsContent(eduCellsRender), [eduCells])
     
 
     return(
         <>
-        <div className="tab-container blurred_bg">
-            <div className="tab-positioning">
-                <div onClick={() => changeActive(1)} className={active===1 ?"tab-toggle active-tab" : "tab-toggle"}><p>О себе</p></div>
-                <div onClick={() => changeActive(2)} className={active===2 ?"tab-toggle active-tab" : "tab-toggle"}><p>Портфолио</p></div>
-                <div onClick={() => changeActive(3)} className={active===3 ?"tab-toggle active-tab" : "tab-toggle"}><p>Образование</p></div>
+        <div className={styles.tab_container}>
+            <div className={styles.tab_positioning}>
+                <div onClick={() => changeActive(1)} className={active===1 ?styles.active_tab : styles.tab_toggle}><p>О себе</p></div>
+                <div onClick={() => changeActive(2)} className={active===2 ?styles.active_tab : styles.tab_toggle}><p>Портфолио</p></div>
+                <div onClick={() => changeActive(3)} className={active===3 ?styles.active_tab : styles.tab_toggle}><p>Образование</p></div>
             </div>
 
 
 {/* PROFILE */}
-            <div className="tab-content" style={{display:  (active===1) ? 'flex' : 'none' }}>
+            <div className={styles.tab_content} style={{display:  (active===1) ? 'flex' : 'none' }}>
                 <h1>Расскажите о себе</h1>
                 <label htmlFor="name">ИМЯ*</label>
                 <input onChange={(e) => inputName(e)} disabled={mode} type="text" name="name" id="name" defaultValue={profile.name} placeholder='Введите...'/>
@@ -572,14 +572,14 @@ const fetchEducation = async(uId) => {
             </div>
 
 {/* EDUCATION */}
-            <div className="tab-content" style={{display:  (active===3) ? 'flex' : 'none' }}>
+            <div className={styles.tab_content} style={{display:  (active===3) ? 'flex' : 'none' }}>
                 <h1>Добавьте ваше образование</h1>
-                <div className="additional_edu">
-                    <div className='edu_header'>
+                <div className={styles.additional_edu}>
+                    <div className={styles.edu_header}>
                             <p>ВИД ОБРАЗОВАНИЯ*</p>
-                            {(activeEdu>0) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 0)}>delete</p>)}
+                            {(activeEdu>0) && ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Education', education, 0)}>delete</p>)}
                         </div>
-                    <div className="signup__radio__cnt no-underline">
+                    <div className={styles.radio_no_underline}>
                         {(education.eduType=='general') ?
                         <input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="general" name="eduType" value="general" defaultChecked/>
                         :<input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="general" name="eduType" value="general" defaultChecked/>}
@@ -694,7 +694,7 @@ const fetchEducation = async(uId) => {
             </div>
 
 {/* PORTFOLIO */}
-            <div className="tab-content" style={{display:  (active===2) ? 'flex' : 'none' }}>
+            <div className={styles.tab_content} style={{display:  (active===2) ? 'flex' : 'none' }}>
                 <h1>Projects</h1>
                 <div className="additional_edu">
                     <div className='edu_header'>

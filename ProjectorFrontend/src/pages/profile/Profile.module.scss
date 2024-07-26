@@ -1,22 +1,48 @@
 @import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
 
-:root {
-  --COLOR: #fff6de;
-  --HIGHLIGHT: #dd9e28;
-  --FONT: "Overpass Mono", monospace;
-}
 
 $color: #fff6de;
 $highlight: #dd9e28;
 $font: "Overpass Mono", monospace;
 
-.tab-container {
+@mixin blurred_bg {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 25px;
+  position: relative;
+  background: inherit;
+  z-index: 1;
+}
+
+@mixin blurred_before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 25px;
+  box-shadow: inset 0 0 2000px rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  z-index: -1;
+}
+
+@mixin signup__radio__cnt {
+  border-bottom: 2px solid var(--HIGHLIGHT);
+  width: 90%;
+  margin-bottom: 2rem;}
+
+.tab_container {
+  @include blurred_bg();
   padding-top: 1%;
   width: 60%;
   margin: 10vh 20% 0 20%;
   display: flex;
   flex-direction: column;
   position: relative;
+  &::before {
+    @include blurred_before();
+  }
 
   .svg-border-button,
   .change-button {
@@ -30,7 +56,7 @@ $font: "Overpass Mono", monospace;
   }
 }
 
-.tab-toggle {
+.tab_toggle {
   height: 5vh;
   width: calc(1 / 3 * 100%);
   text-align: center;
@@ -38,14 +64,17 @@ $font: "Overpass Mono", monospace;
   align-items: center;
   justify-content: center;
   z-index: 1;
+  font-family: $font;
+  font-size: 1.5rem;
 }
 
-.active-tab {
+.active_tab {
+  @extend .tab_toggle;
   color: $highlight;
   text-decoration: underline;
 }
 
-.tab-content {
+.tab_content {
   padding-top: 5vh;
   display: flex;
   flex-direction: column;
@@ -97,7 +126,7 @@ $font: "Overpass Mono", monospace;
   }
 }
 
-.tab-positioning {
+.tab_positioning {
   display: flex;
   flex-flow: row nowrap;
 }
@@ -115,7 +144,8 @@ label {
   }
 }
 
-div .no-underline {
+div .radio_no_underline {
+  @include signup__radio__cnt();
   display: flex;
   justify-items: start;
   border: none;
@@ -249,16 +279,8 @@ hr {
   &:focus {
     outline: none;
   }
-
-  .validation-message {
-    text-align: left;
-    margin-right: 5%;
-    text-transform: none;
-    color: rgb(129, 22, 22);
-    font-size: 1em;
-  }
   
-  .delete-cell:hover{
+  .delete_cell:hover{
    cursor: pointer;
    text-decoration: underline;
   }
