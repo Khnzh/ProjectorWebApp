@@ -1,17 +1,20 @@
 import './Profile.css'
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
-import supabase from './config/supabaseClient';
-import Multiselect from './MultiselectSpecialty';
-import MultiselectLang from './MultiselectLanguage';
-import { profileValidation, portfolioValidation, educationValidation, hasOnlySpecificStrings } from './Validation';
+import { useParams, useNavigate } from 'react-router-dom';
+import supabase from '../../config/supabaseClient';
+import Multiselect from '../../components/specialtySelect/MultiselectSpecialty';
+import MultiselectLang from '../../components/languageSelect/MultiselectLanguage';
+import { profileValidation, portfolioValidation, educationValidation, hasOnlySpecificStrings } from '../../utilityFunctions/Validation';
 
 export default function Profile(){
+    const navigate = useNavigate();
 //FETCHING PARAMS
     const [errors, setErrors] = useState({});
     const { emode } = useParams();
     const [eduCells, setEduCells] = useState(0);
     const [projectCells, setProjectCells] = useState(0);
+    const [activeEdu, setActiveEdu] = useState(0);
+    const [activeProjects, setActiveProjects] = useState(0);
     const [selectedPeople, setSelectedPeople] = useState([])
     const [selectedLanguage, setSelectedLanguage] = useState([])
 
@@ -71,6 +74,7 @@ const inputTg = (e)=>setProfile((prev)=>{
         role: ['', '', '', '', '',],
         link: ['', '', '', '', '',],
         year: ['', '', '', '', '',],
+        id: ['', '', '', '', '',]
     }) 
     
     
@@ -124,6 +128,7 @@ const inputTg = (e)=>setProfile((prev)=>{
         facility: ['', '', ''],
         faculty: ['', '', ''],
         grad: ['', '', ''],
+        id: ['','','']
     }) 
 
 // EDUCATION INPUT DATA FETCHING
@@ -178,13 +183,62 @@ const inputTg = (e)=>setProfile((prev)=>{
 const validateProfile = () => {setErrors((e)=> {return educationValidation(education, eduCells)});
 }
 
+const fetchPortfolio = async(uId) => {
+    let { data: Portfolio, error } = await supabase
+    .from('Portfolio')
+    .select("*")
+    // Filters
+    .eq('user_id', uId)
+
+    if (error) { console.log(error) } else {
+        setActiveProjects(Portfolio.length)
+        setProjectCells((p) => Portfolio.length-1)
+        for (let i=0; i < Portfolio.length; i++){
+            for (const key in Portfolio[i]){
+                if (key!='user_id'){
+                    setProject((p) =>{
+                        const updated = p[key].map((name, index) => (index === i ? Portfolio[i][key] : name));
+                        let obj = {...p};
+                        obj[key] = updated;
+                        return obj
+                    });
+                }
+            }
+        }
+    }
+};
+
+const fetchEducation = async(uId) => {
+    let { data: Education, error } = await supabase
+    .from('Education')
+    .select("*")
+    // Filters
+    .eq('user_id', uId)
+
+    if (error) { console.log(error) } else {
+        setActiveEdu(Education.length)
+        setEduCells((p) => Education.length-1)
+        for (let i=0; i < Education.length; i++){
+            for (const key in Education[i]){
+                if (key!='user_id'){
+                    setEducation((p) =>{
+                        const updated = p[key].map((name, index) => (index === i ? Education[i][key] : name));
+                        let obj = {...p};
+                        obj[key] = updated;
+                        return obj
+                    });
+                }
+            }
+        }
+    }
+};
+
 // TEST OUTPUTS
-    useEffect(()=>{console.log(project)}, [project])
+    // useEffect(()=>{console.log(project)}, [project])
     // useEffect(()=>{console.log(education)}, [education])
-    // useEffect(()=>{console.log(profile.langs)}, [profile])
+    // useEffect(()=>{console.log(profile)}, [profile])
 
     useEffect(()=>{if (emode!=='0') setMode(false);}, [emode])
-    // useEffect(()=>{console.log(profile)}, [profile])
    
     useEffect(()=>{
     if (profile.name && profile.lastName && profile.email && profile.bio && profile.langs && profile.phNumber && profile.tg && profile.socials){
@@ -222,30 +276,6 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
             setProfile((p) => {return {...p, tg: Profile[0].telegram}})
         };
 
-        const fetchPortfolio = async() => {
-            let { data: Portfolio, error } = await supabase
-            .from('Portfolio')
-            .select("*")
-            // Filters
-            .eq('user_id', uId)
-
-            if (error) { console.log(error) } else {
-                setProjectCells((p) => Portfolio.length-1)
-                for (let i=0; i < Portfolio.length; i++){
-                    for (const key in Portfolio[i]){
-                        if (key!='user_id' && key!='id'){
-                            setProject((p) =>{
-                                const updated = p[key].map((name, index) => (index === i ? Portfolio[i][key] : name));
-                                let obj = {...p};
-                                obj[key] = updated;
-                                return obj
-                            });
-                        }
-                    }
-                }
-            }
-        };
-
         const fetchLangs = async () =>{
             const { data, error } = await supabase
             .from('user_languages')
@@ -274,164 +304,241 @@ const validateProfile = () => {setErrors((e)=> {return educationValidation(educa
             fetchProfile();
             fetchLangs();
             fetchSpecs();
-            fetchPortfolio();
+            fetchPortfolio(uId);
+            fetchEducation(uId);
         }
-}
-, [uId])
-
-const updateProfile = async () => {
-
-    const { data, error } = await supabase
-    .from('Profile')
-    .update([
-        {
-         name: profile.name,
-         lastName: profile.lastName,
-         bio: profile.bio,
-         phoneNumber: profile.phNumber,
-         telegram: profile.tg,
-         socials: profile.socials
-        }
-    ])
-    .eq('user_id', uId)
-    .select()
-    error ? console.log(error) : console.log(data);
-
-
-    const multiSelectQuery = (value, specification) =>{
-        let list = '['
-
-        for (let o = 0; o < value.length; o++) {
-            if (o == value.length-1) {
-                list = list + `{"user_id": "${uId}","${specification}_id": ${value[o].id}}]`
-            } else {
-                list = list + `{"user_id": "${uId}","${specification}_id": ${value[o].id}},`
-            }
-        }
-        return list
     }
-    
-    const langsList = multiSelectQuery(profile.langs, "language")
+    , [uId])
 
-    const { error:langsErr } = await supabase
-    .from('user_languages')
-    .delete()
-    .eq('user_id', uId)
-    .select()
-    if (langsErr) console.log(langsErr);
-    
-    const { error:langsInsErr } = await supabase
-    .from('user_languages')
-    .insert(JSON.parse(langsList))
-    .select()
-    if (langsInsErr) console.log(langsInsErr);
-    
-    const specsList = multiSelectQuery(profile.specialties, "qualification")
-    
-    const { error:specsErr } = await supabase
-    .from('user_qualifications')
-    .delete()
-    .eq('user_id', uId)
-    .select()
-    if (specsErr) console.log(specsErr);
-    
-    const { error:specsInsErr } = await supabase
-    .from('user_qualifications')
-    .insert(JSON.parse(specsList))
-    .select()
-    if (specsInsErr) console.log(specsInsErr);
-    
-}
+    const updateProfile = async () => {
 
-    const updatePr = async (value, count) =>{
-        let list = []
-        for (let o = 0; o <= count; o++){
+        const { data, error } = await supabase
+        .from('Profile')
+        .update([
+            {
+            name: profile.name,
+            lastName: profile.lastName,
+            bio: profile.bio,
+            phoneNumber: profile.phNumber,
+            telegram: profile.tg,
+            socials: profile.socials
+            }
+        ])
+        .eq('user_id', uId)
+        .select()
+        error ? console.log(error) : console.log(data);
+
+
+        const multiSelectQuery = (value, specification) =>{
+            let list = '['
+
+            for (let o = 0; o < value.length; o++) {
+                if (o == value.length-1) {
+                    list = list + `{"user_id": "${uId}","${specification}_id": ${value[o].id}}]`
+                } else {
+                    list = list + `{"user_id": "${uId}","${specification}_id": ${value[o].id}},`
+                }
+            }
+            return list
+        }
+        
+        const langsList = multiSelectQuery(profile.langs, "language")
+
+        const { error:langsErr } = await supabase
+        .from('user_languages')
+        .delete()
+        .eq('user_id', uId)
+        .select()
+        if (langsErr) console.log(langsErr);
+        
+        const { error:langsInsErr } = await supabase
+        .from('user_languages')
+        .insert(JSON.parse(langsList))
+        .select()
+        if (langsInsErr) console.log(langsInsErr);
+        
+        const specsList = multiSelectQuery(profile.specialties, "qualification")
+        
+        const { error:specsErr } = await supabase
+        .from('user_qualifications')
+        .delete()
+        .eq('user_id', uId)
+        .select()
+        if (specsErr) console.log(specsErr);
+        
+        const { error:specsInsErr } = await supabase
+        .from('user_qualifications')
+        .insert(JSON.parse(specsList))
+        .select()
+        if (specsInsErr) console.log(specsInsErr);
+        
+    }
+
+    const createQueryFormat = (value, count, base) => {
+        let list = [];
+        for (let o = base; o <= count; o++){
+            let obj = {user_id: uId}
+            for (const key in value){
+                if (key!='id' && value[key][o]) obj[key] = value[key][o];
+            }
+            list.push(obj)
+        }
+        return list;
+    }
+
+    const updateQueryFormat = (value, top) => {
+        let list = [];
+        for (let o = 0; o < top; o++){
             let obj = {user_id: uId}
             for (const key in value){
                 if (value[key][o]) obj[key] = value[key][o];
             }
             list.push(obj)
         }
+        return list;
+    }
+
+    const saveProject = async (value, count, base) =>{
+        let updList = updateQueryFormat(value, base)
+
+        for (let i=0; i<updList.length; i++){
+            const { data, error } = await supabase
+            .from('Portfolio')
+            .update(updList[i])
+            .eq('id', updList[i].id)
+            .select()
+            error ? console.log(error) : console.log(data);
+        }
+        
+        let insList = createQueryFormat(value, count, base)
+        console.log(insList)
 
         const { error:specsInsErr } = await supabase
         .from('Portfolio')
-        .insert(list)
+        .insert(insList)
         .select()
         if (specsInsErr) console.log(specsInsErr);
+
+        fetchPortfolio(uId)
     }
 
-const testPortfolio = async () => {
-//     const { data: Portf, error } = await supabase
-//     .from('Portfolio')
-//     .select()
+    const saveEducation = async (value, count, base) =>{
+        let updList = updateQueryFormat(value, base)
 
-//     // let { data: Portfolio, error } = await supabase
-//     //         .from('Portfolio')
-//     //         .select("*")
-//     //         // Filters
-//     //         .eq('user_id', uId)
+        for (let i=0; i<updList.length; i++){
+            const { data, error } = await supabase
+            .from('Education')
+            .update(updList[i])
+            .eq('id', updList[i].id)
+            .select()
+            error ? console.log(error) : console.log(data);
+        }
+
+        let insList = createQueryFormat(value, count, base)
+
+        const { error:specsInsErr } = await supabase
+        .from('Education')
+        .insert(insList)
+        .select()
+        if (specsInsErr) console.log(specsInsErr);
+
+        fetchEducation(uId)
+    }
+
+    const deleteRow = async (table, value, index) => {
+        const { error } = await supabase
+        .from(table)
+        .delete()
+        .eq('id', value['id'][index])
+        .select()
+        if (error) console.log(error);
+
+        (table==='Education') ? fetchEducation(uId) : fetchPortfolio(uId)
+    }
+
+    const saveChanges = () => {
+        let errs;
+        switch(active) {
+            case 1:
+                errs = profileValidation(profile)
+                if (hasOnlySpecificStrings(errs, '') || !errs) updateProfile()
+                break;
+            case 2:
+                errs = portfolioValidation(project, projectCells)
+                if (hasOnlySpecificStrings(errs, '') || !errs) saveProject(project, projectCells, activeProjects)
+                break;
+            case 3:
+                errs = educationValidation(education, eduCells)
+                if (hasOnlySpecificStrings(errs, '') || !errs) saveEducation(education, eduCells, activeEdu)
+                break;
+          }
+        setErrors(errs)
+    }
+
+
+    const [active, setActive] = useState(1)
+    const changeActive = (n) => { setActive((a)=>n) }
+
+    const [eduCellsContent, setEduCellsContent] = useState([])
+    const eduCellsRender = () => {
+        let list = [];
+        for (let i = 0; i <= eduCells; i++){
+            list.push(<div className="additional_edu">
+                <div className='edu_header'>
+                        <p>ВИД ОБРАЗОВАНИЯ*</p>
+                        {(i==0) && (activeEdu>i) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>)}
+                        {(i!=0) && ((activeEdu>i) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>))}
+                    </div>
+                <div className="signup__radio__cnt no-underline">
+                    {(education.eduType=='general') ?
+                    <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general" defaultChecked/>
+                    :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general"/>}
+                    <label htmlFor="general"><svg className="sign__svg" viewBox="0 0 40 38" >
+                        <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
+                            c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
+                        <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
+                        </svg><span className="radio__label">Основное</span></label>
+                    {(education.eduType=='general') ?
+                    <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" defaultChecked/>
+                    :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" />}
+                    <label htmlFor="additional"><svg className="sign__svg" viewBox="0 0 40 38" >
+                        <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
+                            c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
+                        <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
+                        </svg><span className="radio__label">Дополнительное</span></label>
+                </div>
+                {Array.isArray(errors.eduType) && errors.eduType[i] && (<p className="validation-message">{errors.eduType[i]}</p>)}
+                <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
+                <input onChange={(e) => inputFacility(i,e)} disabled={mode} type="text" name="edFacility" id={`${i}edFacility`} defaultValue={education.facility[i]} placeholder='Введите...'/>
+                {Array.isArray(errors.facility) && errors.facility[i] && (<p className="validation-message">{errors.facility[i]}</p>)}
+                <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
+                <input onChange={(e) => inputFaculty(i,e)} disabled={mode} type="text" name="faculty" id={`${i}faculty`} defaultValue={education.faculty[i]} placeholder='Введите...'/>
+                {Array.isArray(errors.faculty) && errors.faculty[i] && (<p className="validation-message">{errors.faculty[i]}</p>)}
+                <label htmlFor="mastery">МАСТЕР</label>
+                <input onChange={(e) => inputMastery(i,e)} disabled={mode} type="text" name="mastery" id={`${i}mastery`} defaultValue={education.mastery[i]} placeholder='Введите...'/>
+                {Array.isArray(errors.mastery) && errors.mastery[i] && (<p className="validation-message">{errors.mastery[i]}</p>)}
+                <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
+                <input onChange={(e) => inputEnrollment(i,e)} disabled={mode} type="number" name="enYear" id={`${i}enYear`} defaultValue={education.enrollment[i]} placeholder='Введите...'/>
+                {Array.isArray(errors.enrollment) && errors.enrollment[i] && (<p className="validation-message">{errors.enrollment[i]}</p>)}
+                <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
+                <input onChange={(e) => inputGrad(i,e)} disabled={mode} type="number" name="gradYear" id={`${i}gradYear`} defaultValue={education.grad[i]} placeholder='Введите...'/>
+                {Array.isArray(errors.grad) && errors.grad[i] && (<p className="validation-message">{errors.grad[i]}</p>)}
+            </div>)
+            console.log(list)
+            return list
+                }}
+    useEffect(()=> setEduCellsContent(eduCellsRender), [eduCells])
     
-//   if (error){
-//   console.log(error)} else {
-//     console.log(JSON.parse(Portf[5].name))
-//   }
-
-}
-
-// const testEducation = async () => {
-//     // const { data, error } = await supabase
-//     // .from('Education')
-//     // .insert([
-//     //   { edu_type: 'additional' ,
-//     //   user_id: uId,
-//     //   facility: 'additional',
-//     //   faculty: 'additional',
-//     //   enrollment: 'additional',
-//     //   graduation: 'additional'},
-//     // ])
-//     // .select()
-
-//     let { data: Education, error } = await supabase
-//             .from('Education')
-//             .select("*")
-//             // Filters
-//             .eq('user_id', uId)
-
-//   if (error){
-//   console.log(error)} else {
-//     console.log(Education)
-//   }
-// }
-
-const [active, setActive] = useState(1)
-const changeActiveChangable = (n) => {
-    let errs;
-    switch(active) {
-        case 1:
-            errs = profileValidation(profile)
-            break;
-        case 2:
-            errs = portfolioValidation(project, projectCells)
-            break;
-        case 3:
-            errs = educationValidation(education, eduCells)
-            break;
-      }
-      setErrors(errs);
-      if (hasOnlySpecificStrings(errs, '') || !errs) setActive((a)=>n); 
-}
-
-
-const changeActive = (n) => { setActive((a)=>n) }
 
     return(
         <>
         <div className="tab-container blurred_bg">
             <div className="tab-positioning">
-                <div onClick={mode ? ()=>changeActive(1) : () => changeActiveChangable(1)} className={active===1 ?"tab-toggle active-tab" : "tab-toggle"}><p>О себе</p></div>
-                <div onClick={mode ? ()=>changeActive(2) : () => changeActiveChangable(2)} className={active===2 ?"tab-toggle active-tab" : "tab-toggle"}><p>Портфолио</p></div>
-                <div onClick={mode ? ()=>changeActive(3) : () => changeActiveChangable(3)} className={active===3 ?"tab-toggle active-tab" : "tab-toggle"}><p>Образование</p></div>
+                <div onClick={() => changeActive(1)} className={active===1 ?"tab-toggle active-tab" : "tab-toggle"}><p>О себе</p></div>
+                <div onClick={() => changeActive(2)} className={active===2 ?"tab-toggle active-tab" : "tab-toggle"}><p>Портфолио</p></div>
+                <div onClick={() => changeActive(3)} className={active===3 ?"tab-toggle active-tab" : "tab-toggle"}><p>Образование</p></div>
             </div>
+
 
 {/* PROFILE */}
             <div className="tab-content" style={{display:  (active===1) ? 'flex' : 'none' }}>
@@ -448,10 +555,10 @@ const changeActive = (n) => { setActive((a)=>n) }
                 <textarea onChange={(e) => inputBio(e)} disabled={mode} name="description" id="bio" defaultValue={profile.bio}></textarea>
                 {errors.bio && (<p className="validation-message">{errors.bio}</p>)}
                 <p>Выберите специалность*</p>
-                <Multiselect profile={profile} setProfile={setProfile} />
+                <Multiselect profile={profile} setProfile={setProfile} mode={mode} />
                 {errors.specialties && (<p className="validation-message">{errors.specialties}</p>)}
                 <p>ЯЗЫКИ</p>
-                <MultiselectLang profile={profile} setProfile={setProfile} />
+                <MultiselectLang profile={profile} setProfile={setProfile} mode={mode}/>
                 {errors.langs && (<p className="validation-message">{errors.langs}</p>)}
                 <label htmlFor="mobile">ТЕЛЕФОН</label>
                 <input onChange={(e) => inputPhNumber(e)} disabled={mode} type="text" name="mobile" id="mobile" defaultValue={profile.phNumber} placeholder='Введите...'/>
@@ -467,44 +574,51 @@ const changeActive = (n) => { setActive((a)=>n) }
 {/* EDUCATION */}
             <div className="tab-content" style={{display:  (active===3) ? 'flex' : 'none' }}>
                 <h1>Добавьте ваше образование</h1>
-                <p>ВИД ОБРАЗОВАНИЯ*</p>
-                <div className="signup__radio__cnt no-underline">
-                    <input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="general" name="eduType" value="general" />
-                    <label htmlFor="general"><svg className="sign__svg" viewBox="0 0 40 38" >
-                        <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                            c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                        <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                        </svg><span className="radio__label">Основное</span></label>
-                <input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="additional" name="eduType" value="additional" />
-                    <label htmlFor="additional"><svg className="sign__svg" viewBox="0 0 40 38" >
-                        <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                            c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                        <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                        </svg><span className="radio__label">Дополнительное</span></label>
+                <div className="additional_edu">
+                    <div className='edu_header'>
+                            <p>ВИД ОБРАЗОВАНИЯ*</p>
+                            {(activeEdu>0) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 0)}>delete</p>)}
+                        </div>
+                    <div className="signup__radio__cnt no-underline">
+                        {(education.eduType=='general') ?
+                        <input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="general" name="eduType" value="general" defaultChecked/>
+                        :<input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="general" name="eduType" value="general" defaultChecked/>}
+                        <label htmlFor="general"><svg className="sign__svg" viewBox="0 0 40 38" >
+                            <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
+                                c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
+                            <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
+                            </svg><span className="radio__label">Основное</span></label>
+                    <input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="additional" name="eduType" value="additional" defaultChecked = {Boolean(education.eduType!=='additional')}/>
+                        <label htmlFor="additional"><svg className="sign__svg" viewBox="0 0 40 38" >
+                            <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
+                                c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
+                            <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
+                            </svg><span className="radio__label">Дополнительное</span></label>
+                    </div>
+                    {Array.isArray(errors.eduType) && errors.eduType[0] && (<p className="validation-message">{errors.eduType[0]}</p>)}
+                    <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
+                    <input onChange={(e) => inputFacility(0,e)} disabled={mode} type="text" name="edFacility" id="edFacility" defaultValue={education.facility[0]} placeholder='Введите...'/>
+                    {Array.isArray(errors.facility) && errors.facility[0] && (<p className="validation-message">{errors.facility[0]}</p>)}
+                    <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
+                    <input onChange={(e) => inputFaculty(0,e)} disabled={mode} type="text" name="faculty" id="faculty" defaultValue={education.faculty[0]} placeholder='Введите...'/>
+                    {Array.isArray(errors.faculty) && errors.faculty[0] && (<p className="validation-message">{errors.faculty[0]}</p>)}
+                    <label htmlFor="mastery">МАСТЕР</label>
+                    <input onChange={(e) => inputMastery(0,e)} disabled={mode} type="text" name="mastery" id="mastery" defaultValue={education.mastery[0]} placeholder='Введите...'/>
+                    {Array.isArray(errors.mastery) && errors.mastery[0] && (<p className="validation-message">{errors.mastery[0]}</p>)}
+                    <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
+                    <input onChange={(e) => inputEnrollment(0,e)} disabled={mode} type="number" name="enYear" id="enYear" defaultValue={education.enrollment[0]} placeholder='Введите...'/>
+                    {Array.isArray(errors.enrollment) && errors.enrollment[0] && (<p className="validation-message">{errors.enrollment[0]}</p>)}
+                    <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
+                    <input onChange={(e) => inputGrad(0,e)} disabled={mode} type="number" name="gradYear" id="gradYear" defaultValue={education.grad[0]} placeholder='Введите...'/>
+                    {Array.isArray(errors.grad) && errors.grad[0] && (<p className="validation-message">{errors.grad[0]}</p>)}
                 </div>
-                {Array.isArray(errors.eduType) && errors.eduType[0] && (<p className="validation-message">{errors.eduType[0]}</p>)}
-                <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
-                <input onChange={(e) => inputFacility(0,e)} disabled={mode} type="text" name="edFacility" id="edFacility" defaultValue={education.facility[0]} placeholder='Введите...'/>
-                {Array.isArray(errors.facility) && errors.facility[0] && (<p className="validation-message">{errors.facility[0]}</p>)}
-                <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
-                <input onChange={(e) => inputFaculty(0,e)} disabled={mode} type="text" name="faculty" id="faculty" defaultValue={education.faculty[0]} placeholder='Введите...'/>
-                {Array.isArray(errors.faculty) && errors.faculty[0] && (<p className="validation-message">{errors.faculty[0]}</p>)}
-                <label htmlFor="mastery">МАСТЕР</label>
-                <input onChange={(e) => inputMastery(0,e)} disabled={mode} type="text" name="mastery" id="mastery" defaultValue={education.mastery[0]} placeholder='Введите...'/>
-                {Array.isArray(errors.mastery) && errors.mastery[0] && (<p className="validation-message">{errors.mastery[0]}</p>)}
-                <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
-                <input onChange={(e) => inputEnrollment(0,e)} disabled={mode} type="number" name="enYear" id="enYear" defaultValue={education.enrollment[0]} placeholder='Введите...'/>
-                {Array.isArray(errors.enrollment) && errors.enrollment[0] && (<p className="validation-message">{errors.enrollment[0]}</p>)}
-                <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
-                <input onChange={(e) => inputGrad(0,e)} disabled={mode} type="number" name="gradYear" id="gradYear" defaultValue={education.grad[0]} placeholder='Введите...'/>
-                {Array.isArray(errors.grad) && errors.grad[0] && (<p className="validation-message">{errors.grad[0]}</p>)}
 
                 
                 <div className="additional_edu" style={{display:  (eduCells>0) ? 'flex' : 'none' }}>
                     <hr></hr>
                     <div className='edu_header'>
                         <p>ВИД ОБРАЗОВАНИЯ*</p>
-                        <button onClick={decrementEduCells} className="cross"></button>
+                        {(activeEdu>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 1)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>)}
                     </div>
                     <div className="signup__radio__cnt no-underline">
                         <input onClick={(e) => inputEduType(1,e)} disabled={mode} type="radio" id="1general" name="1eduType" value="general"/>
@@ -537,11 +651,13 @@ const changeActive = (n) => { setActive((a)=>n) }
                     <input onChange={(e) => inputGrad(1,e)} disabled={mode} type="number" name="gradYear" id="1gradYear" defaultValue={education.grad[1]} placeholder='Введите...'/>
                     {Array.isArray(errors.grad) && errors.grad[1] && (<p className="validation-message">{errors.grad[1]}</p>)}
                 </div>
+
+                
                 <div className="additional_edu" style={{display:  (eduCells>1) ? 'flex' : 'none' }}>
                     <hr></hr>
                     <div className='edu_header'>
                         <p>ВИД ОБРАЗОВАНИЯ*</p>
-                        <button onClick={decrementEduCells} className="cross"></button>
+                        {(activeEdu>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 2)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>)}
                     </div>
                     <div className="signup__radio__cnt no-underline">
                         <input onClick={(e) => inputEduType(2,e)} disabled={mode} type="radio" id="2general" name="2eduType" value="general" defaultChecked={new Boolean(education.eduType[2] == 'general')}/>
@@ -574,34 +690,39 @@ const changeActive = (n) => { setActive((a)=>n) }
                     <input onChange={(e) => inputGrad(2,e)} disabled={mode} type="number" name="gradYear" id="2gradYear" defaultValue={education.grad[2]} placeholder='Введите...'/>
                     {Array.isArray(errors.grad) && errors.grad[2] && (<p className="validation-message">{errors.grad[2]}</p>)}
                 </div>
-                <p className="add" onClick={incrementEduCells}>Добавить</p>
+                {(mode==0) && <p className="add" onClick={incrementEduCells}>Добавить</p>}
             </div>
 
 {/* PORTFOLIO */}
             <div className="tab-content" style={{display:  (active===2) ? 'flex' : 'none' }}>
                 <h1>Projects</h1>
-                <label htmlFor="prName">Name*</label>
-                <input onChange={(e)=>inputPrName(0, e)} disabled={mode} type="text" name="prName" id="prName" defaultValue={project.name[0]} />
-                {Array.isArray(errors.prName) && errors.prName[0] && (<p className="validation-message">{errors.prName[0]}</p>)}
-                <label htmlFor="prDesc">Description</label>
-                <textarea onChange={(e) => inputPrDesc(0, e)} disabled={mode} name="prDesc" id="prDesc" defaultValue={project.desc[0]}></textarea>
-                {Array.isArray(errors.desc) && errors.desc[0] && (<p className="validation-message">{errors.desc[0]}</p>)}
-                <label htmlFor="prRole">Your role*</label>
-                <input onChange={(e) => inputPrRole(0, e)} disabled={mode} type="text" name="prRole" id="prRole" defaultValue={project.role[0]}/>
-                {Array.isArray(errors.role) && errors.role[0] && (<p className="validation-message">{errors.role[0]}</p>)}
-                <label htmlFor="prLink">Project link</label>
-                <input onChange={(e) => inputPrLink(0, e)} disabled={mode} type="text" name="prLink" id="prLink" defaultValue={project.link[0]}/>
-                {Array.isArray(errors.link) && errors.link[0] && (<p className="validation-message">{errors.link[0]}</p>)}
-                <label htmlFor="prYear">Year*</label>
-                <input onChange={(e) => inputPrYear(0, e)} disabled={mode} type="number" name="prYear" id="prYear" defaultValue={project.year[0]}/>
-                {Array.isArray(errors.year) && errors.year[0] && (<p className="validation-message">{errors.year[0]}</p>)}
+                <div className="additional_edu">
+                    <div className='edu_header'>
+                        <label htmlFor="prName">Name*</label>
+                        {(activeProjects>0) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 0)}>delete</p>)}
+                    </div>
+                    <input onChange={(e)=>inputPrName(0, e)} disabled={mode} type="text" name="prName" id="prName" defaultValue={project.name[0]} />
+                    {Array.isArray(errors.prName) && errors.prName[0] && (<p className="validation-message">{errors.prName[0]}</p>)}
+                    <label htmlFor="prDesc">Description</label>
+                    <textarea onChange={(e) => inputPrDesc(0, e)} disabled={mode} name="prDesc" id="prDesc" defaultValue={project.desc[0]}></textarea>
+                    {Array.isArray(errors.desc) && errors.desc[0] && (<p className="validation-message">{errors.desc[0]}</p>)}
+                    <label htmlFor="prRole">Your role*</label>
+                    <input onChange={(e) => inputPrRole(0, e)} disabled={mode} type="text" name="prRole" id="prRole" defaultValue={project.role[0]}/>
+                    {Array.isArray(errors.role) && errors.role[0] && (<p className="validation-message">{errors.role[0]}</p>)}
+                    <label htmlFor="prLink">Project link</label>
+                    <input onChange={(e) => inputPrLink(0, e)} disabled={mode} type="text" name="prLink" id="prLink" defaultValue={project.link[0]}/>
+                    {Array.isArray(errors.link) && errors.link[0] && (<p className="validation-message">{errors.link[0]}</p>)}
+                    <label htmlFor="prYear">Year*</label>
+                    <input onChange={(e) => inputPrYear(0, e)} disabled={mode} type="number" name="prYear" id="prYear" defaultValue={project.year[0]}/>
+                    {Array.isArray(errors.year) && errors.year[0] && (<p className="validation-message">{errors.year[0]}</p>)}
+                </div>
 
 
                 <div className="additional_edu" style={{display:  (projectCells>0) ? 'flex' : 'none' }} >
                     <hr />
                     <div className='edu_header'>
                         <label htmlFor="prName">Name*</label>
-                        <button onClick={decrementProjectCells} className="cross"></button>
+                        {(activeProjects>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 1)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(1, e)} disabled={mode} type="text" name="prName" id="1prName" defaultValue={project.name[1]}/>
                     {Array.isArray(errors.prName) && errors.prName[1] && (<p className="validation-message">{errors.prName[1]}</p>)}
@@ -624,7 +745,7 @@ const changeActive = (n) => { setActive((a)=>n) }
                     <hr />
                     <div className='edu_header'>
                         <label htmlFor="prName">Name*</label>
-                        <button onClick={decrementProjectCells} className="cross"></button>
+                        {(activeProjects>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 2)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(2, e)} disabled={mode} type="text" name="prName" id="2prName" defaultValue={project.name[2]}/>
                     {Array.isArray(errors.prName) && errors.prName[2] && (<p className="validation-message">{errors.prName[2]}</p>)}
@@ -647,7 +768,7 @@ const changeActive = (n) => { setActive((a)=>n) }
                     <hr />
                     <div className='edu_header'>
                         <label htmlFor="prName">Name*</label>
-                        <button onClick={decrementProjectCells} className="cross"></button>
+                        {(activeProjects>3) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 3)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(3, e)} disabled={mode} type="text" name="prName" id="3prName" defaultValue={project.name[3]}/>
                     {Array.isArray(errors.prName) && errors.prName[3] && (<p className="validation-message">{errors.prName[3]}</p>)}
@@ -670,7 +791,7 @@ const changeActive = (n) => { setActive((a)=>n) }
                     <hr />
                     <div className='edu_header'>
                         <label htmlFor="prName">Name*</label>
-                        <button onClick={decrementProjectCells} className="cross"></button>
+                        {(activeProjects>4) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 4)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(4, e)} disabled={mode} type="text" name="prName" id="4prName" defaultValue={project.name[4]}/>
                     {Array.isArray(errors.prName) && errors.prName[4] && (<p className="validation-message">{errors.prName[4]}</p>)}
@@ -687,16 +808,11 @@ const changeActive = (n) => { setActive((a)=>n) }
                     <input onChange={(e) => inputPrYear(4, e)} disabled={mode} type="number" name="prYear" id="4prYear" defaultValue={project.year[4]}/>
                     {Array.isArray(errors.year) && errors.year[4] && (<p className="validation-message">{errors.year[4]}</p>)}
                 </div>
-                <p className="add" onClick={incrementProjectCells}>Добавить</p>
+                {(mode==0) && <p className="add" onClick={incrementProjectCells}>Добавить</p>}
 
             </div>
-
-
-            <button onClick={() => updatePr(project, projectCells)} className="svg-border-button">
-        </button>
-            {/* <button onClick={updateProfile} className="change-button">
-            
-        </button> */}
+            {mode ? <button onClick={()=>navigate('/profile/1')} className="change-button"></button>
+            : <button onClick={saveChanges} className="svg-border-button"></button>}
         </div>
         </>
     )

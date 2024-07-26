@@ -32,7 +32,7 @@ const languages = [
   { id: 28, name: '中文 (Chinese)' }
 ]
 
-export default function MultiselectLang({ profile, setProfile }) {
+export default function MultiselectLang({ profile, setProfile, mode }) {
   const [query, setQuery] = useState('')
 
   const selectedLanguages = Array.isArray(profile.langs) ? profile.langs : []
@@ -55,7 +55,7 @@ export default function MultiselectLang({ profile, setProfile }) {
         <ul className="horizontal-list">
           {selectedLanguages.map((language) => (
             <li className="list-item" key={language.id}>
-              <button className="cross-button" onClick={() => removeItem(language.id)}>✖</button>
+              {(mode==0) && <button className="cross-button" onClick={() => removeItem(language.id)}>✖</button>}
               {language.name}
             </li>
           ))}

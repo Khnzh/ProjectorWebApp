@@ -128,7 +128,7 @@ const people = [
     { id: 124, name: 'Скрипт-доктор' }
 ]
 
-export default function Multiselect({ profile, setProfile }) {
+export default function Multiselect({ profile, setProfile, mode}) {
   const [query, setQuery] = useState('')
 
   let selectedPeople = Array.isArray(profile.specialties) ? profile.specialties : [];
@@ -151,7 +151,7 @@ export default function Multiselect({ profile, setProfile }) {
         <ul className="horizontal-list">
           {selectedPeople.map((person) => (
             <li className="list-item" key={person.id}>
-                <button className="cross-button" onClick={()=>removeItem(person.id)}>✖</button>
+                {(mode==0) && <button className="cross-button" onClick={()=>removeItem(person.id)}>✖</button>}
                 {person.name}
             </li>
           ))}

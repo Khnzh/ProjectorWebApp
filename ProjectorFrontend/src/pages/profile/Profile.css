@@ -114,7 +114,7 @@ div .no-underline {
 }
 
 .additional_edu {
-  padding-top: 5%;
+  padding-bottom: 5%;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -253,4 +253,9 @@ hr {
   text-transform: none;
   color: rgb(129, 22, 22);
   font-size: 1em;
+}
+
+.delete-cell:hover{
+ cursor: pointer;
+ text-decoration: underline;
 }
