@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import supabase from './config/supabaseClient';
-import { useAppContext } from './context/AuthContext';
+import supabase from '../../config/supabaseClient';
+import { useAppContext } from '../../context/AuthContext';
 import { useEffect } from 'react';
 
 export default function Header() {

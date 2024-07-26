@@ -1,8 +1,8 @@
 import './Login.css';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import supabase from './config/supabaseClient';
-import { useAppContext } from './context/AuthContext';  // Import the context hook
+import supabase from '../../config/supabaseClient';
+import { useAppContext } from '../../context/AuthContext';  // Import the context hook
 
 function Login() {
   const { isLoggedIn, setIsLoggedIn } = useAppContext();

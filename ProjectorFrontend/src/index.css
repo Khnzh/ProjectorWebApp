@@ -213,8 +213,11 @@ input[type="checkbox"] {
 
 .radio__label {
   color: var(--HIGHLIGHT);
+  margin-right: 1em;
+}
+
+label .signup__label{
   font-size: 2em;
-  margin-right: 2em;
 }
 
 input[type="radio"] {
