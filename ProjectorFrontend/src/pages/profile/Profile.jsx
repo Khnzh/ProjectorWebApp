@@ -2,8 +2,8 @@ import styles from './Profile.module.scss'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import supabase from '../../config/supabaseClient';
-import Multiselect from '../../components/specialtySelect/MultiselectSpecialty';
-import MultiselectLang from '../../components/languageSelect/MultiselectLanguage';
+import Multiselect from '../../components/multiselect/specialtySelect/MultiselectSpecialty';
+import MultiselectLang from '../../components/multiselect/languageSelect/MultiselectLanguage';
 import { profileValidation, portfolioValidation, educationValidation, hasOnlySpecificStrings } from '../../utilityFunctions/Validation';
 
 export default function Profile(){
