@@ -469,7 +469,7 @@ const fetchEducation = async(uId) => {
     //             <div className='edu_header'>
     //                     <p>ВИД ОБРАЗОВАНИЯ*</p>
     //                     {(i==0) && (activeEdu>i) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>)}
-    //                     {(i!=0) && ((activeEdu>i) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>))}
+    //                     {(i!=0) && ((activeEdu>i) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>) : (<button onClick={decrementEduCells} className={styles.cross}></button>))}
     //                 </div>
     //             <div className="signup__radio__cnt no-underline">
     //                 {(education.eduType=='general') ?
@@ -536,7 +536,7 @@ const fetchEducation = async(uId) => {
                 <label htmlFor="bio">НЕСКОЛЬКО СЛОВ О ВАС</label>
                 <textarea onChange={(e) => inputBio(e)} disabled={mode} name="description" id="bio" defaultValue={profile.bio}></textarea>
                 {errors.bio && (<p className="validation-message">{errors.bio}</p>)}
-                <p>Выберите специалность*</p>
+                <p>Выберите специальность*</p>
                 <Multiselect profile={profile} setProfile={setProfile} mode={mode} />
                 {errors.specialties && (<p className="validation-message">{errors.specialties}</p>)}
                 <p>ЯЗЫКИ</p>
@@ -596,11 +596,11 @@ const fetchEducation = async(uId) => {
                 </div>
 
                 
-                <div className="additional_edu" style={{display:  (eduCells>0) ? 'flex' : 'none' }}>
+                <div className={styles.additional_edu} style={{display:  (eduCells>0) ? 'flex' : 'none' }}>
                     <hr></hr>
-                    <div className='edu_header'>
+                    <div className={styles.edu_header}>
                         <p>ВИД ОБРАЗОВАНИЯ*</p>
-                        {(activeEdu>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 1)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>)}
+                        {(activeEdu>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 1)}>delete</p>) : (<button onClick={decrementEduCells} className={styles.cross}></button>)}
                     </div>
                     <div className="signup__radio__cnt no-underline">
                         <input onClick={(e) => inputEduType(1,e)} disabled={mode} type="radio" id="1general" name="1eduType" value="general"/>
@@ -635,11 +635,11 @@ const fetchEducation = async(uId) => {
                 </div>
 
                 
-                <div className="additional_edu" style={{display:  (eduCells>1) ? 'flex' : 'none' }}>
+                <div className={styles.additional_edu} style={{display:  (eduCells>1) ? 'flex' : 'none' }}>
                     <hr></hr>
-                    <div className='edu_header'>
+                    <div className={styles.edu_header}>
                         <p>ВИД ОБРАЗОВАНИЯ*</p>
-                        {(activeEdu>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 2)}>delete</p>) : (<button onClick={decrementEduCells} className="cross"></button>)}
+                        {(activeEdu>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 2)}>delete</p>) : (<button onClick={decrementEduCells} className={styles.cross}></button>)}
                     </div>
                     <div className="signup__radio__cnt no-underline">
                         <input onClick={(e) => inputEduType(2,e)} disabled={mode} type="radio" id="2general" name="2eduType" value="general" defaultChecked={new Boolean(education.eduType[2] == 'general')}/>
@@ -672,14 +672,14 @@ const fetchEducation = async(uId) => {
                     <input onChange={(e) => inputGrad(2,e)} disabled={mode} type="number" name="gradYear" id="2gradYear" defaultValue={education.grad[2]} placeholder='Введите...'/>
                     {Array.isArray(errors.grad) && errors.grad[2] && (<p className="validation-message">{errors.grad[2]}</p>)}
                 </div>
-                {(mode==0) && <p className="add" onClick={incrementEduCells}>Добавить</p>}
+                {(mode==0) && <p className={styles.add} onClick={incrementEduCells}>Добавить</p>}
             </div>
 
 {/* PORTFOLIO */}
             <div className={styles.tab_content} style={{display:  (active===2) ? 'flex' : 'none' }}>
                 <h1>Projects</h1>
-                <div className="additional_edu">
-                    <div className='edu_header'>
+                <div className={styles.additional_edu}>
+                    <div className={styles.edu_header}>
                         <label htmlFor="prName">Name*</label>
                         {(activeProjects>0) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 0)}>delete</p>)}
                     </div>
@@ -700,11 +700,11 @@ const fetchEducation = async(uId) => {
                 </div>
 
 
-                <div className="additional_edu" style={{display:  (projectCells>0) ? 'flex' : 'none' }} >
+                <div className={styles.additional_edu} style={{display:  (projectCells>0) ? 'flex' : 'none' }} >
                     <hr />
-                    <div className='edu_header'>
+                    <div className={styles.edu_header}>
                         <label htmlFor="prName">Name*</label>
-                        {(activeProjects>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 1)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
+                        {(activeProjects>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 1)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(1, e)} disabled={mode} type="text" name="prName" id="1prName" defaultValue={project.name[1]}/>
                     {Array.isArray(errors.prName) && errors.prName[1] && (<p className="validation-message">{errors.prName[1]}</p>)}
@@ -723,11 +723,11 @@ const fetchEducation = async(uId) => {
                 </div>
 
 
-                <div className="additional_edu" style={{display:  (projectCells>1) ? 'flex' : 'none' }}>
+                <div className={styles.additional_edu} style={{display:  (projectCells>1) ? 'flex' : 'none' }}>
                     <hr />
-                    <div className='edu_header'>
+                    <div className={styles.edu_header}>
                         <label htmlFor="prName">Name*</label>
-                        {(activeProjects>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 2)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
+                        {(activeProjects>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 2)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(2, e)} disabled={mode} type="text" name="prName" id="2prName" defaultValue={project.name[2]}/>
                     {Array.isArray(errors.prName) && errors.prName[2] && (<p className="validation-message">{errors.prName[2]}</p>)}
@@ -746,11 +746,11 @@ const fetchEducation = async(uId) => {
                 </div>
 
 
-                <div className="additional_edu" style={{display:  (projectCells>2) ? 'flex' : 'none' }}>
+                <div className={styles.additional_edu} style={{display:  (projectCells>2) ? 'flex' : 'none' }}>
                     <hr />
-                    <div className='edu_header'>
+                    <div className={styles.edu_header}>
                         <label htmlFor="prName">Name*</label>
-                        {(activeProjects>3) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 3)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
+                        {(activeProjects>3) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 3)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(3, e)} disabled={mode} type="text" name="prName" id="3prName" defaultValue={project.name[3]}/>
                     {Array.isArray(errors.prName) && errors.prName[3] && (<p className="validation-message">{errors.prName[3]}</p>)}
@@ -769,11 +769,11 @@ const fetchEducation = async(uId) => {
                 </div>
 
 
-                <div className="additional_edu" style={{display:  (projectCells>3) ? 'flex' : 'none' }}>
+                <div className={styles.additional_edu} style={{display:  (projectCells>3) ? 'flex' : 'none' }}>
                     <hr />
-                    <div className='edu_header'>
+                    <div className={styles.edu_header}>
                         <label htmlFor="prName">Name*</label>
-                        {(activeProjects>4) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 4)}>delete</p>) : (<button onClick={decrementProjectCells} className="cross"></button>)}
+                        {(activeProjects>4) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 4)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
                     </div>
                     <input onChange={(e)=>inputPrName(4, e)} disabled={mode} type="text" name="prName" id="4prName" defaultValue={project.name[4]}/>
                     {Array.isArray(errors.prName) && errors.prName[4] && (<p className="validation-message">{errors.prName[4]}</p>)}
@@ -790,11 +790,11 @@ const fetchEducation = async(uId) => {
                     <input onChange={(e) => inputPrYear(4, e)} disabled={mode} type="number" name="prYear" id="4prYear" defaultValue={project.year[4]}/>
                     {Array.isArray(errors.year) && errors.year[4] && (<p className="validation-message">{errors.year[4]}</p>)}
                 </div>
-                {(mode==0) && <p className="add" onClick={incrementProjectCells}>Добавить</p>}
+                {(mode==0) && <p className={styles.add} onClick={incrementProjectCells}>Добавить</p>}
 
             </div>
-            {mode ? <button onClick={()=>navigate('/profile/1')} className={styles.change_button}></button>
-            : <button onClick={saveChanges} className={styles.save_button}></button>}
+            {mode ? <button onClick={()=>navigate('/profile/1')} className={styles.change_button} data-content='ИЗМЕНИТЬ'></button>
+            : <button onClick={saveChanges} className={styles.save_button} data-content='СОХРАНИТЬ'></button>}
         </div>
         </>
     )
