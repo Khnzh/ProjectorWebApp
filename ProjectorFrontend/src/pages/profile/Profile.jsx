@@ -190,7 +190,7 @@ const fetchPortfolio = async(uId) => {
 
     if (error) { console.log(error) } else {
         setActiveProjects(Portfolio.length)
-        setProjectCells((p) => Portfolio.length-1)
+        if(Portfolio.length>0) setProjectCells((p) => Portfolio.length-1)
         for (let i=0; i < Portfolio.length; i++){
             for (const key in Portfolio[i]){
                 if (key!='user_id'){
@@ -215,7 +215,7 @@ const fetchEducation = async(uId) => {
 
     if (error) { console.log(error) } else {
         setActiveEdu(Education.length)
-        setEduCells((p) => Education.length-1)
+        if(Education.length>0) setEduCells((p) => Education.length-1)
         for (let i=0; i < Education.length; i++){
             for (const key in Education[i]){
                 if (key!='user_id'){
@@ -233,7 +233,7 @@ const fetchEducation = async(uId) => {
 
 // TEST OUTPUTS
     // useEffect(()=>{console.log(project)}, [project])
-    // useEffect(()=>{console.log(education)}, [education])
+    useEffect(()=>{console.log(education)}, [education])
     // useEffect(()=>{console.log(profile)}, [profile])
 
     useEffect(()=>{if (emode!=='0') setMode(false);}, [emode])
@@ -460,56 +460,6 @@ const fetchEducation = async(uId) => {
 
     const [active, setActive] = useState(1)
     const changeActive = (n) => { setActive((a)=>n) }
-
-    const [eduCellsContent, setEduCellsContent] = useState([])
-    // const eduCellsRender = () => {
-    //     let list = [];
-    //     for (let i = 0; i <= eduCells; i++){
-    //         list.push(<div className="additional_edu">
-    //             <div className='edu_header'>
-    //                     <p>ВИД ОБРАЗОВАНИЯ*</p>
-    //                     {(i==0) && (activeEdu>i) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>)}
-    //                     {(i!=0) && ((activeEdu>i) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, i)}>delete</p>) : (<button onClick={decrementEduCells} className={styles.cross}></button>))}
-    //                 </div>
-    //             <div className="signup__radio__cnt no-underline">
-    //                 {(education.eduType=='general') ?
-    //                 <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general" defaultChecked/>
-    //                 :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}general`} name="eduType" value="general"/>}
-    //                 <label htmlFor="general"><svg className="sign__svg" viewBox="0 0 40 38" >
-    //                     <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-    //                         c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-    //                     <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-    //                     </svg><span className="radio__label">Основное</span></label>
-    //                 {(education.eduType=='general') ?
-    //                 <input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" defaultChecked/>
-    //                 :<input onClick={(e) => inputEduType(i,e)} disabled={mode} type="radio" id={`${i}additional`} name="eduType" value="additional" />}
-    //                 <label htmlFor="additional"><svg className="sign__svg" viewBox="0 0 40 38" >
-    //                     <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-    //                         c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-    //                     <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-    //                     </svg><span className="radio__label">Дополнительное</span></label>
-    //             </div>
-    //             {Array.isArray(errors.eduType) && errors.eduType[i] && (<p className="validation-message">{errors.eduType[i]}</p>)}
-    //             <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
-    //             <input onChange={(e) => inputFacility(i,e)} disabled={mode} type="text" name="edFacility" id={`${i}edFacility`} defaultValue={education.facility[i]} placeholder='Введите...'/>
-    //             {Array.isArray(errors.facility) && errors.facility[i] && (<p className="validation-message">{errors.facility[i]}</p>)}
-    //             <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
-    //             <input onChange={(e) => inputFaculty(i,e)} disabled={mode} type="text" name="faculty" id={`${i}faculty`} defaultValue={education.faculty[i]} placeholder='Введите...'/>
-    //             {Array.isArray(errors.faculty) && errors.faculty[i] && (<p className="validation-message">{errors.faculty[i]}</p>)}
-    //             <label htmlFor="mastery">МАСТЕР</label>
-    //             <input onChange={(e) => inputMastery(i,e)} disabled={mode} type="text" name="mastery" id={`${i}mastery`} defaultValue={education.mastery[i]} placeholder='Введите...'/>
-    //             {Array.isArray(errors.mastery) && errors.mastery[i] && (<p className="validation-message">{errors.mastery[i]}</p>)}
-    //             <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
-    //             <input onChange={(e) => inputEnrollment(i,e)} disabled={mode} type="number" name="enYear" id={`${i}enYear`} defaultValue={education.enrollment[i]} placeholder='Введите...'/>
-    //             {Array.isArray(errors.enrollment) && errors.enrollment[i] && (<p className="validation-message">{errors.enrollment[i]}</p>)}
-    //             <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
-    //             <input onChange={(e) => inputGrad(i,e)} disabled={mode} type="number" name="gradYear" id={`${i}gradYear`} defaultValue={education.grad[i]} placeholder='Введите...'/>
-    //             {Array.isArray(errors.grad) && errors.grad[i] && (<p className="validation-message">{errors.grad[i]}</p>)}
-    //         </div>)
-    //         console.log(list)
-    //         return list
-    //             }}
-    // useEffect(()=> setEduCellsContent(eduCellsRender), [eduCells])
     
 
     return(
@@ -556,240 +506,86 @@ const fetchEducation = async(uId) => {
 {/* EDUCATION */}
             <div className={styles.tab_content} style={{display:  (active===3) ? 'flex' : 'none' }}>
                 <h1>Добавьте ваше образование</h1>
-                <div className={styles.additional_edu}>
+                {education.eduType.map((edu, index) =>
+                (<div className={styles.additional_edu} style={{display:  ((index==0)) ? 'flex' : ((eduCells>=index) ? 'flex' : 'none') }}>
                     <div className={styles.edu_header}>
                             <p>ВИД ОБРАЗОВАНИЯ*</p>
-                            {(activeEdu>0) && ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Education', education, 0)}>delete</p>)}
+                            {(index==0)?
+                                ((activeEdu>0) && ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Education', education, 0)}>delete</p>)):
+                                ((activeEdu>index) ?
+                                    ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, index)}>delete</p>):
+                                    (<button onClick={decrementEduCells} className={styles.cross}></button>))}
                         </div>
                     <div className={styles.radio_no_underline}>
-                        {(education.eduType=='general') ?
-                        <input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="general" name="eduType" value="general" defaultChecked/>
-                        :<input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="general" name="eduType" value="general" defaultChecked/>}
-                        <label htmlFor="general"><svg className="sign__svg" viewBox="0 0 40 38" >
+                        {(edu == 'general')?
+                        <input onClick={(e) => inputEduType(index, e)} disabled={mode} type="radio" id={index +"general"} name={index +"eduType"} value="general" defaultChecked/>:
+                        <input onClick={(e) => inputEduType(index, e)} disabled={mode} type="radio" id={index +"general"} name={index +"eduType"} value="general"/>}
+                        <label htmlFor={index +"general"}><svg className={'radio sign__svg ' + styles.radio__svg} viewBox="0 0 40 38" >
                             <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
                                 c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
                             <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                            </svg><span className="radio__label">Основное</span></label>
-                    <input onClick={(e) => inputEduType(0,e)} disabled={mode} type="radio" id="additional" name="eduType" value="additional" defaultChecked = {Boolean(education.eduType!=='additional')}/>
-                        <label htmlFor="additional"><svg className="sign__svg" viewBox="0 0 40 38" >
+                            </svg><span className={styles.radio__label}>Основное</span></label>
+                        {(edu == 'additional')?
+                        <input onClick={(e) => inputEduType(index, e)} disabled={mode} type="radio" id={index + "additional"} name={index +"eduType"} value="additional" defaultChecked/>:
+                        <input onClick={(e) => inputEduType(index, e)} disabled={mode} type="radio" id={index + "additional"} name={index +"eduType"} value="additional" />}
+                        <label htmlFor={index + "additional"}><svg className={'radio sign__svg ' + styles.radio__svg} viewBox="0 0 40 38" >
                             <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
                                 c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
                             <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                            </svg><span className="radio__label">Дополнительное</span></label>
+                            </svg><span className={styles.radio__label}>Дополнительное</span></label>
                     </div>
-                    {Array.isArray(errors.eduType) && errors.eduType[0] && (<p className="validation-message">{errors.eduType[0]}</p>)}
-                    <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
-                    <input onChange={(e) => inputFacility(0,e)} disabled={mode} type="text" name="edFacility" id="edFacility" defaultValue={education.facility[0]} placeholder='Введите...'/>
-                    {Array.isArray(errors.facility) && errors.facility[0] && (<p className="validation-message">{errors.facility[0]}</p>)}
-                    <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
-                    <input onChange={(e) => inputFaculty(0,e)} disabled={mode} type="text" name="faculty" id="faculty" defaultValue={education.faculty[0]} placeholder='Введите...'/>
-                    {Array.isArray(errors.faculty) && errors.faculty[0] && (<p className="validation-message">{errors.faculty[0]}</p>)}
-                    <label htmlFor="mastery">МАСТЕР</label>
-                    <input onChange={(e) => inputMastery(0,e)} disabled={mode} type="text" name="mastery" id="mastery" defaultValue={education.mastery[0]} placeholder='Введите...'/>
-                    {Array.isArray(errors.mastery) && errors.mastery[0] && (<p className="validation-message">{errors.mastery[0]}</p>)}
-                    <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
-                    <input onChange={(e) => inputEnrollment(0,e)} disabled={mode} type="number" name="enYear" id="enYear" defaultValue={education.enrollment[0]} placeholder='Введите...'/>
-                    {Array.isArray(errors.enrollment) && errors.enrollment[0] && (<p className="validation-message">{errors.enrollment[0]}</p>)}
-                    <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
-                    <input onChange={(e) => inputGrad(0,e)} disabled={mode} type="number" name="gradYear" id="gradYear" defaultValue={education.grad[0]} placeholder='Введите...'/>
-                    {Array.isArray(errors.grad) && errors.grad[0] && (<p className="validation-message">{errors.grad[0]}</p>)}
-                </div>
+                    {Array.isArray(errors.eduType) && errors.eduType[index] && (<p className="validation-message">{errors.eduType[index]}</p>)}
+                    <label htmlFor={index + "edFacility"}>ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
+                    <input onChange={(e) => inputFacility(index,e)} disabled={mode} type="text" name="edFacility" id={index +"edFacility"} defaultValue={education.facility[index]} placeholder='Введите...'/>
+                    {Array.isArray(errors.facility) && errors.facility[index] && (<p className="validation-message">{errors.facility[index]}</p>)}
+                    <label htmlFor={index + "faculty"}>ФАКУЛЬТЕТ*</label>
+                    <input onChange={(e) => inputFaculty(index,e)} disabled={mode} type="text" name="faculty" id={index +"faculty"} defaultValue={education.faculty[index]} placeholder='Введите...'/>
+                    {Array.isArray(errors.faculty) && errors.faculty[index] && (<p className="validation-message">{errors.faculty[index]}</p>)}
+                    <label htmlFor={index + "mastery"}>МАСТЕР</label>
+                    <input onChange={(e) => inputMastery(index,e)} disabled={mode} type="text" name="mastery" id={index +"mastery"} defaultValue={education.mastery[index]} placeholder='Введите...'/>
+                    {Array.isArray(errors.mastery) && errors.mastery[index] && (<p className="validation-message">{errors.mastery[index]}</p>)}
+                    <label htmlFor={index + "enYear"}>ГОД ПОСТУПЛЕНИЯ*</label>
+                    <input onChange={(e) => inputEnrollment(index,e)} disabled={mode} type="number" name="enYear" id={index +"enYear"} defaultValue={education.enrollment[index]} placeholder='Введите...'/>
+                    {Array.isArray(errors.enrollment) && errors.enrollment[index] && (<p className="validation-message">{errors.enrollment[index]}</p>)}
+                    <label htmlFor={index + "gradYear"}>ГОД ВЫПУСКА*</label>
+                    <input onChange={(e) => inputGrad(index,e)} disabled={mode} type="number" name="gradYear" id={index +"gradYear"} defaultValue={education.grad[index]} placeholder='Введите...'/>
+                    {Array.isArray(errors.grad) && errors.grad[index] && (<p className="validation-message">{errors.grad[index]}</p>)}
+                </div>)
+                )}
 
-                
-                <div className={styles.additional_edu} style={{display:  (eduCells>0) ? 'flex' : 'none' }}>
-                    <hr></hr>
-                    <div className={styles.edu_header}>
-                        <p>ВИД ОБРАЗОВАНИЯ*</p>
-                        {(activeEdu>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 1)}>delete</p>) : (<button onClick={decrementEduCells} className={styles.cross}></button>)}
-                    </div>
-                    <div className="signup__radio__cnt no-underline">
-                        <input onClick={(e) => inputEduType(1,e)} disabled={mode} type="radio" id="1general" name="1eduType" value="general"/>
-                        <label htmlFor="1general"><svg className="sign__svg" viewBox="0 0 40 38" >
-                            <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                                c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                            <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                            </svg><span className="radio__label">Основное</span></label>
-                    <input onClick={(e) => inputEduType(1,e)} disabled={mode} type="radio" id="1additional" name="1eduType" value="additional"/>
-                        <label htmlFor="1additional"><svg className="sign__svg" viewBox="0 0 40 38" >
-                            <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                                c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                            <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                            </svg><span className="radio__label">Дополнительное</span></label>
-                    </div>
-                    {Array.isArray(errors.eduType) && errors.eduType[1] && (<p className="validation-message">{errors.eduType[1]}</p>)}
-                    <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
-                    <input onChange={(e) => inputFacility(1,e)} disabled={mode} type="text" name="edFacility" id="1edFacility" defaultValue={education.facility[1]} placeholder='Введите...'/>
-                    {Array.isArray(errors.facility) && errors.facility[1] && (<p className="validation-message">{errors.facility[1]}</p>)}
-                    <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
-                    <input onChange={(e) => inputFaculty(1,e)} disabled={mode} type="text" name="faculty" id="1faculty" defaultValue={education.faculty[1]} placeholder='Введите...'/>
-                    {Array.isArray(errors.faculty) && errors.faculty[1] && (<p className="validation-message">{errors.faculty[1]}</p>)}
-                    <label htmlFor="mastery">МАСТЕР</label>
-                    <input onChange={(e) => inputMastery(1,e)} disabled={mode} type="text" name="mastery" id="1mastery" defaultValue={education.mastery[1]} placeholder='Введите...'/>
-                    {Array.isArray(errors.mastery) && errors.mastery[1] && (<p className="validation-message">{errors.mastery[1]}</p>)}
-                    <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
-                    <input onChange={(e) => inputEnrollment(1,e)} disabled={mode} type="number" name="enYear" id="1enYear" defaultValue={education.enrollment[1]} placeholder='Введите...'/>
-                    {Array.isArray(errors.enrollment) && errors.enrollment[1] && (<p className="validation-message">{errors.enrollment[1]}</p>)}
-                    <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
-                    <input onChange={(e) => inputGrad(1,e)} disabled={mode} type="number" name="gradYear" id="1gradYear" defaultValue={education.grad[1]} placeholder='Введите...'/>
-                    {Array.isArray(errors.grad) && errors.grad[1] && (<p className="validation-message">{errors.grad[1]}</p>)}
-                </div>
-
-                
-                <div className={styles.additional_edu} style={{display:  (eduCells>1) ? 'flex' : 'none' }}>
-                    <hr></hr>
-                    <div className={styles.edu_header}>
-                        <p>ВИД ОБРАЗОВАНИЯ*</p>
-                        {(activeEdu>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, 2)}>delete</p>) : (<button onClick={decrementEduCells} className={styles.cross}></button>)}
-                    </div>
-                    <div className="signup__radio__cnt no-underline">
-                        <input onClick={(e) => inputEduType(2,e)} disabled={mode} type="radio" id="2general" name="2eduType" value="general" defaultChecked={new Boolean(education.eduType[2] == 'general')}/>
-                        <label htmlFor="2general"><svg className="sign__svg" viewBox="0 0 40 38" >
-                            <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                                c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                            <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                            </svg><span className="radio__label">Основное</span></label>
-                    <input onClick={(e) => inputEduType(2,e)} disabled={mode} type="radio" id="2additional" name="2eduType" value="additional" defaultChecked={new Boolean(education.eduType[2] == 'additional')}/>
-                        <label htmlFor="2additional"><svg className="sign__svg" viewBox="0 0 40 38" >
-                            <path className="box" d="M31.7,2.1C23.3,2.3,14.9,3.2,6.4,3.6C3.6,3.8,1.3,6.3,1.5,9.1c2.1,32.2-4.1,26.5,20.9,26.5
-                                c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
-                            <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
-                            </svg><span className="radio__label">Дополнительное</span></label>
-                    </div>
-                    {Array.isArray(errors.eduType) && errors.eduType[2] && (<p className="validation-message">{errors.eduType[2]}</p>)}
-                    <label htmlFor="edFacility">ОБРАЗОВАТЕЛЬНАЯ ОРГАНИЗАЦИЯ*</label>
-                    <input onChange={(e) => inputFacility(2,e)} disabled={mode} type="text" name="edFacility" id="2edFacility" defaultValue={education.facility[2]} placeholder='Введите...'/>
-                    {Array.isArray(errors.facility) && errors.facility[2] && (<p className="validation-message">{errors.facility[2]}</p>)}
-                    <label htmlFor="faculty">ФАКУЛЬТЕТ*</label>
-                    <input onChange={(e) => inputFaculty(2,e)} disabled={mode} type="text" name="faculty" id="2faculty" defaultValue={education.faculty[2]} placeholder='Введите...'/>
-                    {Array.isArray(errors.faculty) && errors.faculty[2] && (<p className="validation-message">{errors.faculty[2]}</p>)}
-                    <label htmlFor="mastery">МАСТЕР</label>
-                    <input onChange={(e) => inputMastery(2,e)} disabled={mode} type="text" name="mastery" id="2mastery" defaultValue={education.mastery[2]} placeholder='Введите...'/>
-                    {Array.isArray(errors.mastery) && errors.mastery[2] && (<p className="validation-message">{errors.mastery[2]}</p>)}
-                    <label htmlFor="enYear">ГОД ПОСТУПЛЕНИЯ*</label>
-                    <input onChange={(e) => inputEnrollment(2,e)} disabled={mode} type="number" name="enYear" id="2enYear" defaultValue={education.enrollment[2]} placeholder='Введите...'/>
-                    {Array.isArray(errors.enrollment) && errors.enrollment[2] && (<p className="validation-message">{errors.enrollment[2]}</p>)}
-                    <label htmlFor="gradYear">ГОД ВЫПУСКА*</label>
-                    <input onChange={(e) => inputGrad(2,e)} disabled={mode} type="number" name="gradYear" id="2gradYear" defaultValue={education.grad[2]} placeholder='Введите...'/>
-                    {Array.isArray(errors.grad) && errors.grad[2] && (<p className="validation-message">{errors.grad[2]}</p>)}
-                </div>
                 {(mode==0) && <p className={styles.add} onClick={incrementEduCells}>Добавить</p>}
             </div>
 
 {/* PORTFOLIO */}
             <div className={styles.tab_content} style={{display:  (active===2) ? 'flex' : 'none' }}>
                 <h1>Projects</h1>
-                <div className={styles.additional_edu}>
+                {project.name.map((name, index) =>
+                (<div className={styles.additional_edu} style={{display:  ((index==0)) ? 'flex' : ((projectCells>=index) ? 'flex' : 'none') }}>
                     <div className={styles.edu_header}>
-                        <label htmlFor="prName">Name*</label>
-                        {(activeProjects>0) && ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 0)}>delete</p>)}
+                        <label htmlFor={index + "prName"}>Name*</label>
+                        {(index==0)?
+                            ((activeProjects>0) && ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Portfolio', project, o)}>delete</p>))
+                            :((activeProjects>index) ? 
+                                ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Portfolio', project, index)}>delete</p>):
+                                (<button onClick={decrementProjectCells} className={styles.cross}></button>))}
                     </div>
-                    <input onChange={(e)=>inputPrName(0, e)} disabled={mode} type="text" name="prName" id="prName" defaultValue={project.name[0]} />
-                    {Array.isArray(errors.prName) && errors.prName[0] && (<p className="validation-message">{errors.prName[0]}</p>)}
-                    <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(0, e)} disabled={mode} name="prDesc" id="prDesc" defaultValue={project.desc[0]}></textarea>
-                    {Array.isArray(errors.desc) && errors.desc[0] && (<p className="validation-message">{errors.desc[0]}</p>)}
-                    <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(0, e)} disabled={mode} type="text" name="prRole" id="prRole" defaultValue={project.role[0]}/>
-                    {Array.isArray(errors.role) && errors.role[0] && (<p className="validation-message">{errors.role[0]}</p>)}
-                    <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(0, e)} disabled={mode} type="text" name="prLink" id="prLink" defaultValue={project.link[0]}/>
-                    {Array.isArray(errors.link) && errors.link[0] && (<p className="validation-message">{errors.link[0]}</p>)}
-                    <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(0, e)} disabled={mode} type="number" name="prYear" id="prYear" defaultValue={project.year[0]}/>
-                    {Array.isArray(errors.year) && errors.year[0] && (<p className="validation-message">{errors.year[0]}</p>)}
-                </div>
+                    <input onChange={(e)=>inputPrName(index, e)} disabled={mode} type="text" name="prName" id={index + "prName"} defaultValue={name} />
+                    {Array.isArray(errors.prName) && errors.prName[index] && (<p className="validation-message">{errors.prName[index]}</p>)}
+                    <label htmlFor={index + "prDesc"}>Description</label>
+                    <textarea onChange={(e) => inputPrDesc(index, e)} disabled={mode} name="prDesc" id={index + "prDesc"} defaultValue={project.desc[index]}></textarea>
+                    {Array.isArray(errors.desc) && errors.desc[index] && (<p className="validation-message">{errors.desc[index]}</p>)}
+                    <label htmlFor={index + "prRole"}>Your role*</label>
+                    <input onChange={(e) => inputPrRole(index, e)} disabled={mode} type="text" name="prRole" id={index + "prRole"} defaultValue={project.role[index]}/>
+                    {Array.isArray(errors.role) && errors.role[index] && (<p className="validation-message">{errors.role[index]}</p>)}
+                    <label htmlFor={index + "prLink"}>Project link</label>
+                    <input onChange={(e) => inputPrLink(index, e)} disabled={mode} type="text" name="prLink" id={index + "prLink"} defaultValue={project.link[index]}/>
+                    {Array.isArray(errors.link) && errors.link[index] && (<p className="validation-message">{errors.link[index]}</p>)}
+                    <label htmlFor={index + "prYear"}>Year*</label>
+                    <input onChange={(e) => inputPrYear(index, e)} disabled={mode} type="number" name="prYear" id={index + "prYear"} defaultValue={project.year[index]}/>
+                    {Array.isArray(errors.year) && errors.year[index] && (<p className="validation-message">{errors.year[index]}</p>)}
+                </div>)
+                )}
 
-
-                <div className={styles.additional_edu} style={{display:  (projectCells>0) ? 'flex' : 'none' }} >
-                    <hr />
-                    <div className={styles.edu_header}>
-                        <label htmlFor="prName">Name*</label>
-                        {(activeProjects>1) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 1)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
-                    </div>
-                    <input onChange={(e)=>inputPrName(1, e)} disabled={mode} type="text" name="prName" id="1prName" defaultValue={project.name[1]}/>
-                    {Array.isArray(errors.prName) && errors.prName[1] && (<p className="validation-message">{errors.prName[1]}</p>)}
-                    <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(1, e)} disabled={mode} name="prDesc" id="1prDesc" defaultValue={project.desc[1]}></textarea>
-                    {Array.isArray(errors.desc) && errors.desc[1] && (<p className="validation-message">{errors.desc[1]}</p>)}
-                    <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(1, e)} disabled={mode} type="text" name="prRole" id="1prRole" defaultValue={project.role[1]}/>
-                    {Array.isArray(errors.role) && errors.role[1] && (<p className="validation-message">{errors.role[1]}</p>)}
-                    <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(1, e)} disabled={mode} type="text" name="prLink" id="1prLink" defaultValue={project.link[1]}/>
-                    {Array.isArray(errors.link) && errors.link[1] && (<p className="validation-message">{errors.link[1]}</p>)}
-                    <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(1, e)} disabled={mode} type="number" name="prYear" id="1prYear" defaultValue={project.year[1]}/>
-                    {Array.isArray(errors.year) && errors.year[1] && (<p className="validation-message">{errors.year[1]}</p>)}
-                </div>
-
-
-                <div className={styles.additional_edu} style={{display:  (projectCells>1) ? 'flex' : 'none' }}>
-                    <hr />
-                    <div className={styles.edu_header}>
-                        <label htmlFor="prName">Name*</label>
-                        {(activeProjects>2) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 2)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
-                    </div>
-                    <input onChange={(e)=>inputPrName(2, e)} disabled={mode} type="text" name="prName" id="2prName" defaultValue={project.name[2]}/>
-                    {Array.isArray(errors.prName) && errors.prName[2] && (<p className="validation-message">{errors.prName[2]}</p>)}
-                    <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(2, e)} disabled={mode} name="prDesc" id="2prDesc" defaultValue={project.desc[2]}></textarea>
-                    {Array.isArray(errors.desc) && errors.desc[2] && (<p className="validation-message">{errors.desc[2]}</p>)}
-                    <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(2, e)} disabled={mode} type="text" name="prRole" id="2prRole" defaultValue={project.role[2]}/>
-                    {Array.isArray(errors.role) && errors.role[2] && (<p className="validation-message">{errors.role[2]}</p>)}
-                    <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(2, e)} disabled={mode} type="text" name="prLink" id="2prLink" defaultValue={project.link[2]}/>
-                    {Array.isArray(errors.link) && errors.link[2] && (<p className="validation-message">{errors.link[2]}</p>)}
-                    <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(2, e)} disabled={mode} type="number" name="prYear" id="2prYear" defaultValue={project.year[2]}/>
-                    {Array.isArray(errors.year) && errors.year[2] && (<p className="validation-message">{errors.year[2]}</p>)}
-                </div>
-
-
-                <div className={styles.additional_edu} style={{display:  (projectCells>2) ? 'flex' : 'none' }}>
-                    <hr />
-                    <div className={styles.edu_header}>
-                        <label htmlFor="prName">Name*</label>
-                        {(activeProjects>3) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 3)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
-                    </div>
-                    <input onChange={(e)=>inputPrName(3, e)} disabled={mode} type="text" name="prName" id="3prName" defaultValue={project.name[3]}/>
-                    {Array.isArray(errors.prName) && errors.prName[3] && (<p className="validation-message">{errors.prName[3]}</p>)}
-                    <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(3, e)} disabled={mode} name="prDesc" id="3prDesc" defaultValue={project.desc[3]}></textarea>
-                    {Array.isArray(errors.desc) && errors.desc[3] && (<p className="validation-message">{errors.desc[3]}</p>)}
-                    <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(3, e)} disabled={mode} type="text" name="prRole" id="3prRole" defaultValue={project.role[3]}/>
-                    {Array.isArray(errors.role) && errors.role[3] && (<p className="validation-message">{errors.role[3]}</p>)}
-                    <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(3, e)} disabled={mode} type="text" name="prLink" id="3prLink" defaultValue={project.link[3]}/>
-                    {Array.isArray(errors.link) && errors.link[3] && (<p className="validation-message">{errors.link[3]}</p>)}
-                    <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(3, e)} disabled={mode} type="number" name="prYear" id="3prYear" defaultValue={project.year[3]}/>
-                    {Array.isArray(errors.year) && errors.year[3] && (<p className="validation-message">{errors.year[3]}</p>)}
-                </div>
-
-
-                <div className={styles.additional_edu} style={{display:  (projectCells>3) ? 'flex' : 'none' }}>
-                    <hr />
-                    <div className={styles.edu_header}>
-                        <label htmlFor="prName">Name*</label>
-                        {(activeProjects>4) ? ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Portfolio', project, 4)}>delete</p>) : (<button onClick={decrementProjectCells} className={styles.cross}></button>)}
-                    </div>
-                    <input onChange={(e)=>inputPrName(4, e)} disabled={mode} type="text" name="prName" id="4prName" defaultValue={project.name[4]}/>
-                    {Array.isArray(errors.prName) && errors.prName[4] && (<p className="validation-message">{errors.prName[4]}</p>)}
-                    <label htmlFor="prDesc">Description</label>
-                    <textarea onChange={(e) => inputPrDesc(4, e)} disabled={mode} name="prDesc" id="4prDesc" defaultValue={project.desc[4]}></textarea>
-                    {Array.isArray(errors.desc) && errors.desc[4] && (<p className="validation-message">{errors.desc[4]}</p>)}
-                    <label htmlFor="prRole">Your role*</label>
-                    <input onChange={(e) => inputPrRole(4, e)} disabled={mode} type="text" name="prRole" id="4prRole" defaultValue={project.role[4]}/>
-                    {Array.isArray(errors.role) && errors.role[4] && (<p className="validation-message">{errors.role[4]}</p>)}
-                    <label htmlFor="prLink">Project link</label>
-                    <input onChange={(e) => inputPrLink(4, e)} disabled={mode} type="text" name="prLink" id="4prLink" defaultValue={project.link[4]}/>
-                    {Array.isArray(errors.link) && errors.link[4] && (<p className="validation-message">{errors.link[4]}</p>)}
-                    <label htmlFor="prYear">Year*</label>
-                    <input onChange={(e) => inputPrYear(4, e)} disabled={mode} type="number" name="prYear" id="4prYear" defaultValue={project.year[4]}/>
-                    {Array.isArray(errors.year) && errors.year[4] && (<p className="validation-message">{errors.year[4]}</p>)}
-                </div>
                 {(mode==0) && <p className={styles.add} onClick={incrementProjectCells}>Добавить</p>}
 
             </div>
