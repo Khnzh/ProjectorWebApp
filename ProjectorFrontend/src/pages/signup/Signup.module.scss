@@ -1,11 +1,19 @@
-:root {
-  --COLOR: #fff6de;
-  --HIGHLIGHT: #dd9e28;
-  --FONT: "Overpass Mono", monospace;
-}
+@import '../../index';
 
 .signup {
   margin-bottom: 5em;
+}
+
+.signup__cnt {
+  @include blurred_bg();
+  text-align: left;
+  width: 88%;
+  margin: 5vh 6% 0 6%;
+  padding: 3% 0 5vh 5%;
+
+  &::before {
+    @include blurred_before();
+  }
 }
 
 .sign__label {
@@ -13,3 +21,12 @@
   text-decoration: underline;
   font-size: 1.5em;
 }
+
+.enter_button {
+    @include custom_button();
+    width: 20%;
+
+    &::before {
+      content: attr(data-content);
+    }
+  }

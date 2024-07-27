@@ -1,17 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
-
-:root {
-  --COLOR: #fff6de;
-  --HIGHLIGHT: #dd9e28;
-  --FONT: "Overpass Mono", monospace;
-}
-
-$color: #fff6de;
-$highlight: #dd9e28;
-$font: "Overpass Mono", monospace;
-$background-blur: rgba(0, 0, 0, 0.4);
-$box-shadow-color: rgba(0, 0, 0, 0.5);
-$blur-radius: 10px;
+@import '../../index';
 
 .login__cnt {
   text-align: left;

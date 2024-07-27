@@ -1,4 +1,4 @@
-import './Signup.module.scss';
+import styles from './Signup.module.scss';
 import supabase from '../../config/supabaseClient';
 import {useState, useEffect} from "react";
 import { signupValidation } from '../../utilityFunctions/Validation';
@@ -135,15 +135,15 @@ function Signup() {
   }
 
   return (
-    <div className='login__cnt'>
+    <div className={styles.signup__cnt}>
         <h1 className='login__header'>ПРИВЕТСТВУЕМ ТЕБЯ В ПРОЖЕКТОРЕ!</h1>
-        <input onChange={(e)=>updMail(e.target.value)} placeholder='Электронная почта' type="email" className="login__input signup" id='email'/>
+        <input onChange={(e)=>updMail(e.target.value)} placeholder='Электронная почта' type="email" className={"login__input " + StyleSheet.signup} id='email'/>
         {errors.mail && (<p className="validation-message">{errors.mail}</p>)}
-        <input onChange={(e)=>updPwd(e.target.value)} placeholder='Пароль' type="password" className="login__input signup" id='password'/>
+        <input onChange={(e)=>updPwd(e.target.value)} placeholder='Пароль' type="password" className={"login__input " + StyleSheet.signup} id='password'/>
         {errors.password && (<p className="validation-message">{errors.password}</p>)}
-        <input onChange={(e)=>updName(e.target.value)} placeholder='Имя' type="text" className="login__input signup" id='name'/>
+        <input onChange={(e)=>updName(e.target.value)} placeholder='Имя' type="text" className={"login__input " + StyleSheet.signup} id='name'/>
         {errors.name && (<p className="validation-message">{errors.name}</p>)}
-        <input onChange={(e)=>updLastName(e.target.value)} placeholder='Фамилия' type="text" className="login__input signup" id='second_name'/>
+        <input onChange={(e)=>updLastName(e.target.value)} placeholder='Фамилия' type="text" className={"login__input " + StyleSheet.signup} id='second_name'/>
         {errors.lastName && (<p className="validation-message">{errors.lastName}</p>)}
         <div className="signup__radio__cnt no-underline">
             <input onClick={(e) => updSex(e.target.value)} type="radio" id="sex_m" name="sex" value={false}/>
@@ -160,7 +160,7 @@ function Signup() {
                 </svg><span className="radio__label signup__label">Ж</span></label>
         </div>
         {errors.sex && (<p className="validation-message">{errors.sex}</p>)}
-        <input onChange={(e)=>updDob(e.target.value)}  placeholder='Дата рождения' type="date" className="login__input signup" id='dob'/>
+        <input onChange={(e)=>updDob(e.target.value)}  placeholder='Дата рождения' type="date" className={"login__input " + StyleSheet.signup} id='dob'/>
         {errors.dob && (<p className="validation-message">{errors.dob}</p>)}
         <ul>
             <li>
@@ -170,7 +170,7 @@ function Signup() {
                     c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
                 <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
                 </svg>
-                <span className='sign__label'>Соглашаюсь с Обработкой персональных данных</span></label>
+                <span className={styles.sign__label}>Соглашаюсь с Обработкой персональных данных</span></label>
                 {errors.agreement && (<p className="validation-message">{errors.agreement}</p>)}
             </li>
             <li>
@@ -180,7 +180,7 @@ function Signup() {
                     c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
                 <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
                 </svg>
-                <span className='sign__label'>Соглашаюсь с Политикой конфиденциальности</span></label>
+                <span className={styles.sign__label}>Соглашаюсь с Политикой конфиденциальности</span></label>
                 {errors.policy && (<p className="validation-message">{errors.policy}</p>)}
             </li>
             <li>
@@ -190,11 +190,11 @@ function Signup() {
                     c4.1,0,16.2,1.1,15.6-2.4c-0.5-3.1-0.7-10.7-1.1-13.8c-0.2-2.3-0.2-8.5-0.8-13.6C36,3.6,34,2,31.7,2.1z"/>
                 <path className="check" d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"/>
                 </svg>
-                <span className='sign__label'>Подписаться на рассылку</span></label>
+                <span className={styles.sign__label}>Подписаться на рассылку</span></label>
             </li>
         </ul>
 
-        <button onClick={signUser} className="svg-border-button">
+        <button onClick={signUser} className={styles.enter_button} data-content='ВОЙТИ'>
             
         </button>
     </div>
