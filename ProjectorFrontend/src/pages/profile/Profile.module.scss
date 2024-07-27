@@ -14,8 +14,9 @@
     @include blurred_before();
   }
 
-  .svg-border-button,
-  .change-button {
+  .save_button,
+  .change_button {
+    @include custom_button();
     align-self: center;
     width: 50%;
     margin-bottom: 2%;
@@ -89,7 +90,7 @@
     color: $highlight;
   }
 
-  .specialty-input:focus-visible {
+  .specialty_input:focus-visible {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     outline: none;
@@ -195,31 +196,7 @@ hr {
   justify-content: space-between;
 }
 
-.specialty {
-  z-index: 2;
-  background-color: $color;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  padding: 1em;
-  color: $highlight;
-}
-
 .delete_cell:hover{
  cursor: pointer;
  text-decoration: underline;
-}
-
-
-.save_button{
-  @include custom_button();
-  &::before {
-    content: "СОХРАНИТЬ";
-  }
-}
-
-.change_button {
-  @include custom_button();
-  &::before {
-    content: "ИЗМЕНИТЬ";
-  }
 }
