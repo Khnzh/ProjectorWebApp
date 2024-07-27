@@ -29,8 +29,6 @@ export default function Profile(){
     const [uId, setUId] = useState(null);
     const [email, setEmail] = useState(null);
     const [mode, setMode] = useState(true)
-    const [filledPr, setFilledPr] = useState(false)
-    const [filledEdu, setFilledEdu] = useState(false)
 
 
 // PROFILE VARIABLES
@@ -240,22 +238,6 @@ const fetchEducation = async(uId) => {
 
     useEffect(()=>{if (emode!=='0') setMode(false);}, [emode])
    
-    useEffect(()=>{
-    if (profile.name && profile.lastName && profile.email && profile.bio && profile.langs && profile.phNumber && profile.tg && profile.socials){
-        setFilledPr(true)
-    } else {
-        setFilledPr(false)
-    }
-   },[profile.name, profile.lastName, profile.email, profile.bio, profile.langs, profile.phNumber, profile.tg, profile.socials])
-
-   useEffect(()=>{
-    if (education.eduType && education.facility && education.faculty && education.mastery && education.enrollment && education.grad){
-        setFilledEdu(true)
-    } else {
-        setFilledEdu(false)
-    }
-   },[education.eduType, education.facility, education.faculty, education.mastery, education.enrollment, education.grad])
-
    useEffect(() =>
     { 
         const info = JSON.parse(localStorage.getItem(localKey));
@@ -811,8 +793,8 @@ const fetchEducation = async(uId) => {
                 {(mode==0) && <p className="add" onClick={incrementProjectCells}>Добавить</p>}
 
             </div>
-            {mode ? <button onClick={()=>navigate('/profile/1')} className="change-button"></button>
-            : <button onClick={saveChanges} className="svg-border-button"></button>}
+            {mode ? <button onClick={()=>navigate('/profile/1')} className={styles.change_button}></button>
+            : <button onClick={saveChanges} className={styles.save_button}></button>}
         </div>
         </>
     )

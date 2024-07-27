@@ -208,3 +208,18 @@ hr {
  cursor: pointer;
  text-decoration: underline;
 }
+
+
+.save_button{
+  @include custom_button();
+  &::before {
+    content: "СОХРАНИТЬ";
+  }
+}
+
+.change_button {
+  @include custom_button();
+  &::before {
+    content: "ИЗМЕНИТЬ";
+  }
+}
