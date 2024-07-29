@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import supabase from '../../config/supabaseClient';
 import { useAppContext } from '../../context/AuthContext';
 import { useEffect } from 'react';
+import styles from "./Header.module.scss";
 
 export default function Header() {
   const { isLoggedIn, setIsLoggedIn } = useAppContext();
@@ -25,19 +26,19 @@ export default function Header() {
   }
 
   return (
-    <div className="header">
-      <ul className="nav-bar">
-        <li className="nav-link"><Link to='/'>О НАС</Link></li>
-        <li className="nav-link"><Link to='/'>ПОЛЬЗОВАТЕЛЯМ</Link></li>
-        <li className="nav-link"><Link to='/'>ПАРТНЕРАМ</Link></li>
-        <li className="nav-link"><Link to='/'>КОНТАКТЫ</Link></li>
+    <div className={styles.header}>
+      <ul className={styles.header__navbar}>
+        <li className={styles.header__navlink}><Link to='/'>О НАС</Link></li>
+        <li className={styles.header__navlink}><Link to='/'>ПОЛЬЗОВАТЕЛЯМ</Link></li>
+        <li className={styles.header__navlink}><Link to='/'>ПАРТНЕРАМ</Link></li>
+        <li className={styles.header__navlink}><Link to='/'>КОНТАКТЫ</Link></li>
         {isLoggedIn ? (
           <>
-            <li className="sign margin-30"><Link to='/profile/0'>ПРОФИЛЬ</Link></li>
-            <li className="sign"><a onClick={logoutUser}>ВЫЙТИ</a></li>
+            <li className={styles.header__sign_10percent_left}><Link to='/profile/0'>ПРОФИЛЬ</Link></li>
+            <li className={styles.header__sign}><a onClick={logoutUser}>ВЫЙТИ</a></li>
           </>
         ) : (
-          <li className="sign margin-30"><Link to='/login'>ВОЙТИ В АККАУНТ</Link></li>
+          <li className={styles.header__sign_10percent_left}><Link to='/login'>ВОЙТИ В АККАУНТ</Link></li>
         )}
       </ul>
     </div>

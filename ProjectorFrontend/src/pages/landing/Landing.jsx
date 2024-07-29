@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './Landing.css'
+import styles from './Landing.module.scss'
 import.meta.env.VITE_SUPABASE_KEY
 
 function Landing() {
@@ -7,12 +7,12 @@ function Landing() {
 
   return (
     <>
-      <div className='container'>
+      <div className={styles.container}>
         <img src="/projector.svg" alt="" className="big-header" />
-        <div className="landing-cmps">
+        <div className={styles.landing_cmps}>
         <img src="/cloudFrame.svg" alt="" className="cloud" />
         <img src="/circlesComponent.svg" alt="" className="circles" />
-        <p className="cloud-text">Камера, мотор… ПРОЖЕКТОР!<br/>Найди подходящего специалиста сейчас!</p>
+        <p className={styles.cloud_text}>Камера, мотор… ПРОЖЕКТОР!<br/>Найди подходящего специалиста сейчас!</p>
         </div>
       </div>
     </>

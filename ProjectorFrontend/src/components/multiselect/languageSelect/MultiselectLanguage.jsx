@@ -1,5 +1,6 @@
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
 import { useState } from 'react'
+import styles from '../Multiselect.module.scss'
 
 const languages = [
   { id: 1, name: 'العربية (Arabic)' },
@@ -48,27 +49,41 @@ export default function MultiselectLang({ profile, setProfile, mode }) {
   const filteredLanguages = query === ''
     ? languages
     : languages.filter((language) => language.name.toLowerCase().includes(query.toLowerCase()))
-
-  return (
-    <Combobox multiple value={selectedLanguages} onChange={(langs) => setProfile(prev => ({ ...prev, langs }))} onClose={() => setQuery('')}>
+  
+  if (mode){
+    return (<>
       {selectedLanguages.length > 0 && (
-        <ul className="horizontal-list">
+        <ul className={styles.horizontal_list}>
           {selectedLanguages.map((language) => (
-            <li className="list-item" key={language.id}>
-              {(mode==0) && <button className="cross-button" onClick={() => removeItem(language.id)}>✖</button>}
+            <li className={styles.list_item} key={language.id}>
+              {mode === 0 && <button className={styles.cross_button} onClick={() => removeItem(language.id)}>✖</button>}
               {language.name}
             </li>
           ))}
         </ul>
       )}
-      <ComboboxInput className='specialty-input' aria-label="Languages" onChange={(event) => setQuery(event.target.value)} />
-      <ComboboxOptions anchor="bottom start" className="specialty border empty:invisible">
-        {filteredLanguages.map((language) => (
-          <ComboboxOption key={language.id} value={language} className="data-[focus]:bg-blue-100">
-            {language.name}
-          </ComboboxOption>
-        ))}
-      </ComboboxOptions>
-    </Combobox>
-  )
+    </>)
+  } else{
+    return (
+      <Combobox multiple value={selectedLanguages} onChange={(langs) => setProfile(prev => ({ ...prev, langs }))} onClose={() => setQuery('')}>
+        {selectedLanguages.length > 0 && (
+          <ul className={styles.horizontal_list}>
+            {selectedLanguages.map((language) => (
+              <li className={styles.list_item} key={language.id}>
+                {(mode==0) && <button className={styles.cross_button} onClick={() => removeItem(language.id)}>✖</button>}
+                {language.name}
+              </li>
+            ))}
+          </ul>
+        )}
+        <ComboboxInput className={styles.specialty_input} aria-label="Languages" onChange={(event) => setQuery(event.target.value)} />
+        <ComboboxOptions anchor="bottom start" className={styles.specialty +' border empty:invisible'}>
+          {filteredLanguages.map((language) => (
+            <ComboboxOption key={language.id} value={language} className="data-[focus]:bg-blue-100">
+              {language.name}
+            </ComboboxOption>
+          ))}
+        </ComboboxOptions>
+      </Combobox>
+  )}
 }
