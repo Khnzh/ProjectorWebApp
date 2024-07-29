@@ -159,7 +159,7 @@ export function portfolioValidation(value, i){
             errors.prName = [...errors.prName, 'Заполните поле']
         }
 
-        if (value.desc[iteration].length > 0){
+        if (value.desc[iteration]){
             if (whitelistRegex.test(value.desc[iteration]) && !blacklistRegex.test(value.desc[iteration])) {
                 if (value.desc[iteration].length > 250) {errors.desc = [...errors.desc, 'Используйте не больше 250 символов']}
                 else {errors.desc = [...errors.desc, '']}
@@ -175,7 +175,7 @@ export function portfolioValidation(value, i){
             errors.role = [...errors.role, 'Заполните поле']
         }
 
-        if (value.link[iteration].length > 0){
+        if (value.link[iteration]){
             if (urlPattern.test(value.link[iteration])) {
                 if (value.link[iteration].length > 50) {errors.link = [...errors.link, 'Используйте не больше 50 символов']}
                 else {errors.link = [...errors.link, '']}
