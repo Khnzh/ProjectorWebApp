@@ -136,7 +136,7 @@ function Signup() {
 
   return (
     <div className={styles.signup__cnt}>
-        <h1 className='login__header'>ПРИВЕТСТВУЕМ ТЕБЯ В ПРОЖЕКТОРЕ!</h1>
+        <h1 className={styles.header}>ПРИВЕТСТВУЕМ ТЕБЯ В ПРОЖЕКТОРЕ!</h1>
         <input onChange={(e)=>updMail(e.target.value)} placeholder='Электронная почта' type="email" className={"login__input " + StyleSheet.signup} id='email'/>
         {errors.mail && (<p className="validation-message">{errors.mail}</p>)}
         <input onChange={(e)=>updPwd(e.target.value)} placeholder='Пароль' type="password" className={"login__input " + StyleSheet.signup} id='password'/>

@@ -8,7 +8,7 @@ import { profileValidation, portfolioValidation, educationValidation, hasOnlySpe
 
 export default function Profile(){
     const navigate = useNavigate();
-//FETCHING PARAMS
+    //FETCHING PARAMS
     const [errors, setErrors] = useState({});
     const { emode } = useParams();
     const [eduCells, setEduCells] = useState(0);
@@ -17,12 +17,20 @@ export default function Profile(){
     const [activeProjects, setActiveProjects] = useState(0);
     const [selectedPeople, setSelectedPeople] = useState([])
     const [selectedLanguage, setSelectedLanguage] = useState([])
-
+    
     const incrementEduCells = () => {if (eduCells<2) setEduCells(e=>e+1)}
     const decrementEduCells = () => {if (eduCells>0) setEduCells(e=>e-1)}
     const incrementProjectCells = () => {if (projectCells<4) setProjectCells(e=>e+1)}
     const decrementProjectCells = () => {if (projectCells>0) setProjectCells(e=>e-1)}
+    
+// TEST OUTPUTS
+    // useEffect(()=>{console.log(project)}, [project])
+    // useEffect(()=>{console.log(education)}, [education])
+    // useEffect(()=>{console.log(profile)}, [profile])
 
+// SETTING MODE FROM URL 0 = VIEW, 1 = EDIT AND UPDATE
+    useEffect(()=>{if (emode!=='0') setMode(false);}, [emode])
+    
     
 // localStorage and state variables
     const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
@@ -178,67 +186,66 @@ const inputTg = (e)=>setProfile((prev)=>{
         });
     };
 
-const validateProfile = () => {setErrors((e)=> {return educationValidation(education, eduCells)});
-}
 
-const fetchPortfolio = async(uId) => {
-    let { data: Portfolio, error } = await supabase
-    .from('Portfolio')
-    .select("*")
-    // Filters
-    .eq('user_id', uId)
+// FETCHING PORTFOLIO INFORMATION FROM DATABASE
 
-    if (error) { console.log(error) } else {
-        setActiveProjects(Portfolio.length)
-        if(Portfolio.length>0) setProjectCells((p) => Portfolio.length-1)
-        for (let i=0; i < Portfolio.length; i++){
-            for (const key in Portfolio[i]){
-                if (key!='user_id'){
-                    setProject((p) =>{
-                        const updated = p[key].map((name, index) => (index === i ? Portfolio[i][key] : name));
-                        let obj = {...p};
-                        obj[key] = updated;
-                        return obj
-                    });
+    const fetchPortfolio = async(uId) => {
+        let { data: Portfolio, error } = await supabase
+        .from('Portfolio')
+        .select("*")
+        // Filters
+        .eq('user_id', uId)
+
+        if (error) { console.log(error) } else {
+            setActiveProjects(Portfolio.length)
+            if(Portfolio.length>0) setProjectCells((p) => Portfolio.length-1)
+            for (let i=0; i < Portfolio.length; i++){
+                for (const key in Portfolio[i]){
+                    if (key!='user_id'){
+                        setProject((p) =>{
+                            const updated = p[key].map((name, index) => (index === i ? Portfolio[i][key] : name));
+                            let obj = {...p};
+                            obj[key] = updated;
+                            return obj
+                        });
+                    }
                 }
             }
         }
-    }
-};
+    };
 
-const fetchEducation = async(uId) => {
-    let { data: Education, error } = await supabase
-    .from('Education')
-    .select("*")
-    // Filters
-    .eq('user_id', uId)
+// FETCHING EDUCATION INFORMATION FROM DATABASE
 
-    if (error) { console.log(error) } else {
-        setActiveEdu(Education.length)
-        if(Education.length>0) setEduCells((p) => Education.length-1)
-        for (let i=0; i < Education.length; i++){
-            for (const key in Education[i]){
-                if (key!='user_id'){
-                    setEducation((p) =>{
-                        const updated = p[key].map((name, index) => (index === i ? Education[i][key] : name));
-                        let obj = {...p};
-                        obj[key] = updated;
-                        return obj
-                    });
+
+    const fetchEducation = async(uId) => {
+        let { data: Education, error } = await supabase
+        .from('Education')
+        .select("*")
+        // Filters
+        .eq('user_id', uId)
+
+        if (error) { console.log(error) } else {
+            setActiveEdu(Education.length)
+            if(Education.length>0) setEduCells((p) => Education.length-1)
+            for (let i=0; i < Education.length; i++){
+                for (const key in Education[i]){
+                    if (key!='user_id'){
+                        setEducation((p) =>{
+                            const updated = p[key].map((name, index) => (index === i ? Education[i][key] : name));
+                            let obj = {...p};
+                            obj[key] = updated;
+                            return obj
+                        });
+                    }
                 }
             }
         }
-    }
-};
+    };
 
-// TEST OUTPUTS
-    // useEffect(()=>{console.log(project)}, [project])
-    useEffect(()=>{console.log(education)}, [education])
-    // useEffect(()=>{console.log(profile)}, [profile])
+// FETCHING PROFILE INFORMATION FROM DATABASE
 
-    useEffect(()=>{if (emode!=='0') setMode(false);}, [emode])
-   
-   useEffect(() =>
+
+    useEffect(() =>
     { 
         const info = JSON.parse(localStorage.getItem(localKey));
         setUId((u) => info.user.id);
@@ -291,6 +298,9 @@ const fetchEducation = async(uId) => {
         }
     }
     , [uId])
+
+// UPDATING AND EDITING PROFILE
+
 
     const updateProfile = async () => {
 
@@ -353,6 +363,7 @@ const fetchEducation = async(uId) => {
         .insert(JSON.parse(specsList))
         .select()
         if (specsInsErr) console.log(specsInsErr);
+        navigate('/profile/0')
         
     }
 
@@ -380,6 +391,9 @@ const fetchEducation = async(uId) => {
         return list;
     }
 
+// UPDATING AND EDITING PORTFOLIO
+
+
     const saveProject = async (value, count, base) =>{
         let updList = updateQueryFormat(value, base)
 
@@ -399,10 +413,13 @@ const fetchEducation = async(uId) => {
         .from('Portfolio')
         .insert(insList)
         .select()
-        if (specsInsErr) console.log(specsInsErr);
+        if (specsInsErr) {console.log(specsInsErr)}
 
         fetchPortfolio(uId)
     }
+
+// UPDATING AND EDITING EDUCATION
+
 
     const saveEducation = async (value, count, base) =>{
         let updList = updateQueryFormat(value, base)
@@ -427,6 +444,9 @@ const fetchEducation = async(uId) => {
         fetchEducation(uId)
     }
 
+// DELETING EDUCATION OR PORTFOLIO INSTANCE, DEPENDS ON INPUT PARAMETERS
+
+
     const deleteRow = async (table, value, index) => {
         const { error } = await supabase
         .from(table)
@@ -437,6 +457,9 @@ const fetchEducation = async(uId) => {
 
         (table==='Education') ? fetchEducation(uId) : fetchPortfolio(uId)
     }
+
+// SAVES CHANGES AFTER VALIDATING INPUTS
+
 
     const saveChanges = () => {
         let errs;
@@ -457,6 +480,8 @@ const fetchEducation = async(uId) => {
         setErrors(errs)
     }
 
+
+// RESPONSIBLE FOR DISPLAYING THE CORRECT TAB
 
     const [active, setActive] = useState(1)
     const changeActive = (n) => { setActive((a)=>n) }
@@ -506,6 +531,8 @@ const fetchEducation = async(uId) => {
 {/* EDUCATION */}
             <div className={styles.tab_content} style={{display:  (active===3) ? 'flex' : 'none' }}>
                 <h1>Добавьте ваше образование</h1>
+
+                {/* MAPS THROUGH ALL EDUCATION INSTANCES AND RENDERS THEM */}
                 {education.eduType.map((edu, index) =>
                 (<div className={styles.additional_edu} style={{display:  ((index==0)) ? 'flex' : ((eduCells>=index) ? 'flex' : 'none') }}>
                     <div className={styles.edu_header}>
@@ -559,6 +586,8 @@ const fetchEducation = async(uId) => {
 {/* PORTFOLIO */}
             <div className={styles.tab_content} style={{display:  (active===2) ? 'flex' : 'none' }}>
                 <h1>Projects</h1>
+
+                {/* MAPS THROUGH ALL PROJECT INSTANCES AND RENDERS THEM */}
                 {project.name.map((name, index) =>
                 (<div className={styles.additional_edu} style={{display:  ((index==0)) ? 'flex' : ((projectCells>=index) ? 'flex' : 'none') }}>
                     <div className={styles.edu_header}>
