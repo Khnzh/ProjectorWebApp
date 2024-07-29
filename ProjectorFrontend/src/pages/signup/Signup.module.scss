@@ -4,6 +4,11 @@
   margin-bottom: 5em;
 }
 
+.header {
+  margin-bottom: 0.5em;
+  font-size: 3.5rem;
+}
+
 .signup__cnt {
   @include blurred_bg();
   text-align: left;
@@ -24,9 +29,12 @@
 
 .enter_button {
     @include custom_button();
-    width: 20%;
 
     &::before {
       content: attr(data-content);
     }
   }
+
+.enter_button {
+  width: 20%
+}
