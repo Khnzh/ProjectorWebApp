@@ -3,6 +3,7 @@ import Landing from './pages/landing/Landing'
 import Login from './pages/login/Login';
 import Signup from './pages/signup/Signup';
 import Profile from './pages/profile/Profile';
+import Projects from './pages/projects/Projects';
 import Header from './components/header/Header';
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/profile/:emode' element={<Profile />} />
+        <Route path='/projects' element={<Projects/>} />
       </Routes>
     </BrowserRouter>
   );
