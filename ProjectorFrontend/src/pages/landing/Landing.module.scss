@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
+
+$font: "Overpass Mono", monospace;
+$color-cloud-text: #fff5da99;
+
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  height: 300vh;
+}
+
+.big_header {
+  width: 85%;
+  padding-top: 170px;
+  padding-left: 40px;
+}
+
+.landing_cmps {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  position: relative;
+
+  img {
+    width: 40%;
+  }
+}
+
+.cloud_text {
+  color: $color-cloud-text;
+  font-family: $font;
+  font-size: 1.4rem;
+  font-weight: 100;
+  white-space: nowrap;
+  position: absolute;
+  left: 8%;
+  top: 43%;
+  text-align: left;
+}
