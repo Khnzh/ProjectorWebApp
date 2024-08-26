@@ -1,0 +1,190 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.root {
+  display: flex;
+  align-self: flex-start;
+  align-self: stretch;
+  margin-left: 3%;
+  padding-right: 3%;
+  padding-top: 3%;
+  margin-top: 0%;
+  flex-direction: column;
+  border-right: 1px $color solid;
+  max-width: 25%
+}
+
+.flex_col {
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  margin: 0 0 0 2px;
+  width: calc(100% - 13px);
+}
+
+.avatar {
+  margin: 2em 0 0;
+  width: 35%;
+  border-radius: 50%;
+  border: 2px solid $color;
+}
+
+.big_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 36px 0 0 1px;
+  font: 2em $font;
+  font-weight: 700;
+  color: $highlight;
+  text-align: left;
+  opacity: 0.89;
+}
+
+.medium_title {
+  display: flex;
+  align-items: center;
+  margin-top: -0.75em;
+  font: 400 25px/2.4 $font;
+  color: $color;
+  opacity: 0.8;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  margin: 31px 1px 0;
+  font: 700 30px/2 $font;
+  font-weight: 700;
+  color: $color;
+  opacity: 0.89;
+}
+
+.medium_title1 {
+  display: flex;
+  align-items: center;
+  font: 1.5em $font;
+  color: $highlight;
+  text-decoration: underline;
+  opacity: 0.89;
+}
+
+.flex_row {
+  display: flex;
+  align-items: center;
+  gap: 0 14px;
+  margin-top: 1em;
+}
+
+.image17 {
+  width: 15px;
+  min-width: 0;
+  height: 20px;
+}
+
+.title1 {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font: 1.5em $font;
+  color: $color;
+  opacity: 0.89;
+}
+
+.flex_row1 {
+  display: flex;
+  gap: 0 15px;
+  margin: 7px 2px 0;
+}
+
+.image18 {
+  margin: 16px 0 19px;
+  width: 15px;
+  min-width: 0;
+  height: 20px;
+}
+
+.title2 {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font: 700 30px/1.5 $font;
+  color: $color;
+  text-decoration: underline;
+  opacity: 0.89;
+}
+
+
+.image19 {
+  margin: 15px 0 17px;
+  width: 15px;
+  min-width: 0;
+  height: 20px;
+}
+
+.role_image {
+  width: 25px;
+  min-width: 0;
+  height: 26px;
+  align-self: start;
+}
+
+.image20 {
+  margin: 6px 0 26px;
+  width: 15px;
+  min-width: 0;
+  height: 20px;
+}
+
+.flex_row_info {
+  align-items: center;
+  display: flex;
+  gap: 0 11px;
+}
+
+.role_title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+  font: 2em $font;
+  font-weight: 700;
+  color: rgb(255 245 218 / 89.8%);
+  text-align: left;
+  opacity: 0.89;
+  text-transform: uppercase;
+}
+
+.small_margin_top {
+  margin-top: 3%;
+}
+
+.logo_container {
+  position: relative;
+}
+
+.second_decorator_image {
+  position: absolute;
+  top: -30%;
+  left: -75px;
+  width: 120%;
+  filter: blur(100px);
+}
+
+.full_length_button {
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80%;
+  font: 1.5em $font;
+  color: $highlight;
+  text-align: center;
+  background-color: rgba($highlight, 0.2);
+  border-radius: 10px;
+  padding: 6.5px 8px;
+  margin-top: 0.75em;
+  border: 1px solid $highlight;
+}
