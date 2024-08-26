@@ -1,0 +1,23 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.main_spec{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-align: left;
+  font: 2em $font;
+  font-weight: 700;
+}
+
+div[data-open]{
+  padding-right: -40px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  font: 1.5em $font;
+  background-color: rgba($highlight, 0.5);
+  border-radius: 10px;
+  padding: 1%;
+  text-decoration: underline;
+}

@@ -1,0 +1,54 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+
+.title4 {
+  display: flex;
+  align-items: center;
+  font: 700 2em $font;
+  color: $highlight;
+  margin-top: 1em;
+}
+
+.medium_title3 {
+  display: flex;
+  align-items: center;
+  font: 700 1.5em $font;
+  color: $highlight;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  font: 700 1em $font;
+  text-align: left;
+  color: $color;
+  height: 100%;
+}
+
+.project_card {
+  margin: 11px 3% 32px 3%;
+  background-image: url('/assets/card_frame.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  width: 94%;
+  display: flex;
+  height: 30vh;
+  box-sizing: border-box; /* Ensures border and padding are included in width */
+}
+
+.project_text{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.img_frame{
+  display: flex;
+  margin: 2.5% 2% 3% 2%;
+  padding: 1%;
+  background-color: rgba($highlight, 0.2);
+  border:1px $highlight solid;
+  border-radius: 20px;
+}

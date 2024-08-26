@@ -1,0 +1,503 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.content_box {
+  display: flex;
+  flex-direction: column;
+  background: var(--src) center center / 100% 100% no-repeat;
+}
+
+.group_container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 1px auto 0;
+  width: 95.31%;
+}
+
+.image_column {
+  display: flex;
+  flex-direction: column;
+  width: 438px;
+  min-width: 0;
+}
+
+.profile_image {
+  margin: 0 0 0 7px;
+  width: calc(100% - 7px);
+}
+
+.decorative_image {
+  margin: 101px 0 0 5px;
+  width: 154px;
+}
+
+.user_full_name {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 34px 0 0 6px;
+  font: 700 35px/1.71 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: right;
+  opacity: 0.89;
+}
+
+.user_website {
+  display: flex;
+  align-items: center;
+  margin: 9px 5px 0;
+  font: 400 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 245 218 / 89.8%);
+  opacity: 0.8;
+}
+
+.flex_row_info {
+  display: flex;
+  gap: 0 11px;
+  margin: 9px 6px 0;
+}
+
+.role_title {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
+  font: 700 30px/2 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 245 218 / 89.8%);
+  text-align: right;
+  opacity: 0.89;
+}
+
+.role_image {
+  margin: 8px 0 26px;
+  width: 25px;
+  min-width: 0;
+  height: 26px;
+}
+
+.edit_profile_title {
+  display: flex;
+  align-items: center;
+  margin: 2px 0 0;
+  font: 700 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40 / 80%);
+  text-decoration: underline;
+  opacity: 0.89;
+}
+
+.add_request_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0 0 5px;
+  width: 284px;
+  max-width: 100%;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  background-color: rgb(221 158 40 / 20%);
+  border-radius: 10px;
+  padding: 9.5px 26px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.request_catalog_row {
+  display: flex;
+  align-items: center;
+  gap: 0 14px;
+  margin: 25px 5px 0;
+}
+
+.catalog_image {
+  width: 11px;
+  min-width: 0;
+  height: 13px;
+}
+
+.my_projects_title {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font: 700 30px/1.5 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 246 222);
+  opacity: 0.89;
+}
+
+.flex_row {
+  display: flex;
+  gap: 0 15px;
+  margin: 14px 7px 0;
+}
+
+.projects_image {
+  margin: 16px 0 19px;
+  width: 8px;
+  min-width: 0;
+  height: 10px;
+}
+
+.projects_row {
+  display: flex;
+  gap: 0 11px;
+  width: 241px;
+  min-width: 0;
+}
+
+.specialists_title {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font: 700 30px/1.5 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 245 218);
+  text-decoration: underline;
+  opacity: 0.89;
+}
+
+.image22 {
+  margin: 4px 0 16px;
+  width: 26px;
+  min-width: 0;
+  height: 25px;
+}
+
+.flex_row1 {
+  display: flex;
+  gap: 0 13px;
+  margin: 15px 7px 0;
+}
+
+.specialists_image {
+  margin: 15px 0 17px;
+  width: 10px;
+  min-width: 0;
+  height: 13px;
+}
+
+.title1 {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font: 700 30px/1.5 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 246 222);
+  opacity: 0.89;
+}
+
+.flex_row2 {
+  display: flex;
+  gap: 0 15px;
+  margin: 14px 6px 0;
+}
+
+.image20 {
+  margin: 6px 0 26px;
+  width: 9px;
+  min-width: 0;
+  height: 13px;
+}
+
+.notifications_title {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font: 700 30px/1.5 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 246 222);
+  opacity: 0.89;
+}
+
+.decorator_image {
+  width: 1px;
+  min-width: 0;
+}
+
+.project_detail_column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px 0;
+  width: 97.93%;
+}
+
+.project_add_title {
+  display: flex;
+  align-items: center;
+  font: 5em $font;
+  color: rgb(255 246 222);
+}
+
+.flex_row_input_container {
+  display: flex;
+  justify-content: space-between;
+  gap: 0 10px;
+  width: 100%;
+}
+
+.project_name_column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 37px;
+  width: 639px;
+  min-width: 0;
+}
+
+.project_name_label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font: 700 35px/2.85 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+}
+
+.project_name_input_box {
+  display: flex;
+  flex-direction: column;
+  width: 98.75%;
+  background: var(--src) center center / 100% 100% no-repeat;
+}
+
+.project_name_hint {
+  display: flex;
+  align-items: center;
+  margin: 0 0 1px 35px;
+  width: 154px;
+  font: 300 25px/4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 246 222);
+}
+
+.project_description_label {
+  display: flex;
+  align-items: center;
+  margin: 50px 0 0;
+  width: 100%;
+  font: 500 35px/2.85 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+}
+
+.project_description_input_box {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 0;
+  width: 98.75%;
+  background: var(--src) center center / 100% 100% no-repeat;
+}
+
+.project_description_hint {
+  display: flex;
+  align-items: center;
+  margin: 0 0 1px 35px;
+  width: 154px;
+  font: 300 25px/4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(255 246 222);
+}
+
+.image_display_column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px 0;
+  margin: 49px 0 0;
+  width: 499px;
+  min-width: 0;
+}
+
+.project_image_comment {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: rgb(221 158 40 / 20%);
+  border-radius: 30px;
+  outline: 3px solid rgb(222 158 40 / 90.1%);
+  outline-offset: -3px;
+}
+
+.project_image {
+  margin: 45px auto;
+  width: 74.55%;
+}
+
+.project_type_column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.project_type_label {
+  display: flex;
+  align-items: center;
+  font: 500 35px/2.85 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+}
+
+.project_type_buttons_row1 {
+  display: flex;
+  gap: 0 21px;
+  margin: 44.5px 0 0 8px;
+}
+
+.full_length_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 284px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  background-color: rgb(221 158 40 / 20%);
+  border-radius: 10px;
+  padding: 6.5px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.short_length_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 285px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.music_video_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 284px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 6.5px 18px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.commercial_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 285px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 26px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.project_type_buttons_row2 {
+  display: flex;
+  gap: 0 21px;
+  margin: 24px 0 0 8px;
+}
+
+.tiktok_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 284px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 8.5px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.vlog_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 285px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.behind_the_scenes_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 284px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 4.5px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.show_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 285px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 7px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.project_type_buttons_row3 {
+  display: flex;
+  justify-content: space-between;
+  gap: 0 10px;
+  margin: 24px 0 0 8px;
+  width: 600px;
+}
+
+.report_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 284px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 5.5px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
+
+.other_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 285px;
+  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
+  color: rgb(221 158 40);
+  text-align: center;
+  border-radius: 10px;
+  padding: 7.5px 8px;
+  outline: 1px solid rgb(221 158 40);
+  outline-offset: -1px;
+  opacity: 0.89;
+}
