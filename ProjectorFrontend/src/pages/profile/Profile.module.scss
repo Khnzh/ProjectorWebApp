@@ -17,12 +17,15 @@
   .save_button,
   .change_button {
     @include custom_button();
-    align-self: center;
-    width: 50%;
-    margin-bottom: 2%;
-
-    &::before {
-      content: attr(data-content);
+    
+    &{
+      align-self: center;
+      margin-bottom: 2%;
+      width: 50%;
+      
+      &::before{
+        content: attr(data-content);
+      }
     }
   }
 }
@@ -199,4 +202,14 @@ hr {
 .delete_cell:hover{
  cursor: pointer;
  text-decoration: underline;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom_profile_pic_upload {
+  display: inline-block;
+  cursor: pointer;
+  align-self: center;
 }
