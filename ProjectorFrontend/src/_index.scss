@@ -3,12 +3,29 @@
 $color: #fff6de;
 $highlight: #dd9e28;
 $font: "Overpass Mono", monospace;
+$background-color: #000;
 $background-blur: rgba(0, 0, 0, 0.4);
 $box-shadow-color: rgba(0, 0, 0, 0.5);
 $blur-radius: 10px;
 
+@mixin button_accent {
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80%;
+  font: 1.5em $font;
+  color: $highlight;
+  text-align: center;
+  background-color: rgba($highlight, 0.2);
+  border-radius: 10px;
+  padding: 6.5px 8px;
+  margin-top: 0.75em;
+  border: 1px solid $highlight;
+}
+
 @mixin signup__radio__cnt {
-  border-bottom: 2px solid var(--HIGHLIGHT);
+  border-bottom: 2px solid $highlight;
   width: 90%;
   margin-bottom: 2rem;}
 
@@ -53,8 +70,8 @@ $blur-radius: 10px;
   &::before {
     content: "ВОЙТИ";
     font-size: 0.7em;
-    color: var(--COLOR);
-    font-family: var(--FONT);
+    color: $color;
+    font-family: $font;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -97,21 +114,12 @@ $blur-radius: 10px;
     z-index: -1;
 }
 
-$color: #fff6de;
-$highlight: #dd9e28;
-$font: "Overpass Mono", monospace;
-
-:root {
-  --COLOR: #fff6de;
-  --HIGHLIGHT: #dd9e28;
-  --FONT: "Overpass Mono", monospace;
-}
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: var(--FONT);
+  font-family: $font;
 }
 
 input,
@@ -120,6 +128,10 @@ textarea {
   color: inherit;
   font-family: inherit;
   box-sizing: inherit;
+}
+
+button {
+  cursor: pointer
 }
 
 input:-webkit-autofill,
@@ -135,9 +147,8 @@ input:-webkit-autofill:active {
 #root {
   position: absolute;
   top: 0;
-  padding-bottom: inherit;
+  padding-bottom: 0;
   width: 100%;
-  padding-bottom: 5vh;
 }
 
 body {
@@ -147,8 +158,8 @@ body {
   display: flex;
   flex-direction: column;
   background-color: black;
-  color: var(--COLOR);
-  font-family: var(--FONT);
+  color: $color;
+  font-family: $font;
   background-image: url(/Noise&Texture.png), url(/lamp.svg),
     url(/sidesFrame.svg), url(/lightTriangle.svg), url(/lightRect.svg);
   place-items: center;
@@ -169,18 +180,18 @@ a {
   background: none;
   width: 90%;
   border: none;
-  border-bottom: 2px solid var(--HIGHLIGHT);
-  color: var(--HIGHLIGHT);
+  border-bottom: 2px solid $highlight;
+  color: $highlight;
   font-size: 1.5rem;
-  font-family: var(--FONT);
+  font-family: $font;
   margin-bottom: 2rem;
 
   &::placeholder {
-    color: var(--HIGHLIGHT);
+    color: $highlight;
   }
 
   &:focus {
-    border-color: var(--COLOR);
+    border-color: color;
     outline: none;
   }
 }
@@ -225,7 +236,7 @@ input[type="checkbox"] {
 }
 
 .radio__label {
-  color: var(--HIGHLIGHT);
+  color: $highlight;
   margin-right: 1em;
 }
 
@@ -270,13 +281,13 @@ input[type="checkbox"]:checked + label {
 }
 
 .signup__radio__cnt {
-  border-bottom: 2px solid var(--HIGHLIGHT);
+  border-bottom: 2px solid $highlight;
   width: 90%;
   margin-bottom: 2rem;
 }
 
 .radio {
-  stroke: var(--HIGHLIGHT);
+  stroke: $highlight;
 }
 
 div .validation-message {
@@ -285,4 +296,14 @@ div .validation-message {
   text-transform: none;
   color: rgb(129, 22, 22);
   font-size: 1em;
+}
+
+#headlessui-popover-panel-{
+ position: static; 
+}
+
+.test_borders{
+  border: 1px $highlight solid;
+  border-radius: 10px 10px 10px 0;
+  width: 100%
 }

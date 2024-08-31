@@ -4,7 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import supabase from '../../config/supabaseClient';
 import Multiselect from '../../components/multiselect/specialtySelect/MultiselectSpecialty';
 import MultiselectLang from '../../components/multiselect/languageSelect/MultiselectLanguage';
-import { profileValidation, portfolioValidation, educationValidation, hasOnlySpecificStrings } from '../../utilityFunctions/Validation';
+import { profileValidation, portfolioValidation, educationValidation, hasOnlySpecificStrings } from '../../utilityFunctions/Validation';    
+import ImageInput from '../../components/profilePictureUpload/ImageInput';
 
 export default function Profile(){
     const navigate = useNavigate();
@@ -37,7 +38,8 @@ export default function Profile(){
     const [uId, setUId] = useState(null);
     const [email, setEmail] = useState(null);
     const [mode, setMode] = useState(true)
-
+    const [profilePic, setProfilePic] = useState()
+    
 
 // PROFILE VARIABLES
     const [profile, setProfile] = useState({
@@ -499,6 +501,7 @@ const inputTg = (e)=>setProfile((prev)=>{
 
 {/* PROFILE */}
             <div className={styles.tab_content} style={{display:  (active===1) ? 'flex' : 'none' }}>
+                <ImageInput uId={uId} styleName={styles.custom_profile_pic_upload}/> 
                 <h1>Расскажите о себе</h1>
                 <label htmlFor="name">ИМЯ*</label>
                 <input onChange={(e) => inputName(e)} disabled={mode} type="text" name="name" id="name" defaultValue={profile.name} placeholder='Введите...'/>
@@ -577,6 +580,7 @@ const inputTg = (e)=>setProfile((prev)=>{
                     <label htmlFor={index + "gradYear"}>ГОД ВЫПУСКА*</label>
                     <input onChange={(e) => inputGrad(index,e)} disabled={mode} type="number" name="gradYear" id={index +"gradYear"} defaultValue={education.grad[index]} placeholder='Введите...'/>
                     {Array.isArray(errors.grad) && errors.grad[index] && (<p className="validation-message">{errors.grad[index]}</p>)}
+                    <hr></hr>
                 </div>)
                 )}
 
@@ -585,13 +589,13 @@ const inputTg = (e)=>setProfile((prev)=>{
 
 {/* PORTFOLIO */}
             <div className={styles.tab_content} style={{display:  (active===2) ? 'flex' : 'none' }}>
-                <h1>Projects</h1>
+                <h1>Добавьте ваш проект</h1>
 
                 {/* MAPS THROUGH ALL PROJECT INSTANCES AND RENDERS THEM */}
                 {project.name.map((name, index) =>
                 (<div className={styles.additional_edu} style={{display:  ((index==0)) ? 'flex' : ((projectCells>=index) ? 'flex' : 'none') }}>
                     <div className={styles.edu_header}>
-                        <label htmlFor={index + "prName"}>Name*</label>
+                        <label htmlFor={index + "prName"}>НАЗВАНИЕ*</label>
                         {(index==0)?
                             ((activeProjects>0) && ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Portfolio', project, o)}>delete</p>))
                             :((activeProjects>index) ? 
@@ -600,19 +604,20 @@ const inputTg = (e)=>setProfile((prev)=>{
                     </div>
                     <input onChange={(e)=>inputPrName(index, e)} disabled={mode} type="text" name="prName" id={index + "prName"} defaultValue={name} />
                     {Array.isArray(errors.prName) && errors.prName[index] && (<p className="validation-message">{errors.prName[index]}</p>)}
-                    <label htmlFor={index + "prDesc"}>Description</label>
+                    <label htmlFor={index + "prDesc"}>ОПИСАНИЕ</label>
                     <textarea onChange={(e) => inputPrDesc(index, e)} disabled={mode} name="prDesc" id={index + "prDesc"} defaultValue={project.desc[index]}></textarea>
                     {Array.isArray(errors.desc) && errors.desc[index] && (<p className="validation-message">{errors.desc[index]}</p>)}
-                    <label htmlFor={index + "prRole"}>Your role*</label>
+                    <label htmlFor={index + "prRole"}>РОЛЬ В ПРОЕКТЕ*</label>
                     <input onChange={(e) => inputPrRole(index, e)} disabled={mode} type="text" name="prRole" id={index + "prRole"} defaultValue={project.role[index]}/>
                     {Array.isArray(errors.role) && errors.role[index] && (<p className="validation-message">{errors.role[index]}</p>)}
-                    <label htmlFor={index + "prLink"}>Project link</label>
+                    <label htmlFor={index + "prLink"}>ССЫЛКА</label>
                     <input onChange={(e) => inputPrLink(index, e)} disabled={mode} type="text" name="prLink" id={index + "prLink"} defaultValue={project.link[index]}/>
                     {Array.isArray(errors.link) && errors.link[index] && (<p className="validation-message">{errors.link[index]}</p>)}
-                    <label htmlFor={index + "prYear"}>Year*</label>
+                    <label htmlFor={index + "prYear"}>ГОД*</label>
                     <input onChange={(e) => inputPrYear(index, e)} disabled={mode} type="number" name="prYear" id={index + "prYear"} defaultValue={project.year[index]}/>
                     {Array.isArray(errors.year) && errors.year[index] && (<p className="validation-message">{errors.year[index]}</p>)}
-                </div>)
+                    <hr></hr>
+                </div> )
                 )}
 
                 {(mode==0) && <p className={styles.add} onClick={incrementProjectCells}>Добавить</p>}
