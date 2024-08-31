@@ -1,0 +1,61 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.popover{
+  width: 100%;
+
+  div[data-open]{
+    outline: none;
+    background-color: transparent;
+  };
+
+  div[data-headlessui-state]{
+    width: 100%;
+
+    button
+    {
+      &[data-headlessui-state]{
+        border:none;
+        width: 30%;
+        padding: 0.75em;
+        color: $color;
+        background-color: $background-color;
+      };
+
+      &[data-headlessui-state="open active"], &[data-headlessui-state="open active hover"]{
+        border: 3px $highlight solid;
+        border-radius: 10px 10px 0 0;
+        border-bottom: none;
+        outline: none;
+        background-color: $background-color;
+        z-index: 1;
+      }
+    }
+  }
+
+  .filter{
+    display: flex;
+    align-items: center;
+
+    img {
+      margin-bottom: 1%;
+      margin-left: 3%;
+      height: 1.5em;
+    }
+
+    h2 {
+      font-weight: 300;
+    }
+}
+}
+
+div[data-headlessui-portal]{
+  .custom {
+    outline: none;
+    background-color: $background-color;
+    border: 3px $highlight solid;
+    border-radius: 0 10px 10px 10px;
+    width: 60%;
+    margin-top: -3px;
+  };
+}
