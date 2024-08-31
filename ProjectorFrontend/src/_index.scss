@@ -8,6 +8,22 @@ $background-blur: rgba(0, 0, 0, 0.4);
 $box-shadow-color: rgba(0, 0, 0, 0.5);
 $blur-radius: 10px;
 
+@mixin button_accent {
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 80%;
+  font: 1.5em $font;
+  color: $highlight;
+  text-align: center;
+  background-color: rgba($highlight, 0.2);
+  border-radius: 10px;
+  padding: 6.5px 8px;
+  margin-top: 0.75em;
+  border: 1px solid $highlight;
+}
+
 @mixin signup__radio__cnt {
   border-bottom: 2px solid $highlight;
   width: 90%;
@@ -112,6 +128,10 @@ textarea {
   color: inherit;
   font-family: inherit;
   box-sizing: inherit;
+}
+
+button {
+  cursor: pointer
 }
 
 input:-webkit-autofill,
@@ -276,4 +296,14 @@ div .validation-message {
   text-transform: none;
   color: rgb(129, 22, 22);
   font-size: 1em;
+}
+
+#headlessui-popover-panel-{
+ position: static; 
+}
+
+.test_borders{
+  border: 1px $highlight solid;
+  border-radius: 10px 10px 10px 0;
+  width: 100%
 }

@@ -2,16 +2,25 @@
 @use "../../index" as *;
 
 .root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
   display: flex;
   align-self: flex-start;
-  align-self: stretch;
-  margin-left: 3%;
+  padding-left: 1%;
   padding-right: 3%;
   padding-top: 3%;
-  margin-top: 0%;
   flex-direction: column;
   border-right: 1px $color solid;
-  max-width: 25%
+  max-width: 25%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
 .flex_col {
@@ -174,17 +183,19 @@
 }
 
 .full_length_button {
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 80%;
-  font: 1.5em $font;
-  color: $highlight;
-  text-align: center;
-  background-color: rgba($highlight, 0.2);
-  border-radius: 10px;
-  padding: 6.5px 8px;
-  margin-top: 0.75em;
-  border: 1px solid $highlight;
+  @include button_accent();
+}
+
+// .sidebar{
+//   transform: translateX(-100%);
+// }
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+      transform: translateX(-100%);
+  }
+
+  .sidebar.active {
+      transform: translateX(0);
+  }
 }
