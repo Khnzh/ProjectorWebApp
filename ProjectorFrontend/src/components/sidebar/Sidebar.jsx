@@ -7,7 +7,7 @@ import DropdownSpecs from '../dropdownSpecs/DropdownSpecs';
 
 import styles from './Sidebar.module.scss';
 
-export default function Sidebar(props) {
+export default function Sidebar({sb}) {
   const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
   const [uId, setUId] = useState(null);
   const [email, setEmail] = useState(null);
@@ -88,7 +88,7 @@ export default function Sidebar(props) {
   }, [uId])
 
   return (
-    <div className={cn(styles.root, props.className, 'untitled-page')}>
+    <div className={cn(styles.root, styles.sidebar)} ref={sb}>
       <div className={styles.flex_col}>
         <div className={styles.logo_container}>
           <img className={styles.image} src={'/assets/24460b1d64f6723e11f3547be97d0e99.svg'} alt="alt text" />
@@ -147,7 +147,3 @@ export default function Sidebar(props) {
     </div>
   );
 }
-
-Sidebar.propTypes = {
-  className: PropTypes.string
-};
