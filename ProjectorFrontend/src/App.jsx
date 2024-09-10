@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation} from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Landing from './pages/landing/Landing'
 import Login from './pages/login/Login';
 import Signup from './pages/signup/Signup';
@@ -7,24 +7,27 @@ import Projects from './pages/projects/Projects';
 import Header from './components/header/Header';
 import Account from './pages/account/Account';
 import Sidebar from './components/sidebar/Sidebar';
+import ProjectDisplay from './pages/projectDisplay/ProjectDisplay';
 
 function AppInside() {
   const location = useLocation();
 
   // Determine if the current path is '/create'
-  const isCreatePage = location.pathname === "/create" || location.pathname === "/sb";
+  const isCreatePage = location.pathname === "/" || location.pathname === "/login" || location.pathname === "/signup"
+    || location.pathname === "/profile/1" || location.pathname === "/profile/0";
 
   return (
     <>
-      {(!isCreatePage)&&<Header />}
+      {(isCreatePage) && <Header />}
       <Routes>
         <Route path='/' element={<Landing />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/profile/:emode' element={<Profile />} />
-        <Route path='/projects' element={<Projects/>} />
-        <Route path='/create' element={<Account/>}/>
-        <Route path='/sb' element={<Sidebar/>}/>
+        <Route element={<Account />}>
+          <Route path='/projects' element={<ProjectDisplay />} />
+          <Route path='/project/:prId' element={<ProjectDisplay />} />
+        </Route>
       </Routes>
     </>
   );
@@ -32,7 +35,7 @@ function AppInside() {
 
 export default function App() {
   return (<BrowserRouter>
-  <AppInside/>
+    <AppInside />
   </BrowserRouter>)
 
 }
