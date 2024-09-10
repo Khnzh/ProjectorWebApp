@@ -11,15 +11,17 @@ export default function DropdownSpecs({specs, mainSpec, setMainSpec}) {
   }
 
   return (
-    <Menu>
-      <MenuButton className={styles.main_spec}>{mainSpec.name}</MenuButton>
-      <MenuItems anchor="bottom start">
-        {specs.map((item, index) => ((mainSpec.id!=item.id) && <MenuItem id={index}>
-          <a id={index + 'link'} onClick={(e) => updateMainSpec(e)}>
-            {item.name}
-          </a>
-        </MenuItem>))}
-      </MenuItems>
-    </Menu>
+    <div className={styles.drpdwn}>
+      <Menu>
+        <MenuButton className={styles.main_spec}>{mainSpec.name}</MenuButton>
+        <MenuItems anchor="bottom start">
+          {specs.map((item, index) => ((mainSpec.id!=item.id) && <MenuItem id={index} key={item.id}>
+            <a id={index + 'link'} onClick={(e) => updateMainSpec(e)}>
+              {item.name}
+            </a>
+          </MenuItem>))}
+        </MenuItems>
+      </Menu>
+    </div>
   )
 }

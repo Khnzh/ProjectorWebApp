@@ -1,0 +1,60 @@
+@import '../../index';
+
+
+.options {
+  z-index: 2;
+  width: 20em;
+  background-color: rgba($color, 0.9);
+  padding: 0;
+  margin-top: 1em;
+  padding: 0 1em 1em 1em;
+  color: $highlight;
+  border: 1px solid rgba($color, 0.9);
+  border-radius: 9px;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.option{
+  margin-top: 0.5em;
+}
+
+.filter_input {
+  color: $color;
+  border: 2px solid $color;
+  border-radius: 9px;
+  padding: 3.5% 2% 3.5% 2%;
+  text-align: center;
+  background-color: rgba($highlight, 0.58);
+  width: 20em;
+
+  &[data-headlessui-state="hover"]{
+    border: 2px solid $color;
+    outline: none;
+  }
+
+  &[data-headlessui-state="focus"]{
+    border: 2px solid $color;
+    outline: none;
+  }
+
+  &[data-headlessui-state="hover focus"]{
+    border: 2px solid $color;
+    outline: none;
+  }
+
+  &:focus-visible{
+    border: 2px solid $color;
+    outline: none;
+  }
+
+}
+
+.button{
+  background-color: transparent;
+  border: none;
+}

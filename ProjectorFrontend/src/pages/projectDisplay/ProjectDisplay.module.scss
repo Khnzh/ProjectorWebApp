@@ -10,6 +10,14 @@
   margin-top: 1em;
 }
 
+.close_filter_cont {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+
+  @include cross_button();
+}
+
 .medium_title3 {
   display: flex;
   align-items: center;
@@ -42,22 +50,23 @@
   width: 100%;
   display: flex;
   height: 30vh;
-  box-sizing: border-box; /* Ensures border and padding are included in width */
+  box-sizing: border-box;
+  /* Ensures border and padding are included in width */
 }
 
-.project_text{
+.project_text {
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: flex-start;
 }
 
-.img_frame{
+.img_frame {
   display: flex;
   justify-content: center;
   margin: 2.5% 2% 3% 2%;
   background-color: rgba($highlight, 0.2);
-  border:1px $highlight solid;
+  border: 1px $highlight solid;
   border-radius: 20px;
   height: 174px;
   min-width: 182px;
@@ -68,7 +77,7 @@
   @include button_accent();
 }
 
-.search_and_add{
+.search_and_add {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -78,7 +87,7 @@
   justify-content: space-between;
 }
 
-input.searchbar{
+input.searchbar {
   width: 100%;
   margin-bottom: 0;
   background: url('/assets/search_arrow.svg') top right no-repeat;
@@ -90,7 +99,7 @@ input.searchbar{
   width: 50%;
 }
 
-.inv_search_button{
+.inv_search_button {
   position: absolute;
   top: 0;
   right: 0;
@@ -100,6 +109,86 @@ input.searchbar{
   border: none;
 }
 
-.inline{
+.inline {
   display: inline;
+}
+
+.whitebg {
+  display: flex;
+  justify-content: center; // Centers the pagination horizontally
+  align-items: center;
+
+  nav {
+    ul {
+      display: flex;
+      justify-content: center; // Centers the pagination buttons inside the ul
+      align-items: center;
+
+      li {
+
+        div {
+          color: $color;
+        }
+
+        a {
+
+          font-family: $font;
+          font-weight: 700;
+          font-size: 1em;
+          padding: 0;
+          color: $color;
+
+          &:hover {
+            background-color: rgba($highlight, 0.2);
+          }
+        }
+      }
+    }
+  }
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-bottom: 1%;
+    margin-left: 3%;
+    height: 1.5em;
+  }
+
+  h2 {
+    font-weight: 300;
+  }
+}
+
+.filter_cont {
+  @include blurred_bg();
+  padding: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: fixed;
+  transform: translateY(-50%) translateX(-50%);
+  top: 50%;
+  left: 50%;
+  gap: 1em;
+  background-color: rgba(rgb(64, 75, 95), 0.4);
+  max-width: 25%;
+  min-width: 328px;
+
+  &::before {
+    @include blurred_before();
+  }
+
+  h1 {
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  .apply {
+    align-self: flex-end;
+
+    @include higlighted_underline_button()
+  }
 }
