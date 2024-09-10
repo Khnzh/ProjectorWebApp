@@ -24,6 +24,16 @@ $blur-radius: 10px;
   border: 1px solid $highlight;
 }
 
+@mixin higlighted_underline_button {
+  color: $highlight;
+  text-transform: uppercase;
+  background-color: transparent;
+  text-decoration: underline;
+  border: none;
+  outline: none;
+  font-size: 2em;
+}
+
 @mixin signup__radio__cnt {
   border-bottom: 2px solid $highlight;
   width: 90%;
@@ -112,6 +122,22 @@ $blur-radius: 10px;
     -webkit-backdrop-filter: blur($blur-radius);
     backdrop-filter: blur($blur-radius);
     z-index: -1;
+}
+
+@mixin cross_button{
+    height: 40px;
+    width: 40px;
+    background-color: transparent;
+    border: none;
+    background-image: url(../cross.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.5s ease-in-out;
+  
+    &:hover {
+      cursor: pointer;
+      transform: rotate(70deg);
+    }
 }
 
 
@@ -306,4 +332,12 @@ div .validation-message {
   border: 1px $highlight solid;
   border-radius: 10px 10px 10px 0;
   width: 100%
+}
+
+a.css-q7jpt8-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+  background-color: $highlight;
+
+  &:hover {
+    background-color: $highlight;
+  }
 }
