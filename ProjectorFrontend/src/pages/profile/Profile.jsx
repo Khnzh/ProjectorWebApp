@@ -544,7 +544,7 @@ const inputTg = (e)=>setProfile((prev)=>{
                                 ((activeEdu>0) && ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Education', education, 0)}>delete</p>)):
                                 ((activeEdu>index) ?
                                     ((mode==0) && <p className="delete-cell" onClick={() => deleteRow('Education', education, index)}>delete</p>):
-                                    (<button onClick={decrementEduCells} className={styles.cross}></button>))}
+                                    (<button onClick={decrementEduCells} className={styles.section_deletion}></button>))}
                         </div>
                     <div className={styles.radio_no_underline}>
                         {(edu == 'general')?
@@ -600,7 +600,7 @@ const inputTg = (e)=>setProfile((prev)=>{
                             ((activeProjects>0) && ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Portfolio', project, o)}>delete</p>))
                             :((activeProjects>index) ? 
                                 ((mode==0) && <p className={styles.delete_cell} onClick={() => deleteRow('Portfolio', project, index)}>delete</p>):
-                                (<button onClick={decrementProjectCells} className={styles.cross}></button>))}
+                                (<button onClick={decrementProjectCells} className={styles.section_deletion}></button>))}
                     </div>
                     <input onChange={(e)=>inputPrName(index, e)} disabled={mode} type="text" name="prName" id={index + "prName"} defaultValue={name} />
                     {Array.isArray(errors.prName) && errors.prName[index] && (<p className="validation-message">{errors.prName[index]}</p>)}

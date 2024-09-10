@@ -186,10 +186,6 @@
   @include button_accent();
 }
 
-// .sidebar{
-//   transform: translateX(-100%);
-// }
-
 @media screen and (max-width: 768px) {
   .sidebar {
       transform: translateX(-100%);
