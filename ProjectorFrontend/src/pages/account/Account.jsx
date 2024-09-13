@@ -7,7 +7,6 @@ import Sidebar from '../../components/sidebar/Sidebar';
 import styles from './Account.module.scss'
 import ProjectCreate from '../projectCreate/ProjectCreate';
 import ProjectDisplay from '../projectDisplay/ProjectDisplay';
-// import supabase from '../../config/supabaseClient';
 
 export default function Account(props) {
   const [sbDisplay, setSbDisplay] = useState(false)
@@ -15,6 +14,7 @@ export default function Account(props) {
   const sb = useRef(null);
   const mainDiv = useRef(null)
   const hamburger = useRef(null)
+
 
   useEffect(() => {
     if (sb.current && mainDiv.current)
