@@ -8,6 +8,7 @@ import Header from './components/header/Header';
 import Account from './pages/account/Account';
 import Sidebar from './components/sidebar/Sidebar';
 import ProjectDisplay from './pages/projectDisplay/ProjectDisplay';
+import ProjectDetailedView from './pages/projectDetailedView/ProjectDetailedView';
 
 function AppInside() {
   const location = useLocation();
@@ -26,7 +27,7 @@ function AppInside() {
         <Route path='/profile/:emode' element={<Profile />} />
         <Route element={<Account />}>
           <Route path='/projects' element={<ProjectDisplay />} />
-          <Route path='/project/:prId' element={<ProjectDisplay />} />
+          <Route path='/project/:prId' element={<ProjectDetailedView />} />
         </Route>
       </Routes>
     </>
