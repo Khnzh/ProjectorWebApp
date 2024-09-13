@@ -37,7 +37,8 @@ $blur-radius: 10px;
 @mixin signup__radio__cnt {
   border-bottom: 2px solid $highlight;
   width: 90%;
-  margin-bottom: 2rem;}
+  margin-bottom: 2rem;
+}
 
 @mixin custom_button {
   position: relative;
@@ -110,7 +111,7 @@ $blur-radius: 10px;
   z-index: 1;
 }
 
-@mixin blurred_before{
+@mixin blurred_before {
   content: "";
   position: absolute;
   top: 0;
@@ -119,25 +120,25 @@ $blur-radius: 10px;
   bottom: 0;
   border-radius: 25px;
   box-shadow: inset 0 0 2000px $box-shadow-color;
-    -webkit-backdrop-filter: blur($blur-radius);
-    backdrop-filter: blur($blur-radius);
-    z-index: -1;
+  -webkit-backdrop-filter: blur($blur-radius);
+  backdrop-filter: blur($blur-radius);
+  z-index: -1;
 }
 
-@mixin cross_button{
-    height: 40px;
-    width: 40px;
-    background-color: transparent;
-    border: none;
-    background-image: url(../cross.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
-    transition: transform 0.5s ease-in-out;
-  
-    &:hover {
-      cursor: pointer;
-      transform: rotate(70deg);
-    }
+@mixin cross_button {
+  height: 40px;
+  width: 40px;
+  background-color: transparent;
+  border: none;
+  background-image: url(../cross.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 0.5s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+    transform: rotate(70deg);
+  }
 }
 
 
@@ -280,7 +281,7 @@ textarea:disabled {
   background: linear-gradient(to top, #fff6de2a, #fff6de00);
 }
 
-input[type="radio"]:checked + label {
+input[type="radio"]:checked+label {
   .check {
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 0.3s linear;
@@ -299,7 +300,7 @@ input[type="radio"]:checked + label {
   }
 }
 
-input[type="checkbox"]:checked + label {
+input[type="checkbox"]:checked+label {
   .check {
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 0.3s linear;
@@ -324,20 +325,78 @@ div .validation-message {
   font-size: 1em;
 }
 
-#headlessui-popover-panel-{
- position: static; 
+#headlessui-popover-panel- {
+  position: static;
 }
 
-.test_borders{
+.test_borders {
   border: 1px $highlight solid;
   border-radius: 10px 10px 10px 0;
   width: 100%
 }
 
-a.css-q7jpt8-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected{
+a.css-q7jpt8-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
   background-color: $highlight;
 
   &:hover {
     background-color: $highlight;
   }
+}
+
+.img_frame {
+  display: flex;
+  justify-content: center;
+  margin: 2.5% 2% 3% 2%;
+  background-color: rgba($highlight, 0.2);
+  border: 1px $highlight solid;
+  border-radius: 20px;
+  height: 174px;
+  min-width: 182px;
+  overflow: hidden;
+}
+
+section {
+  width: 100%;
+}
+
+@mixin popup_middle_long {
+  @include blurred_bg();
+  padding: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: fixed;
+  transform: translateY(-50%) translateX(-50%);
+  top: 50%;
+  left: 50%;
+  gap: 1em;
+  background-color: rgba(rgb(64, 75, 95), 0.4);
+  max-width: 25%;
+  min-width: 328px;
+
+  &::before {
+    @include blurred_before();
+  }
+
+  h1 {
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 1em;
+  }
+
+  .apply {
+    align-self: flex-end;
+
+    @include higlighted_underline_button()
+  }
+}
+
+@mixin popup_accent_field {
+  color: $color;
+  border: 2px solid $color;
+  border-radius: 9px;
+  padding: 3.5% 2% 3.5% 2%;
+  text-align: center;
+  background-color: rgba($highlight, 0.58);
+  width: 20em;
 }

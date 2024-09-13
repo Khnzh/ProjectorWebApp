@@ -11,13 +11,14 @@ import cn from 'classnames';
 import supabase from '../../config/supabaseClient';
 
 import styles from './ProjectDisplay.module.scss';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import FilterInput from '../../components/filterInput/FilterInput';
 import { toggleButtonGroupClasses } from '@mui/material';
 
 function ProjectDisplay() {
+  const navigate = useNavigate();
 
   const [projectInfo, setProjectInfo] = useState();
   const [filters, setFilters] = useState({
@@ -34,6 +35,15 @@ function ProjectDisplay() {
   const perPage = 5;
 
   const filterContRef = useRef()
+
+  const coverProjectImage = (imgURL) => {
+    return {
+      backgroundImage: `url('${imgURL}')`,
+      backgroundPosition: 'center',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat'
+    }
+  };
 
   async function queryProjects(supabase, filters, start, end) {
     // Start the query with the required project fields and project_qualifications
@@ -93,7 +103,7 @@ function ProjectDisplay() {
   }
 
 
-  function goToDetailedView(e) { console.log(e.currentTarget.getAttribute('pr_id')) }
+  function goToDetailedView(e) { navigate(`/project/${e.currentTarget.getAttribute('pr_id')}`) }
 
   useEffect(() => {
     (async () => {
@@ -136,13 +146,9 @@ function ProjectDisplay() {
             console.error('Error fetching data:', error);
           } else {
             setProjectInfo(data);
-            console.log(data);
           }
         } else {
-          console.log(params)
           const result = await queryProjects(supabase, params, start, end);
-          console.log("Projects:", result.projects);
-          console.log("Total Count:", result.totalCount);
           setProjectInfo(result.projects);
           setTotal(Math.ceil(result.totalCount / perPage));
         }
@@ -152,7 +158,14 @@ function ProjectDisplay() {
     , [searchParams])
 
   function defaultImage(e) {
+    e.target.style = { display: 'block' }
     e.target.src = '/assets/hlopushka.svg';
+  }
+
+  const toggleFilter = () => {
+    (filterContRef.current.style.display == 'none') ?
+      filterContRef.current.style.display = 'flex' :
+      filterContRef.current.style.display = 'none'
   }
 
   function applyFilter() {
@@ -171,6 +184,7 @@ function ProjectDisplay() {
       }
     });
     setPage(1);
+    toggleFilter();
   }
 
   function objectToQueryString(filters, page) {
@@ -189,12 +203,6 @@ function ProjectDisplay() {
       return ''
     };  // Return the query string
   }
-
-  const toggleFilter = () => {
-    (filterContRef.current.style.display == 'none') ?
-      filterContRef.current.style.display = 'flex' :
-      filterContRef.current.style.display = 'none'
-  }
   return (
 
     <>
@@ -211,8 +219,9 @@ function ProjectDisplay() {
       </div>
       {projectInfo && projectInfo.map((item) =>
         <div className={styles.project_card} key={item.id} pr_id={item.id} onClick={(e) => goToDetailedView(e)}>
-          <div className={styles.img_frame}>
-            <img src={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`} alt="hlopushka" onError={(e) => (defaultImage(e))} />
+          <div className={cn('img_frame')}
+            style={coverProjectImage(`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`)}>
+            <img src={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`} style={{ display: 'none' }} alt="hlopushka" onError={(e) => (defaultImage(e))} />
           </div>
           <div className={styles.project_text} >
             <h1 className={styles.title4}>{item.name}</h1>
@@ -242,7 +251,7 @@ function ProjectDisplay() {
                   }
                 });
               }}
-              to={`/create${item.page === 1 ? '' : `?page=${item.page}`}${objectToQueryString(Object.fromEntries(searchParams.entries()), item.page)}`}
+              to={`/projects${item.page === 1 ? '' : `?page=${item.page}`}${objectToQueryString(Object.fromEntries(searchParams.entries()), item.page)}`}
               {...item}
             />
           )}

@@ -1,0 +1,94 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.detailed {
+  width: 100%;
+
+  h1 {
+    font-size: 2em;
+    font-weight: 700em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 1.75em;
+    font-weight: 700em;
+    color: $highlight;
+    margin-top: 1.5em;
+  }
+
+  p {
+    margin-top: 1em;
+  }
+}
+
+.qualifications_cont {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 380px;
+
+}
+
+.qualification {
+  @include button_accent();
+  max-width: 220px;
+  margin-right: 0.75em;
+  font-size: 1.25em;
+}
+
+.float_image {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1em;
+
+  .bigger_img {
+    width: 364px;
+    height: 358px;
+  }
+
+  p {
+    align-self: center;
+    margin-top: 0;
+    margin-bottom: 1em;
+
+    span {
+      text-decoration: underline;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+  }
+}
+
+.filter_cont {
+  @include popup_middle_long();
+  display: none;
+}
+
+.close_filter_cont {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+
+  @include cross_button();
+}
+
+.qualification_details {
+  @include popup_accent_field();
+  width: 200px;
+
+}
+
+.requirements {
+  width: 100%;
+  text-align: left;
+  height: 25vh;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
