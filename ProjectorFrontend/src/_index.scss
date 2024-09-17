@@ -387,7 +387,8 @@ section {
   .apply {
     align-self: flex-end;
 
-    @include higlighted_underline_button()
+    @include higlighted_underline_button();
+
   }
 }
 

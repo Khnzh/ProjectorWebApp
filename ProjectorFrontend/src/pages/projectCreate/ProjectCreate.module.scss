@@ -234,6 +234,33 @@
   width: 100%;
 }
 
+input,
+textarea {
+  border: 2px solid $highlight;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 1em;
+  width: 90%;
+  font-size: 1em;
+  font-family: $font;
+  resize: none;
+
+  &::placeholder {
+    color: $color;
+    opacity: 40%;
+  }
+}
+
+textarea {
+  height: 8em;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
 .project_name_column {
   display: flex;
   flex-direction: column;
@@ -320,8 +347,34 @@
 
 .project_type_column {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
   width: 100%;
+  margin-bottom: 10px;
+
+  .button_accent,
+  button {
+    @include button_accent();
+
+    width: 255px;
+    margin-right: 0.75em;
+  }
+
+  button {
+    background-color: black;
+  }
+}
+
+.role_cnt {
+  ul {
+    @extend .project_type_column;
+    margin-bottom: 0;
+
+    li {
+      width: 320px;
+    }
+  }
 }
 
 .project_type_label {
@@ -331,173 +384,92 @@
   color: rgb(221 158 40);
 }
 
-.project_type_buttons_row1 {
-  display: flex;
-  gap: 0 21px;
-  margin: 44.5px 0 0 8px;
+@import "../../index";
+
+.qual_opts {
+  z-index: 2;
+  width: 80em;
+  margin-top: 0;
+  background-color: rgba($color, 0.9);
+  padding: 0 1em 1em 1em;
+  color: $highlight;
+  border: 1px solid rgba($color, 0.9);
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
-.full_length_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 284px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  background-color: rgb(221 158 40 / 20%);
-  border-radius: 10px;
-  padding: 6.5px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
+.qual_input {
+  @extend .login__input;
+  width: 100%;
+  margin-bottom: 0;
+  background: url("/assets/search_arrow.svg") top right no-repeat;
+  padding: 0;
+  padding-bottom: 0.25em;
+  border-radius: 0;
+
+  &[data-headlessui-state="hover"] {
+    outline: none;
+  }
+
+  &:hover {
+    outline: none;
+  }
+
+  &[data-headlessui-state="focus"] {
+    outline: none;
+  }
+
+  &[data-headlessui-state="hover focus"] {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
-.short_length_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 285px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 5px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
+.qual_opt {
+  margin-top: 0;
 }
 
-.music_video_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 284px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 6.5px 18px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
+.save_button {
+  @include custom_button();
+
+  & {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 100%;
+    padding: 0;
+
+    &::before {
+      content: attr(data-content);
+    }
+  }
 }
 
-.commercial_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 285px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 5px 26px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
+.wtf {
+  width: 40%;
+  height: 3vh;
+  color: black;
 }
 
-.project_type_buttons_row2 {
-  display: flex;
-  gap: 0 21px;
-  margin: 24px 0 0 8px;
+.wtf_b {
+  width: 40%;
+  height: 3vh;
+  color: black;
+  display: none;
 }
 
-.tiktok_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 284px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 8.5px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
-}
+.helic {
+  & > :nth-child(2) > :first-child {
+    display: none;
+  }
 
-.vlog_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 285px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 5px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
-}
-
-.behind_the_scenes_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 284px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 4.5px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
-}
-
-.show_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 285px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 7px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
-}
-
-.project_type_buttons_row3 {
-  display: flex;
-  justify-content: space-between;
-  gap: 0 10px;
-  margin: 24px 0 0 8px;
-  width: 600px;
-}
-
-.report_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 284px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 5.5px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
-}
-
-.other_button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 285px;
-  font: 300 25px/2.4 "Overpass Mono", Helvetica, Arial, serif;
-  color: rgb(221 158 40);
-  text-align: center;
-  border-radius: 10px;
-  padding: 7.5px 8px;
-  outline: 1px solid rgb(221 158 40);
-  outline-offset: -1px;
-  opacity: 0.89;
+  & > :last-child > :last-child {
+    display: block;
+  }
 }

@@ -62,8 +62,8 @@
 }
 
 .filter_cont {
-  @include popup_middle_long();
   display: none;
+  @include popup_middle_long();
 }
 
 .close_filter_cont {
@@ -83,7 +83,7 @@
 .requirements {
   width: 100%;
   text-align: left;
-  height: 25vh;
+  max-height: 25vh;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 
