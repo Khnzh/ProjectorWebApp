@@ -1,33 +1,40 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import Landing from './pages/landing/Landing'
-import Login from './pages/login/Login';
-import Signup from './pages/signup/Signup';
-import Profile from './pages/profile/Profile';
-import Projects from './pages/projects/Projects';
-import Header from './components/header/Header';
-import Account from './pages/account/Account';
-import Sidebar from './components/sidebar/Sidebar';
-import ProjectDisplay from './pages/projectDisplay/ProjectDisplay';
-import ProjectDetailedView from './pages/projectDetailedView/ProjectDetailedView';
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import Landing from "./pages/landing/Landing";
+import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
+import Profile from "./pages/profile/Profile";
+import Projects from "./pages/projects/Projects";
+import Header from "./components/header/Header";
+import Account from "./pages/account/Account";
+import Sidebar from "./components/sidebar/Sidebar";
+import ProjectDisplay from "./pages/projectDisplay/ProjectDisplay";
+import ProjectDetailedView from "./pages/projectDetailedView/ProjectDetailedView";
+import ProjectCreate from "./pages/projectCreate/ProjectCreate";
+import { AuthProvider } from "./context/AuthContext";
 
 function AppInside() {
   const location = useLocation();
 
   // Determine if the current path is '/create'
-  const isCreatePage = location.pathname === "/" || location.pathname === "/login" || location.pathname === "/signup"
-    || location.pathname === "/profile/1" || location.pathname === "/profile/0";
+  const isCreatePage =
+    location.pathname === "/" ||
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/profile/1" ||
+    location.pathname === "/profile/0";
 
   return (
     <>
-      {(isCreatePage) && <Header />}
+      {isCreatePage && <Header />}
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/profile/:emode' element={<Profile />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/profile/:emode" element={<Profile />} />
         <Route element={<Account />}>
-          <Route path='/projects' element={<ProjectDisplay />} />
-          <Route path='/project/:prId' element={<ProjectDetailedView />} />
+          <Route path="/projects" element={<ProjectDisplay />} />
+          <Route path="/project/:prId" element={<ProjectDetailedView />} />
+          <Route path="/project/create" element={<ProjectCreate />} />
         </Route>
       </Routes>
     </>
@@ -35,8 +42,11 @@ function AppInside() {
 }
 
 export default function App() {
-  return (<BrowserRouter>
-    <AppInside />
-  </BrowserRouter>)
-
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppInside />
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }

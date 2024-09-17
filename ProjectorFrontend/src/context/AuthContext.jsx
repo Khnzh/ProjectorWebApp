@@ -1,15 +1,20 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext } from "react";
 
-const AppContext = createContext();
+// Create the Auth context
+const AuthContext = createContext();
 
+// Create a provider component
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // default to not authenticated
 
   return (
-    <AppContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       {children}
-    </AppContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-export const useAppContext = () => useContext(AppContext);
+// Hook to use the Auth context
+export const useAuth = () => {
+  return useContext(AuthContext);
+};

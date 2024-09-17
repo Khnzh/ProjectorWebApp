@@ -1,3 +1,14 @@
+export const popularQualifications = [
+  { id: 1, name: 'Актер' },
+  { id: 2, name: 'Сценарист' },
+  { id: 3, name: 'Продакшн' },
+  { id: 4, name: 'Режиссер' },
+  { id: 5, name: 'Редактор' },
+  { id: 6, name: 'Продюсер' },
+  { id: 7, name: 'Звукорежиссер' },
+  { id: 9, name: 'Монтажер' },
+]
+
 export const qualifications = [
   { id: 1, name: 'Актер' },
   { id: 2, name: 'Сценарист' },
