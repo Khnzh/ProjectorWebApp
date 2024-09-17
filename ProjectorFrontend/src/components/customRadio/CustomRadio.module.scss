@@ -1,0 +1,34 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.radio__label {
+  color: $highlight;
+  margin-right: 1em;
+}
+
+.signup__label {
+  font-size: 2em;
+}
+
+.sign__svg {
+  width: 1.5em;
+  stroke: #fff6de;
+  stroke-width: 4;
+  fill: none;
+
+  .check {
+    stroke-dasharray: 70;
+    stroke-dashoffset: 70;
+  }
+}
+
+input[type="checkbox"]:checked+label {
+  .check {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.3s linear;
+  }
+}
+
+.radio {
+  stroke: $highlight;
+}
