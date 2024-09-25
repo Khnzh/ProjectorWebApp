@@ -61,6 +61,22 @@ const ProjectDetailedView = () => {
             `https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${projectInfo[0].Profile.id}/${projectInfo[0].id}/Project_pic.png`
           )}
         >
+          <svg
+            className="save_svg_outline"
+            width="51"
+            height="60"
+            viewBox="0 0 51 60"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.8"
+              d="M13.0928 45.2632C16.5547 50.9937 21.8331 57.6367 21.8331 57.6367C24.873 55.1367 31.7791 44.0076 34.1665 40.6755C40.5742 31.7323 47.8615 22.0263 49.0681 10.7137C49.9004 2.91087 44.4961 0.621925 37.6565 3.70817C29.8691 7.22208 25.8793 15.9417 23.3707 23.6079C23.1429 24.3043 22.6097 27.6935 21.8331 25.3502C21.0552 23.003 20.4166 20.6447 19.4622 18.3533C17.4295 13.473 13.4064 5.11764 6.90558 5.42906C-0.155697 5.76734 1.54686 17.8848 2.42256 22.0322C4.18424 30.3758 8.73817 38.0549 13.0928 45.2632Z"
+              stroke="#DD9E28"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          </svg>
           <img
             src={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${projectInfo[0].Profile.id}/${projectInfo[0].id}/Project_pic.png`}
             style={{ display: "none" }}

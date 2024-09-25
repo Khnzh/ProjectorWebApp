@@ -989,9 +989,9 @@ export default function Profile() {
           ))}
 
           {mode == 0 && (
-            <p className={styles.add} onClick={incrementProjectCells}>
+            <button className={styles.add} onClick={incrementProjectCells}>
               Добавить
-            </p>
+            </button>
           )}
         </div>
         {mode ? (

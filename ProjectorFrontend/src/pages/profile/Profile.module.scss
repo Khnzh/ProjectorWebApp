@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
-@import '../../index';
-
+@import "../../index";
 
 .tab_container {
   @include blurred_bg();
@@ -17,13 +16,13 @@
   .save_button,
   .change_button {
     @include custom_button();
-    
-    &{
+
+    & {
       align-self: center;
       margin-bottom: 2%;
       width: 50%;
-      
-      &::before{
+
+      &::before {
         content: attr(data-content);
       }
     }
@@ -150,34 +149,11 @@ hr {
 }
 
 .section_deletion {
-  @include cross_button()
+  @include cross_button();
 }
 
 .add {
-  margin-top: 5vh;
-  margin-bottom: 3vh;
-  background-color: transparent;
-  border: none;
-  color: $highlight;
-  position: relative;
-  align-self: center;
-
-  &::before {
-    content: "";
-    background-image: url(../cross.svg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    transform: rotate(45deg);
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: 150%;
-    left: -100%;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
+  @include add_button();
 }
 
 .edu_header {
@@ -187,9 +163,9 @@ hr {
   justify-content: space-between;
 }
 
-.delete_cell:hover{
- cursor: pointer;
- text-decoration: underline;
+.delete_cell:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 input[type="file"] {

@@ -21,17 +21,17 @@ function ProjectDisplay() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
 
-  useEffect(() => {
-    console.log(isLoggedIn);
-    const timeoutId = setTimeout(() => {
-      if (!isLoggedIn) {
-        navigate("/login");
-        console.log(`vv ${isLoggedIn}`);
-      }
-    }, 5000);
+  // useEffect(() => {
+  //   console.log(isLoggedIn);
+  //   const timeoutId = setTimeout(() => {
+  //     if (!isLoggedIn) {
+  //       navigate("/login");
+  //       console.log(`vv ${isLoggedIn}`);
+  //     }
+  //   }, 5000);
 
-    return () => clearTimeout(timeoutId);
-  }, [isLoggedIn, navigate]);
+  //   return () => clearTimeout(timeoutId);
+  // }, [isLoggedIn, navigate]);
 
   const [projectInfo, setProjectInfo] = useState();
   const [filters, setFilters] = useState([

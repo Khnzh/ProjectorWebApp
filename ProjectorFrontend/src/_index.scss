@@ -141,7 +141,6 @@ $blur-radius: 10px;
   }
 }
 
-
 * {
   margin: 0;
   padding: 0;
@@ -158,7 +157,7 @@ textarea {
 }
 
 button {
-  cursor: pointer
+  cursor: pointer;
 }
 
 input:-webkit-autofill,
@@ -281,7 +280,7 @@ textarea:disabled {
   background: linear-gradient(to top, #fff6de2a, #fff6de00);
 }
 
-input[type="radio"]:checked+label {
+input[type="radio"]:checked + label {
   .check {
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 0.3s linear;
@@ -300,7 +299,7 @@ input[type="radio"]:checked+label {
   }
 }
 
-input[type="checkbox"]:checked+label {
+input[type="checkbox"]:checked + label {
   .check {
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 0.3s linear;
@@ -332,7 +331,7 @@ div .validation-message {
 .test_borders {
   border: 1px $highlight solid;
   border-radius: 10px 10px 10px 0;
-  width: 100%
+  width: 100%;
 }
 
 a.css-q7jpt8-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
@@ -353,6 +352,7 @@ a.css-q7jpt8-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
   height: 174px;
   min-width: 182px;
   overflow: hidden;
+  position: relative;
 }
 
 section {
@@ -388,7 +388,6 @@ section {
     align-self: flex-end;
 
     @include higlighted_underline_button();
-
   }
 }
 
@@ -400,4 +399,48 @@ section {
   text-align: center;
   background-color: rgba($highlight, 0.58);
   width: 20em;
+}
+
+@mixin add_button {
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+  background-color: transparent;
+  border: none;
+  color: $highlight;
+  position: relative;
+  align-self: center;
+  font-size: 1.5em;
+
+  &::before {
+    content: "";
+    background-image: url(../cross.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(45deg);
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 150%;
+    left: -100%;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.save_svg_outline {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+
+  &:hover {
+    fill: $highlight;
+  }
+}
+
+.save_svg_filled {
+  @extend .save_svg_outline;
+  fill: highlight;
 }

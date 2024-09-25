@@ -39,11 +39,11 @@
   input {
     display: none;
 
-    &:checked+svg {
+    &:checked + svg {
       transform: rotate(-45deg);
     }
 
-    &:checked+svg .line_top_bottom {
+    &:checked + svg .line_top_bottom {
       stroke-dasharray: 20 300;
       stroke-dashoffset: -32.42;
     }
@@ -56,8 +56,6 @@
     transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
-
-
 
 .line {
   fill: none;
@@ -72,4 +70,9 @@
 
 .line_top_bottom {
   stroke-dasharray: 12 63;
+}
+
+.account_section {
+  display: flex;
+  flex-direction: column;
 }

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./ProjectCreate.module.scss";
+import { useNavigate } from "react-router-dom";
 import {
   employmentTypes,
   experiences,
@@ -11,6 +12,7 @@ import {
 } from "../../utilityFunctions/utilityObjects";
 import CustomRadio from "../../components/customRadio/CustomRadio";
 import FilterInput from "../../components/filterInput/FilterInput";
+import supabase from "../../config/supabaseClient";
 
 export default function ProjectCreate() {
   const [prInfo, setPrInfo] = useState({
@@ -19,7 +21,12 @@ export default function ProjectCreate() {
     type: types[0],
   });
 
-  const [checked, setChecked] = useState(false);
+  const navigate = useNavigate();
+
+  const popup = useRef();
+
+  const [uId, setUId] = useState(null);
+  const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
 
   const [availableRoles, setAvailableRoles] = useState([
     {
@@ -32,10 +39,81 @@ export default function ProjectCreate() {
     },
   ]);
 
+  const serializeRoles = (id) => {
+    const resultArr = availableRoles.map((item) => {
+      let result = {};
+      result.requirements = item.requirements;
+      for (const _ in item) {
+        if (_ !== "requirements") result[`${_}`] = item[`${_}`].name;
+      }
+      delete result.qualification;
+      result.qualification_id = item.qualification.id;
+      result.project_id = id;
+      return result;
+    });
+    return resultArr;
+  };
+
+  const createProject = async () => {
+    const { data: pId, error: pIdError } = await supabase.rpc("profile_id", {
+      p_user_id: uId,
+    });
+
+    if (pIdError) {
+      console.error("Error calling function:", pIdError);
+    } else {
+      console.log("Function result:", pId);
+    }
+
+    const { data, error } = await supabase
+      .from("Projects")
+      .insert([
+        {
+          name: prInfo["name"],
+          description: prInfo["description"],
+          user_id: uId,
+          promotion: "z",
+          type: prInfo["type"],
+          profile_id: pId,
+        },
+      ])
+      .select("id");
+    !error ? console.log(data[0].id) : console.log(error);
+
+    const { data: prData, error: prError } = await supabase
+      .from("Projects")
+      .insert([
+        {
+          name: prInfo["name"],
+          description: prInfo["description"],
+          user_id: uId,
+          promotion: "z",
+          type: prInfo["type"],
+          profile_id: pId,
+        },
+      ])
+      .select("id");
+    !prError ? console.log(prData[0].id) : console.log(prError);
+
+    const qualsList = serializeRoles(prData[0].id);
+    console.log(qualsList);
+
+    const { data: qualData, error: qualError } = await supabase
+      .from("project_qualifications")
+      .insert(qualsList)
+      .select();
+    if (!qualError) {
+      console.log(qualData);
+      popup.current.style.display = "flex";
+      setTimeout(() => navigate("/projects"), 1500);
+    } else {
+      console.log(qualError);
+    }
+  };
+
   const changeRoleProperty = (i, property, value) =>
     setAvailableRoles((ar) => {
       let updatedRoles = [...ar];
-      console.log(`${updatedRoles}`);
 
       // Create a shallow copy of the specific role object that needs to be updated
       let updatedRole = { ...updatedRoles[i] };
@@ -62,10 +140,33 @@ export default function ProjectCreate() {
       return updatedRoles; // Return the new
     });
 
-  useEffect(() => console.log(availableRoles), [availableRoles]);
+  const rmRole = (e) =>
+    setAvailableRoles((ar) => {
+      let availableRolesCopy = [...ar];
+
+      // Create a shallow copy of the specific role object that needs to be updated
+      let updatedRoles = availableRolesCopy.filter((item, index) => {
+        if (index != e.target.getAttribute("index")) return item;
+      });
+
+      return updatedRoles; // Return the new
+    });
+
+  useEffect(() => {
+    console.log(availableRoles);
+  }, [availableRoles]);
+  useEffect(() => {
+    const info = JSON.parse(localStorage.getItem(localKey));
+    setUId((u) => info.user.id);
+  }, []);
 
   return (
     <>
+      <div className={styles.popup} ref={popup}>
+        <div className={styles.succes_message}>
+          <p>Succes!</p>
+        </div>
+      </div>
       <div className={styles.project_detail_column}>
         <h1
           className={styles.project_add_title}
@@ -135,11 +236,18 @@ export default function ProjectCreate() {
       </div>
 
       {/* popular qualifications */}
-      <div className={styles.helic}>
+      <div className={styles.roles_cnt}>
         <h1 className={styles.project_type_label}>СПЕЦИАЛИСТЫ*</h1>
         {availableRoles.map((qual, i) => (
           <div className={styles.role_cnt} key={`role${i}`} id={`role${i}`}>
-            <button className={styles.wtf}>+ specialist</button>
+            <div className={styles.role_header}>
+              <h1 className={styles.project_type_label}>СПЕЦИАЛИСТ №{i + 1}</h1>
+              <button
+                index={i}
+                onClick={(e) => rmRole(e)}
+                className={styles.role_deletion_button}
+              ></button>
+            </div>
             <FilterInput
               pageStyles={[
                 styles.qual_input,
@@ -158,12 +266,16 @@ export default function ProjectCreate() {
                 {popularQualifications.map((item) => (
                   <li key={item.id}>
                     <CustomRadio
-                      click={() => setChecked((s) => !s)}
-                      change={(e) => console.log(e)}
-                      id={item.id}
-                      name={"qualification"}
-                      checked={checked}
-                      lblValue={item.name}
+                      i={i}
+                      id={`${i}popular${item.id}`}
+                      name={`qualification${i}`}
+                      checked={
+                        qual.qualification
+                          ? qual.qualification.id == item.id
+                          : false
+                      }
+                      item={item}
+                      changeRoleProperty={changeRoleProperty}
                     />
                   </li>
                 ))}
@@ -242,13 +354,17 @@ export default function ProjectCreate() {
                 changeRoleProperty(i, "requirements", e.target.value)
               }
             />
-            <button onClick={addRole} className={styles.wtf_b}>
-              + specialist
-            </button>
           </div>
         ))}
       </div>
-      <button className={styles.save_button} data-content="СОХРАНИТЬ"></button>
+      <button className={styles.add_role} onClick={addRole}>
+        Добавить
+      </button>
+      <button
+        onClick={createProject}
+        className={styles.save_button}
+        data-content="СОХРАНИТЬ"
+      ></button>
     </>
   );
 }
