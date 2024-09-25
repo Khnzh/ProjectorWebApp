@@ -27,7 +27,6 @@
   flex-wrap: wrap;
   flex-direction: row;
   width: 380px;
-
 }
 
 .qualification {
@@ -77,7 +76,6 @@
 .qualification_details {
   @include popup_accent_field();
   width: 200px;
-
 }
 
 .requirements {
