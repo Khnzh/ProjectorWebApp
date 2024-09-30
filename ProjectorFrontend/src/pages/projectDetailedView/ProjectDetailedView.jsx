@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./ProjectDetailedView.module.scss";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -6,7 +6,10 @@ import supabase from "../../config/supabaseClient";
 import cn from "classnames";
 
 const ProjectDetailedView = () => {
+  const likeButton = useRef();
+  const [likeButtonDisabled, setLikedButtonDisabled] = useState(false);
   const { prId } = useParams();
+  const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
 
   const [projectInfo, setProjectInfo] = useState();
   const [active, setActive] = useState(null);
@@ -25,9 +28,28 @@ const ProjectDetailedView = () => {
     e.target.src = "/assets/hlopushka.svg";
   }
 
+  const addToSaved = async () => {
+    const { data, error } = await supabase
+      .from("Saved_projects")
+      .insert([
+        {
+          project_id: prId,
+          user_id: uId,
+        },
+      ])
+      .select();
+
+    if (error) {
+      console.error("Error fetching data:", error);
+    } else {
+      console.log(data);
+    }
+  };
+
   useEffect(() => {
     if (prId)
       (async (prId) => {
+        const info = JSON.parse(localStorage.getItem(localKey));
         const { data, error } = await supabase
           .from("Projects")
           .select(
@@ -48,6 +70,22 @@ const ProjectDetailedView = () => {
         } else {
           setProjectInfo(data);
         }
+        const {
+          data: { length: dl },
+          error: failure,
+        } = await supabase
+          .from("Saved_projects")
+          .select()
+          .eq("project_id", prId)
+          .eq("user_id", info.user.id);
+        if (failure) {
+          console.error("Error fetching succes:", failure);
+        } else {
+          if (dl) {
+            setLikedButtonDisabled(true);
+            likeButton.current.style.fill = "#dd9e28";
+          }
+        }
       })(prId);
   }, []);
 
@@ -62,6 +100,8 @@ const ProjectDetailedView = () => {
           )}
         >
           <svg
+            onClick={likeButtonDisabled ? () => {} : addToSaved}
+            ref={likeButton}
             className="save_svg_outline"
             width="51"
             height="60"

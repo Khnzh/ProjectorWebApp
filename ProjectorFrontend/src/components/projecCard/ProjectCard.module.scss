@@ -1,0 +1,74 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.project_card {
+  margin: 0 0 0.75em 0;
+  // background-image: url("/assets/project_frame.png");
+
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: 100% 100%;
+  width: 100%;
+  display: flex;
+  height: 30vh;
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+
+    .card_border {
+      fill: rgba($highlight, 0.2);
+    }
+
+    .img_frame {
+      border: 1px white solid;
+    }
+  }
+}
+
+.card_border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project_text {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-start;
+}
+
+.title4 {
+  display: flex;
+  align-items: center;
+  font: 700 2em $font;
+  color: $highlight;
+  margin-top: 1em;
+}
+
+.medium_title3 {
+  display: flex;
+  align-items: center;
+  font: 700 1.5em $font;
+  color: $highlight;
+}
+
+.subtitle {
+  font: 700 1em $font;
+  text-align: left;
+  color: $color;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 5em;
+  width: 95%;
+}
+
+.desc_cont {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}

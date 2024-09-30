@@ -25,35 +25,38 @@ export default function Header() {
   };
 
   return (
-    <div className={styles.header}>
-      <ul className={styles.header__navbar}>
-        <li className={styles.header__navlink}>
-          <Link to="/">О НАС</Link>
-        </li>
-        <li className={styles.header__navlink}>
-          <Link to="/projects">ПОЛЬЗОВАТЕЛЯМ</Link>
-        </li>
-        <li className={styles.header__navlink}>
-          <Link to="/">ПАРТНЕРАМ</Link>
-        </li>
-        <li className={styles.header__navlink}>
-          <Link to="/">КОНТАКТЫ</Link>
-        </li>
-        {isLoggedIn ? (
-          <>
-            <li className={styles.header__sign_10percent_left}>
-              <Link to="/profile/0">ПРОФИЛЬ</Link>
-            </li>
-            <li className={styles.header__sign}>
-              <a onClick={logoutUser}>ВЫЙТИ</a>
-            </li>
-          </>
-        ) : (
-          <li className={styles.header__sign_10percent_left}>
-            <Link to="/login">ВОЙТИ В АККАУНТ</Link>
+    <>
+      <div className={styles.paperOverlay}></div>
+      <div className={styles.header}>
+        <ul className={styles.header__navbar}>
+          <li className={styles.header__navlink}>
+            <Link to="/">О НАС</Link>
           </li>
-        )}
-      </ul>
-    </div>
+          <li className={styles.header__navlink}>
+            <Link to="/projects">ПОЛЬЗОВАТЕЛЯМ</Link>
+          </li>
+          <li className={styles.header__navlink}>
+            <Link to="/">ПАРТНЕРАМ</Link>
+          </li>
+          <li className={styles.header__navlink}>
+            <Link to="/">КОНТАКТЫ</Link>
+          </li>
+          {isLoggedIn ? (
+            <>
+              <li className={styles.header__sign_10percent_left}>
+                <Link to="/profile/0">ПРОФИЛЬ</Link>
+              </li>
+              <li className={styles.header__sign}>
+                <a onClick={logoutUser}>ВЫЙТИ</a>
+              </li>
+            </>
+          ) : (
+            <li className={styles.header__sign_10percent_left}>
+              <Link to="/login">ВОЙТИ В АККАУНТ</Link>
+            </li>
+          )}
+        </ul>
+      </div>
+    </>
   );
 }

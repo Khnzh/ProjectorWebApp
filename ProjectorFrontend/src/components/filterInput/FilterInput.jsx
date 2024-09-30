@@ -13,6 +13,7 @@ import styles from "./FilterInput.module.scss";
 export default function FilterInput({
   pageStyles = [null, null, null],
   i,
+  placeholder,
   data,
   selected,
   setSelected,
@@ -51,6 +52,7 @@ export default function FilterInput({
       >
         <div className={styles.combobox_wrapper}>
           <ComboboxInput
+            placeholder={placeholder}
             className={clsx(pageStyles[0] || styles.filter_input)}
             displayValue={(instance) => instance?.name}
             onChange={(event) => setQuery(event.target.value)}
