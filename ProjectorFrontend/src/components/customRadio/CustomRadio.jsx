@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./CustomRadio.module.scss";
 import cn from "classnames";
 
-const CustomRadio = ({ i, id, name, checked, item, changeRoleProperty }) => {
+const CustomRadio = ({ id, lbl, name, checked, changeFn, style = null }) => {
   return (
     <>
       <input
@@ -10,7 +10,7 @@ const CustomRadio = ({ i, id, name, checked, item, changeRoleProperty }) => {
         id={id}
         name={name}
         checked={checked}
-        onChange={() => changeRoleProperty(i, "qualification", item)}
+        onChange={(e) => changeFn(e)}
       />
       <label htmlFor={id}>
         <svg className={cn(styles.radio, styles.sign__svg)} viewBox="0 0 40 38">
@@ -24,8 +24,12 @@ const CustomRadio = ({ i, id, name, checked, item, changeRoleProperty }) => {
             d="M6.9,20.2c3.3,3.8,6.4,9.7,8.6,8.9c2.2-0.8,19-9.3,15.2-19.7"
           />
         </svg>
-        <span className={cn(styles.radio__label, styles.signup__label)}>
-          {item.name}
+        <span
+          className={
+            style ? style : cn(styles.radio__label, styles.signup__label)
+          }
+        >
+          {lbl}
         </span>
       </label>
     </>
