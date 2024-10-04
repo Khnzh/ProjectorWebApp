@@ -83,10 +83,20 @@ input.searchbar {
 }
 
 .filter {
+  display: flex;
+  align-items: center;
+}
+
+.filter_cont {
+  @include popup_middle_long();
+}
+
+.filters_cnt {
   margin-top: 1em;
   margin-bottom: 1em;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   img {
     margin-bottom: 0.5em;
@@ -99,8 +109,4 @@ input.searchbar {
     font-weight: 300;
     cursor: pointer;
   }
-}
-
-.filter_cont {
-  @include popup_middle_long();
 }

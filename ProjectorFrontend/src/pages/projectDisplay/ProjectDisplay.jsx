@@ -384,10 +384,14 @@ function ProjectDisplay({ specific }) {
         </div>
         <button className={styles.button_accent}>мои заявки</button>
       </div>
-      <div className={styles.filter}>
-        <h2 onClick={toggleFilter}>Фильтры</h2>
-        <img onClick={toggleFilter} src="/assets/dd_arrow.svg" alt="" />
-        <h2 onClick={clearFilters}>Оааистить фильтры</h2>
+      <div className={styles.filters_cnt}>
+        <div className={styles.filter}>
+          <h2 onClick={toggleFilter}>Фильтры</h2>
+          <img onClick={toggleFilter} src="/assets/dd_arrow.svg" alt="" />
+        </div>
+        <div>
+          <h2 onClick={clearFilters}>Очистить фильтры</h2>
+        </div>
       </div>
       {projectInfo &&
         projectInfo.map((item) => (

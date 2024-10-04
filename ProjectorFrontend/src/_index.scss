@@ -171,20 +171,15 @@ input:-webkit-autofill:active {
 }
 
 #root {
-  position: absolute;
+  position: relative;
   top: 0;
   padding-bottom: 0;
   width: 100%;
-  background-color: black;
+  background-color: transparent;
   color: $color;
   font-family: $font;
-  background-image: url(/lamp.svg), url(/lightTriangle.svg), url(/lightRect.svg);
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
-  background-size: 20%, 100vw, 100%;
-  background-position: -2px 16px, 2% 1.5%, 0% 63.3vw;
-  background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
 body {
@@ -193,6 +188,12 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  background-color: $background-color;
+  background-image: url(/lamp.svg), url(/lightTriangle.svg), url(/lightRect.svg);
+  background-size: 20%, 100vw, 100%;
+  background-position: -2px 16px, 2% 1.5%, 0% 63.3vw;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  min-height: 100vh;
 }
 
 a {
