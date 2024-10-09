@@ -21,19 +21,14 @@ $color-sign: #fff5da;
   justify-content: center;
   top: 0;
   z-index: 1;
-
+  height: 7vh;
   &__navbar {
-    position: sticky;
-    top: 0;
-    left: 15%;
-    padding: 0 5px;
     list-style-type: none;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     gap: 1rem;
     width: 85%;
-    height: 2em;
   }
 
   &__navlink {

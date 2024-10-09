@@ -392,6 +392,7 @@ function ProjectDisplay({ specific }) {
         <div>
           <h2 onClick={clearFilters}>Очистить фильтры</h2>
         </div>
+        <button>remedy</button>
       </div>
       {projectInfo &&
         projectInfo.map((item) => (
