@@ -16,32 +16,111 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import FilterInput from "../../components/filterInput/FilterInput";
 import { useAuth } from "../../context/AuthContext";
+import ProjectCard from "../../components/projecCard/ProjectCard";
 
-function ProjectDisplay() {
+function ProjectDisplay({ specific }) {
+  //queries collection
+  const BASE_QUERY = {
+    all: {
+      count: () => {
+        return supabase
+          .from("Projects")
+          .select("*", { count: "exact", head: true });
+      },
+      fetch: () => {
+        return supabase
+          .from("Projects")
+          .select(
+            `
+      id,
+      name,
+      description,
+      created_at,
+      Profile ( id, name, lastName ),
+      project_qualifications!inner( 
+        qualification_id!inner(name), 
+        experience, 
+        employment, 
+        shift, 
+        salary
+      )
+    `,
+            { count: "exact" }
+          ) // Request the exact count of matching rows
+          .order("promotion", { ascending: true })
+          .order("id", { ascending: true });
+      },
+      urlQuery: (item) => {
+        return `/projects${
+          item.page === 1 ? "" : `?page=${item.page}`
+        }${objectToQueryString(
+          Object.fromEntries(searchParams.entries()),
+          item.page
+        )}`;
+      },
+    },
+
+    saved: {
+      count: (id) => {
+        return supabase
+          .from("Saved_projects")
+          .select("*", { count: "exact", head: true })
+          .eq("user_id", id);
+      },
+      fetch: (id) => {
+        return supabase
+          .from("Saved_projects")
+          .select(
+            `
+        Projects!inner(id,
+          name,
+          description,
+          type,
+          created_at,
+          Profile ( id, name, lastName ),
+          project_qualifications!inner( 
+            qualification_id!inner(name), 
+            experience, 
+            employment, 
+            shift, 
+            salary
+        ))
+        `,
+            { count: "exact" }
+          ) // Request the exact count of matching rows
+          .order("project_id", { ascending: true })
+          .eq("user_id", id);
+      },
+      urlQuery: (item) => {
+        return `/projects/saved${
+          item.page === 1 ? "" : `?page=${item.page}`
+        }${objectToQueryString(
+          Object.fromEntries(searchParams.entries()),
+          item.page
+        )}`;
+      },
+    },
+  };
+
+  // constants
+  const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
+  const perPage = 5;
   const navigate = useNavigate();
+
+  // state variables
   const { isLoggedIn } = useAuth();
-
-  // useEffect(() => {
-  //   console.log(isLoggedIn);
-  //   const timeoutId = setTimeout(() => {
-  //     if (!isLoggedIn) {
-  //       navigate("/login");
-  //       console.log(`vv ${isLoggedIn}`);
-  //     }
-  //   }, 5000);
-
-  //   return () => clearTimeout(timeoutId);
-  // }, [isLoggedIn, navigate]);
-
+  const [uId, setUId] = useState(null);
+  const [searchFilter, setSearchFilter] = useState();
   const [projectInfo, setProjectInfo] = useState();
   const [filters, setFilters] = useState([
     {
-      qualification: qualifications[1],
-      type: types[1],
-      experience: experiences[1],
-      emplType: employmentTypes[1],
-      shift: shifts[1],
-      salary: salaries[1],
+      qualification: undefined,
+      type: undefined,
+      experience: undefined,
+      emplType: undefined,
+      shift: undefined,
+      salary: undefined,
+      searchPattern: "",
     },
   ]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -49,68 +128,119 @@ function ProjectDisplay() {
     parseInt(searchParams.get("page") || "1", 10)
   );
   const [total, setTotal] = useState();
-  const perPage = 5;
 
+  // references
   const filterContRef = useRef();
 
-  const coverProjectImage = (imgURL) => {
-    return {
-      backgroundImage: `url('${imgURL}')`,
-      backgroundPosition: "center",
-      backgroundSize: "cover",
-      backgroundRepeat: "no-repeat",
-    };
-  };
+  //FUNCTIONS
+  function setSearchPattern(e) {
+    setFilters((ar) => {
+      let updatedRoles = [...ar];
 
-  async function queryProjects(supabase, filters, start, end) {
+      // Create a shallow copy of the specific role object that needs to be updated
+      let updatedRole = { ...updatedRoles[0] };
+
+      // Update the property with the new value
+      updatedRole["searchPattern"] = e.target.value.trim();
+
+      // Replace the role in the array with the updated one
+      updatedRoles[0] = updatedRole;
+
+      return updatedRoles; // Return the new
+    });
+  }
+
+  function clearFilters() {
+    setFilters([
+      {
+        qualification: undefined,
+        type: undefined,
+        experience: undefined,
+        emplType: undefined,
+        shift: undefined,
+        salary: undefined,
+        searchPattern: "",
+      },
+    ]);
+    applyFilter();
+  }
+
+  // Function querying projects with different filters
+  async function queryProjects(supabase, filters, start, end, id = null) {
     // Start the query with the required project fields and project_qualifications
-    let query = supabase
-      .from("Projects")
-      .select(
-        `
-        id,
-        name,
-        description,
-        created_at,
-        Profile ( id, name, lastName ),
-        project_qualifications!inner( 
-          qualification_id!inner(name), 
-          experience, 
-          employment, 
-          shift, 
-          salary
-        )
-      `,
-        { count: "exact" }
-      ) // Request the exact count of matching rows
-      .order("promotion", { ascending: true }) // Sorting by promotion
-      .range(start, end); // Pagination using start and end
+    let query = BASE_QUERY[specific].fetch(id);
+    query = query.range(start, end); // Pagination using start and end
 
     // Apply filters on Projects if they are present
     if (filters.type) {
-      query = query.eq("type", filters.type); // Filter by project type
+      console.log(filters.type);
+      specific === "all"
+        ? (query = query.eq("type", filters.type))
+        : (query = query.eq("Projects.type", filters.type)); // Filter by project type
     }
 
     // Apply filters on project_qualifications fields
     if (filters.qualification) {
-      query = query.eq(
-        "project_qualifications.qualification_id.name",
-        filters.qualification
-      ); // Filter by qualification name
-    }
-    if (filters.experience) {
-      query = query.eq("project_qualifications.experience", filters.experience); // Filter by experience
-    }
-    if (filters.emplType) {
-      query = query.eq("project_qualifications.employment", filters.emplType); // Filter by employment type
-    }
-    if (filters.shift) {
-      query = query.eq("project_qualifications.shift", filters.shift); // Filter by shift
-    }
-    if (filters.salary) {
-      query = query.eq("project_qualifications.salary", filters.salary); // Filter by salary
+      console.log(filters.type);
+      specific === "all"
+        ? (query = query.eq(
+            "project_qualifications.qualification_id.name",
+            filters.qualification
+          ))
+        : (query = query.eq(
+            "Projects.project_qualifications.qualification_id.name",
+            filters.qualification
+          ));
     }
 
+    if (filters.experience) {
+      console.log(filters.type);
+      specific === "all"
+        ? (query = query.eq(
+            "project_qualifications.experience",
+            filters.experience
+          ))
+        : (query = query.eq(
+            "Projects.project_qualifications.experience",
+            filters.experience
+          )); // Filter by experience
+    }
+    if (filters.emplType) {
+      console.log(filters.type);
+      specific === "all"
+        ? (query = query.eq(
+            "project_qualifications.employment",
+            filters.emplType
+          ))
+        : (query = query.eq(
+            "Projects.project_qualifications.employment",
+            filters.emplType
+          )); // Filter by employment type
+    }
+    if (filters.shift) {
+      console.log(filters.type);
+      specific === "all"
+        ? (query = query.eq("project_qualifications.shift", filters.shift))
+        : (query = query.eq(
+            "Projects.project_qualifications.shift",
+            filters.shift
+          ));
+    }
+    if (filters.salary) {
+      console.log(filters.type);
+      specific === "all"
+        ? (query = query.eq("project_qualifications.salary", filters.salary))
+        : (query = query.eq(
+            "Projects.project_qualifications.salary",
+            filters.salary
+          ));
+    }
+    if (filters.searchPattern) {
+      console.log(filters.type);
+      specific === "all"
+        ? (query = query.like("name", `%${filters.searchPattern}%`))
+        : (query = query.like("Projects.name", `%${filters.searchPattern}%`)); // Filter by salary
+    }
     // Execute the query
     const { data, error, count } = await query;
 
@@ -125,80 +255,23 @@ function ProjectDisplay() {
     };
   }
 
-  function goToDetailedView(e) {
-    navigate(`/project/${e.currentTarget.getAttribute("pr_id")}`);
-  }
-
-  useEffect(() => {
-    (async () => {
-      const { count, error } = await supabase
-        .from("Projects")
-        .select("*", { count: "exact", head: true });
-      if (error) {
-        console.log(error);
-      } else {
-        setTotal(Math.ceil(count / perPage));
-      }
-    })();
-
-    filterContRef.current.style.display = "none";
-  }, []);
-
-  useEffect(() => {
-    const currPage = parseInt(searchParams.get("page") || "1", 10);
-    const params = Object.fromEntries(searchParams.entries());
-    setPage(currPage);
-    (async () => {
-      if (currPage) {
-        const start = (currPage - 1) * perPage;
-        const end = start - 1 + perPage;
-        if (Object.keys(params).length < 2) {
-          const { data, error } = await supabase
-            .from("Projects")
-            .select(
-              `
-            id,
-            name,
-            description,
-            created_at,
-            Profile ( id, name, lastName ),
-            project_qualifications( qualification_id(name), experience, employment, shift, salary)
-          `
-            )
-            .order("promotion", { ascending: true })
-            .range(start, end);
-
-          if (error) {
-            console.error("Error fetching data:", error);
-          } else {
-            setProjectInfo(data);
-          }
-        } else {
-          const result = await queryProjects(supabase, params, start, end);
-          setProjectInfo(result.projects);
-          setTotal(Math.ceil(result.totalCount / perPage));
-        }
-      }
-    })();
-  }, [searchParams]);
-
-  function defaultImage(e) {
-    e.target.style = { display: "block" };
-    e.target.src = "/assets/hlopushka.svg";
-  }
-
+  // function for showing filter popup
   const toggleFilter = () => {
     filterContRef.current.style.display == "none"
       ? (filterContRef.current.style.display = "flex")
       : (filterContRef.current.style.display = "none");
   };
 
+  // function for fetching projects according to filters
   function applyFilter() {
     setSearchParams((previous) => {
       let existingFilters = {};
-
-      for (const [key, value] of Object.entries(filters)) {
-        if (value) {
+      const destrFilters = filters[0];
+      if (destrFilters.searchPattern) {
+        existingFilters.searchPattern = destrFilters.searchPattern;
+      }
+      for (const [key, value] of Object.entries(destrFilters)) {
+        if (key !== "searchPattern" && value) {
           existingFilters[key] = value["name"];
         }
       }
@@ -209,9 +282,9 @@ function ProjectDisplay() {
       };
     });
     setPage(1);
-    toggleFilter();
   }
 
+  // converts filters object to url query
   function objectToQueryString(filters, page) {
     const queryString = Object.keys(filters)
       .filter(
@@ -234,6 +307,67 @@ function ProjectDisplay() {
       return "";
     } // Return the query string
   }
+
+  //Counts projects quantity to define how many pages it will need
+  useEffect(() => {
+    (async () => {
+      const info = JSON.parse(localStorage.getItem(localKey));
+      setUId((u) => info.user.id);
+      const { count, error } = await BASE_QUERY[specific].count(info.user.id);
+      if (error) {
+        console.log(error);
+      } else {
+        setTotal(Math.ceil(count / perPage));
+      }
+    })();
+
+    filterContRef.current.style.display = "none";
+  }, []);
+
+  // Fetches another 5 projects according to the filters every time searchparams changes it's value
+  useEffect(() => {
+    const currPage = parseInt(searchParams.get("page") || "1", 10);
+    const params = Object.fromEntries(searchParams.entries());
+    setPage(currPage);
+    (async () => {
+      if (currPage && uId) {
+        const start = (currPage - 1) * perPage;
+        const end = start - 1 + perPage;
+        if (Object.keys(params).length < 2) {
+          let query = BASE_QUERY[specific].fetch(uId);
+          query = query.range(start, end);
+          const { data, count, error } = await query;
+
+          if (error) {
+            console.error("Error fetching data:", error);
+          } else {
+            specific === "saved"
+              ? setProjectInfo(data.map((item) => item.Projects))
+              : setProjectInfo(data);
+            setTotal(Math.ceil(count / perPage));
+          }
+        } else {
+          const result = await queryProjects(supabase, params, start, end, uId);
+          console.log(result);
+          if (result) {
+            if (specific == "saved") {
+              setProjectInfo(() => {
+                let res = result.projects.map((item) => item["Projects"]);
+                res = res.filter((item) => item != null);
+                return res;
+              });
+            } else {
+              setProjectInfo(result.projects);
+            }
+            setTotal(Math.ceil(result.totalCount / perPage));
+          }
+        }
+      }
+    })();
+  }, [searchParams, uId]);
+
+  useEffect(() => console.log(filters), [filters]);
+
   return (
     <>
       <div className={styles.search_and_add}>
@@ -242,46 +376,31 @@ function ProjectDisplay() {
             type="text"
             className={cn("login__input", styles.searchbar)}
             placeholder="Поиск"
+            onChange={(e) => setSearchPattern(e)}
           />
-          <button className={styles.inv_search_button}> </button>
+          <button className={styles.inv_search_button} onClick={applyFilter}>
+            {" "}
+          </button>
         </div>
         <button className={styles.button_accent}>мои заявки</button>
       </div>
-      <div className={styles.filter} onClick={toggleFilter}>
-        <h2>Фильтры</h2>
-        <img src="/assets/dd_arrow.svg" alt="" />
+      <div className={styles.filters_cnt}>
+        <div className={styles.filter}>
+          <h2 onClick={toggleFilter}>Фильтры</h2>
+          <img onClick={toggleFilter} src="/assets/dd_arrow.svg" alt="" />
+        </div>
+        <div>
+          <h2 onClick={clearFilters}>Очистить фильтры</h2>
+        </div>
+        <button>remedy</button>
       </div>
       {projectInfo &&
         projectInfo.map((item) => (
-          <div
-            className={styles.project_card}
+          <ProjectCard
             key={item.id}
-            pr_id={item.id}
-            onClick={(e) => goToDetailedView(e)}
-          >
-            <div
-              className={cn("img_frame")}
-              style={coverProjectImage(
-                `https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`
-              )}
-            >
-              <img
-                src={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`}
-                style={{ display: "none" }}
-                alt="hlopushka"
-                onError={(e) => defaultImage(e)}
-              />
-            </div>
-            <div className={styles.project_text}>
-              <h1 className={styles.title4}>{item.name}</h1>
-              <h2 className={styles.medium_title3}>
-                {item.Profile.name} {item.Profile.lastName}
-              </h2>
-              <div className={styles.desc_cont}>
-                <h3 className={styles.subtitle}>{item.description}</h3>
-              </div>
-            </div>
-          </div>
+            item={item}
+            coverImg={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`}
+          />
         ))}
       <div className={styles.whitebg}>
         {total && (
@@ -301,12 +420,7 @@ function ProjectDisplay() {
                     };
                   });
                 }}
-                to={`/projects${
-                  item.page === 1 ? "" : `?page=${item.page}`
-                }${objectToQueryString(
-                  Object.fromEntries(searchParams.entries()),
-                  item.page
-                )}`}
+                to={BASE_QUERY[specific].urlQuery(item)}
                 {...item}
               />
             )}
@@ -321,6 +435,7 @@ function ProjectDisplay() {
         <h1>СПЕЦИАЛЬНОСТЬ</h1>
         <FilterInput
           i={"qualification"}
+          placeholder={"Выберите специальность"}
           data={qualifications}
           selected={filters}
           setSelected={setFilters}
@@ -328,6 +443,7 @@ function ProjectDisplay() {
         <h1>ТИП ПРОЕКТА</h1>
         <FilterInput
           i={"type"}
+          placeholder={"Выберите тип проекта"}
           data={types}
           selected={filters}
           setSelected={setFilters}
@@ -335,12 +451,14 @@ function ProjectDisplay() {
         <h1>СТАЖ</h1>
         <FilterInput
           i={"experience"}
+          placeholder={"Выберите стаж"}
           data={experiences}
           selected={filters}
           setSelected={setFilters}
         />
         <h1>ЗАНЯТОСТЬ</h1>
         <FilterInput
+          placeholder={"Выберите занятость"}
           i={"emplType"}
           data={employmentTypes}
           selected={filters}
@@ -348,6 +466,7 @@ function ProjectDisplay() {
         />
         <h1>ВРЕМЯ СМЕНЫ</h1>
         <FilterInput
+          placeholder={"Выберите смену"}
           i={"shift"}
           data={shifts}
           selected={filters}
@@ -355,12 +474,19 @@ function ProjectDisplay() {
         />
         <h1>ОПЛАТА</h1>
         <FilterInput
+          placeholder={"Выберите оплату"}
           i={"salary"}
           data={salaries}
           selected={filters}
           setSelected={setFilters}
         />
-        <button className={styles.apply} onClick={applyFilter}>
+        <button
+          className={styles.apply}
+          onClick={() => {
+            applyFilter();
+            toggleFilter();
+          }}
+        >
           ПРИМЕНИТЬ
         </button>
       </div>

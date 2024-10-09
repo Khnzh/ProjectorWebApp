@@ -1,0 +1,28 @@
+.logo_container {
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    .second_decorator_image {
+      display: block;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.second_decorator_image {
+  position: absolute;
+  top: -30%;
+  left: -75px;
+  width: 120%;
+  filter: blur(100px);
+  display: none;
+}
+
+.image {
+  margin: 0 0 0 2px;
+  width: calc(100% - 13px);
+}

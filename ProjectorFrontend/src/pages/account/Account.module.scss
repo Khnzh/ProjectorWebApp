@@ -8,6 +8,10 @@
   overflow: visible;
 }
 
+.toggle_btn_cnt {
+  width: 20%;
+}
+
 .flex_row_container {
   position: relative;
   display: flex;
@@ -26,7 +30,7 @@
   margin-right: 1%;
   min-width: 0;
   min-height: 100vh;
-  padding: 4% 1% 0 2%;
+  padding: 1em 1% 0 2%;
 }
 
 .hamburger {

@@ -266,16 +266,17 @@ export default function ProjectCreate() {
                 {popularQualifications.map((item) => (
                   <li key={item.id}>
                     <CustomRadio
-                      i={i}
                       id={`${i}popular${item.id}`}
+                      lbl={item.name}
                       name={`qualification${i}`}
                       checked={
                         qual.qualification
                           ? qual.qualification.id == item.id
                           : false
                       }
-                      item={item}
-                      changeRoleProperty={changeRoleProperty}
+                      changeFn={(e) =>
+                        changeRoleProperty(i, "qualification", item)
+                      }
                     />
                   </li>
                 ))}

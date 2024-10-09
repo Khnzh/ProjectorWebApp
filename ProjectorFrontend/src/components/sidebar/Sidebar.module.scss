@@ -28,11 +28,6 @@
   flex-direction: column;
 }
 
-.image {
-  margin: 0 0 0 2px;
-  width: calc(100% - 13px);
-}
-
 .avatar {
   margin: 2em 0 0;
   width: 35%;
@@ -125,7 +120,6 @@
   opacity: 0.89;
 }
 
-
 .image19 {
   margin: 15px 0 17px;
   width: 15px;
@@ -170,28 +164,16 @@
   margin-top: 3%;
 }
 
-.logo_container {
-  position: relative;
-}
-
-.second_decorator_image {
-  position: absolute;
-  top: -30%;
-  left: -75px;
-  width: 120%;
-  filter: blur(100px);
-}
-
 .full_length_button {
   @include button_accent();
 }
 
 @media screen and (max-width: 768px) {
   .sidebar {
-      transform: translateX(-100%);
+    transform: translateX(-100%);
   }
 
   .sidebar.active {
-      transform: translateX(0);
+    transform: translateX(0);
   }
 }

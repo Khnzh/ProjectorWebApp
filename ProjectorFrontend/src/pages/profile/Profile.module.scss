@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&display=swap");
 @import "../../index";
 
 .tab_container {
@@ -47,98 +46,9 @@
   text-decoration: underline;
 }
 
-.tab_content {
-  padding-top: 5vh;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  align-items: start;
-  padding-left: 5%;
-  padding-bottom: 5%;
-  width: 100%;
-
-  input,
-  textarea {
-    border: 2px solid $highlight;
-    background-color: transparent;
-    border-radius: 5px;
-    padding: 1em;
-    width: 90%;
-    font-size: 1em;
-    font-family: $font;
-
-    &::placeholder {
-      color: $color;
-      opacity: 40%;
-    }
-  }
-
-  textarea {
-    height: 5rem;
-    overflow: hidden;
-    resize: none;
-  }
-
-  h1 {
-    align-self: center;
-    margin-bottom: 1em;
-    text-transform: uppercase;
-  }
-
-  label,
-  p {
-    text-transform: uppercase;
-    font-size: 1.5em;
-    color: $highlight;
-  }
-
-  .specialty_input:focus-visible {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    outline: none;
-  }
-}
-
 .tab_positioning {
   display: flex;
   flex-flow: row nowrap;
-}
-
-label {
-  .radio__svg {
-    width: 1em;
-    stroke: $highlight;
-  }
-
-  .radio__label {
-    margin: 1em;
-    font-size: 1em;
-    color: $color;
-  }
-}
-
-div .radio_no_underline {
-  @include signup__radio__cnt();
-  display: flex;
-  justify-items: start;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-
-.additional_edu {
-  padding-bottom: 5%;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 1em;
-  align-items: start;
-  padding-right: 10%;
-
-  input,
-  textarea {
-    width: 100%;
-  }
 }
 
 hr {
@@ -148,32 +58,12 @@ hr {
   border: none;
 }
 
-.section_deletion {
-  @include cross_button();
-}
-
-.add {
-  @include add_button();
-}
-
-.edu_header {
-  width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-}
-
-.delete_cell:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
 input[type="file"] {
   display: none;
 }
 
-.custom_profile_pic_upload {
-  display: inline-block;
-  cursor: pointer;
-  align-self: center;
-}
+// .tab_content {
+//   & > :nth-last-child(2) > :last-child {
+//     display: none;
+//   }
+// }

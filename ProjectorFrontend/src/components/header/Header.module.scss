@@ -3,18 +3,26 @@ $font: "Overpass Mono", monospace;
 $color-stretch-end: rgb(236, 174, 31);
 $color-sign: #fff5da;
 
+.paperOverlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-repeat: repeat, repeat-y;
+  background-size: 100%, calc(100% - 40px);
+  background-position: center, center;
+  background-image: url("/noise&Texture.png"), url("/sidesFrame.svg");
+  pointer-events: none;
+}
 
 .header {
-  position: sticky;
   display: flex;
   justify-content: center;
   top: 0;
   z-index: 1;
-
+  height: 7vh;
   &__navbar {
-    position: static;
-    left: 15%;
-    padding: 0 5px;
     list-style-type: none;
     display: flex;
     flex-direction: row;
@@ -29,7 +37,8 @@ $color-sign: #fff5da;
     font-size: 1.5rem;
     animation: return-to-original 300ms ease-in-out;
     white-space: nowrap;
-  
+    height: 2em;
+
     &:hover {
       animation: stretch-color 300ms ease-in-out forwards;
       white-space: nowrap;
@@ -42,34 +51,33 @@ $color-sign: #fff5da;
     font-size: 1.5rem;
     white-space: nowrap;
     text-transform: uppercase;
-    
+    cursor: pointer;
+
     &_10percent_left {
-        @extend .header__sign;
-        margin-left: 10%;
-      }
+      @extend .header__sign;
+      margin-left: 10%;
+    }
   }
 }
 
 @keyframes stretch-color {
-    0% {
-      color: $color-nav-link; // Initial color
-      transform: scale(1) translate(0, 0);
-    }
-    100% {
-      color: $color-stretch-end; // End color
-      transform: scale(1.05) translate(-5%, -5%);
-    }
+  0% {
+    color: $color-nav-link; // Initial color
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    color: $color-stretch-end; // End color
+    transform: scale(1.05) translate(-5%, -5%);
+  }
 }
 
 @keyframes return-to-original {
-    from {
-      color: $color-stretch-end; // End color
-      transform: scale(1.05) translate(-5%, -5%);
-    }
-    to {
-      color: $color-nav-link; // Initial color
-      transform: scale(1) translate(0, 0);
-    }
+  from {
+    color: $color-stretch-end; // End color
+    transform: scale(1.05) translate(-5%, -5%);
+  }
+  to {
+    color: $color-nav-link; // Initial color
+    transform: scale(1) translate(0, 0);
+  }
 }
-
-
