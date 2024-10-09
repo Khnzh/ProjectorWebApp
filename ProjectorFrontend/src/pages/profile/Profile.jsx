@@ -491,14 +491,13 @@ export default function Profile() {
           <button
             onClick={() => navigate("/profile/1")}
             className={styles.change_button}
-            data-content="ИЗМЕНИТЬ"
-          ></button>
+          >
+            <p>ИЗМЕНИТЬ</p>
+          </button>
         ) : (
-          <button
-            onClick={saveChanges}
-            className={styles.save_button}
-            data-content="СОХРАНИТЬ"
-          ></button>
+          <button onClick={saveChanges} className={styles.save_button}>
+            <p>СОХРАНИТЬ</p>
+          </button>
         )}
       </div>
     </>

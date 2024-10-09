@@ -26,20 +26,22 @@ export default function Header() {
 
   return (
     <>
-      <div className={styles.paperOverlay}></div>
       <div className={styles.header}>
         <ul className={styles.header__navbar}>
           <li className={styles.header__navlink}>
-            <Link to="/">О НАС</Link>
+            <Link to="/#about">О НАС</Link>
           </li>
           <li className={styles.header__navlink}>
-            <Link to="/projects">ПОЛЬЗОВАТЕЛЯМ</Link>
+            {/* <Link to="/#forUsers">ПОЛЬЗОВАТЕЛЯМ</Link> */}
+            <a href="/#forUsers">ПОЛЬЗОВАТЕЛЯМ</a>
           </li>
           <li className={styles.header__navlink}>
-            <Link to="/">ПАРТНЕРАМ</Link>
+            {/* <Link to="/">ПАРТНЕРАМ</Link> */}
+            <a href="/#partnership">ПАРТНЕРАМ</a>
           </li>
           <li className={styles.header__navlink}>
-            <Link to="/">КОНТАКТЫ</Link>
+            {/* <Link to="/">КОНТАКТЫ</Link> */}
+            <a href="/#contactUs">КОНТАКТЫ</a>
           </li>
           {isLoggedIn ? (
             <>

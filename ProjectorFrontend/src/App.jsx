@@ -16,7 +16,6 @@ function AppInside() {
 
   // Determine if the current path is '/create'
   const isCreatePage =
-    location.pathname === "/" ||
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
     location.pathname === "/profile/1" ||
