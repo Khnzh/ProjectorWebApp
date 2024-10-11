@@ -1,7 +1,6 @@
 # node modules
 /ProjectorFrontend/node_modules
 /ProjectorFrontend/node_modules/*
-/ProjectorFrontend/node_modules/
 
 # secrets
 /ProjectorFrontend/.env
