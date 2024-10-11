@@ -34,7 +34,12 @@ function Landing() {
                 Найди подходящего специалиста сейчас!
               </span>
             </div>
-            <div className={styles.signup}>
+            <div
+              className="outline_btn align-center"
+              onClick={() => {
+                navigate("/signup");
+              }}
+            >
               <p>Зарегистрироваться</p>
               <span>Зарегистрироваться</span>
               <button></button>

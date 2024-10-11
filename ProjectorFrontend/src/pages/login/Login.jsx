@@ -32,9 +32,19 @@ function Login() {
   };
 
   useEffect(() => {
-    console.log(isLoggedIn);
-    if (isLoggedIn) navigate("/");
-  }, [isLoggedIn]);
+    const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
+
+    if (!isLoggedIn) {
+      if (localStorage.getItem(localKey)) {
+        setIsLoggedIn(true);
+        navigate("/");
+      } else {
+        setIsLoggedIn(false);
+      }
+    } else {
+      navigate("/");
+    }
+  }, [isLoggedIn, setIsLoggedIn]);
 
   return (
     <div className={styles.login}>
@@ -69,11 +79,11 @@ function Login() {
       >
         <a href="#">Забыли пароль?</a>
       </h2>
-      <button
-        onClick={loginUser}
-        className={styles.login__button}
-        data-content="ВОЙТИ"
-      ></button>
+      <div className="outline_btn" onClick={loginUser}>
+        <p>ВОЙТИ</p>
+        <span>ВОЙТИ</span>
+        <button></button>
+      </div>
     </div>
   );
 }

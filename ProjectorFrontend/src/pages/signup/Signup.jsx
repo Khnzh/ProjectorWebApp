@@ -4,10 +4,9 @@ import { useState, useEffect } from "react";
 import { signupValidation } from "../../utilityFunctions/Validation";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { portfolioValidation } from "../../utilityFunctions/Validation";
 
 function Signup() {
-  const { setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [signup, setSignup] = useState({
@@ -76,8 +75,6 @@ function Signup() {
     });
   };
 
-  //   useEffect(()=>{console.log(signup); console.log(new Date().getFullYear())}, [signup])
-
   const signUser = async () => {
     let errs = signupValidation(signup);
     if (Object.keys(errs).length > 0) {
@@ -138,7 +135,20 @@ function Signup() {
       }
     }
   };
+  useEffect(() => {
+    const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
 
+    if (!isLoggedIn) {
+      if (localStorage.getItem(localKey)) {
+        setIsLoggedIn(true);
+        navigate("/");
+      } else {
+        setIsLoggedIn(false);
+      }
+    } else {
+      navigate("/");
+    }
+  }, [isLoggedIn, setIsLoggedIn]);
   return (
     <div className={styles.signup__cnt}>
       <h1 className={styles.header}>ПРИВЕТСТВУЕМ ТЕБЯ В ПРОЖЕКТОРЕ!</h1>
@@ -314,12 +324,11 @@ function Signup() {
           </label>
         </li>
       </ul>
-
-      <button
-        onClick={signUser}
-        className={styles.enter_button}
-        data-content="ВОЙТИ"
-      ></button>
+      <div className="outline_btn" onClick={signUser}>
+        <p>ВОЙТИ</p>
+        <span>ВОЙТИ</span>
+        <button></button>
+      </div>
     </div>
   );
 }

@@ -12,9 +12,10 @@ import { useAuth } from "../../context/AuthContext";
 import ProfileTab from "../../components/tabs/ProfileTab/ProfileTab";
 import EducationTab from "../../components/tabs/EducationTab/EducationTab";
 import PortfolioTab from "../../components/tabs/PortfolioTab/PortfolioTab";
+import { unauthorizedRedirect } from "../../utilityFunctions/unauthorizedRedirect";
 
 export default function Profile() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
   // useEffect(() => {
   //   if (!isLoggedIn) navigate("/login");
@@ -37,6 +38,10 @@ export default function Profile() {
   const [mode, setMode] = useState(true);
 
   // PROFILE VARIABLES
+  useEffect(
+    () => unauthorizedRedirect(isLoggedIn, setIsLoggedIn, navigate),
+    [isLoggedIn, setIsLoggedIn, navigate]
+  );
   const [profile, setProfile] = useState({
     name: "",
     lastName: "",
@@ -488,16 +493,20 @@ export default function Profile() {
         />
 
         {mode ? (
-          <button
+          <div
+            className="outline_btn align-center"
             onClick={() => navigate("/profile/1")}
-            className={styles.change_button}
           >
             <p>ИЗМЕНИТЬ</p>
-          </button>
+            <span>ИЗМЕНИТЬ</span>
+            <button></button>
+          </div>
         ) : (
-          <button onClick={saveChanges} className={styles.save_button}>
+          <div className="outline_btn align-center" onClick={saveChanges}>
             <p>СОХРАНИТЬ</p>
-          </button>
+            <span>СОХРАНИТЬ</span>
+            <button></button>
+          </div>
         )}
       </div>
     </>

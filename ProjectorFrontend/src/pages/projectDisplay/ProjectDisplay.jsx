@@ -60,6 +60,47 @@ function ProjectDisplay({ specific }) {
       },
     },
 
+    mine: {
+      count: (id) => {
+        return supabase
+          .from("Projects")
+          .select("*", { count: "exact", head: true })
+          .eq("user_id", id);
+      },
+      fetch: (id) => {
+        return supabase
+          .from("Projects")
+          .select(
+            `
+        id,
+          name,
+          description,
+          type,
+          created_at,
+          Profile ( id, name, lastName ),
+          project_qualifications!inner( 
+            qualification_id!inner(name), 
+            experience, 
+            employment, 
+            shift, 
+            salary
+        )
+        `,
+            { count: "exact" }
+          ) // Request the exact count of matching rows
+          .order("id", { ascending: true })
+          .eq("user_id", id);
+      },
+      urlQuery: (item) => {
+        return `/projects/mine${
+          item.page === 1 ? "" : `?page=${item.page}`
+        }${objectToQueryString(
+          Object.fromEntries(searchParams.entries()),
+          item.page
+        )}`;
+      },
+    },
+
     saved: {
       count: (id) => {
         return supabase
@@ -174,7 +215,7 @@ function ProjectDisplay({ specific }) {
     // Apply filters on Projects if they are present
     if (filters.type) {
       console.log(filters.type);
-      specific === "all"
+      specific !== "saved"
         ? (query = query.eq("type", filters.type))
         : (query = query.eq("Projects.type", filters.type)); // Filter by project type
     }
@@ -182,7 +223,7 @@ function ProjectDisplay({ specific }) {
     // Apply filters on project_qualifications fields
     if (filters.qualification) {
       console.log(filters.type);
-      specific === "all"
+      specific !== "saved"
         ? (query = query.eq(
             "project_qualifications.qualification_id.name",
             filters.qualification
@@ -195,7 +236,7 @@ function ProjectDisplay({ specific }) {
 
     if (filters.experience) {
       console.log(filters.type);
-      specific === "all"
+      specific !== "saved"
         ? (query = query.eq(
             "project_qualifications.experience",
             filters.experience
@@ -207,7 +248,7 @@ function ProjectDisplay({ specific }) {
     }
     if (filters.emplType) {
       console.log(filters.type);
-      specific === "all"
+      specific !== "saved"
         ? (query = query.eq(
             "project_qualifications.employment",
             filters.emplType
@@ -219,7 +260,7 @@ function ProjectDisplay({ specific }) {
     }
     if (filters.shift) {
       console.log(filters.type);
-      specific === "all"
+      specific !== "saved"
         ? (query = query.eq("project_qualifications.shift", filters.shift))
         : (query = query.eq(
             "Projects.project_qualifications.shift",
@@ -228,7 +269,7 @@ function ProjectDisplay({ specific }) {
     }
     if (filters.salary) {
       console.log(filters.type);
-      specific === "all"
+      specific !== "saved"
         ? (query = query.eq("project_qualifications.salary", filters.salary))
         : (query = query.eq(
             "Projects.project_qualifications.salary",
@@ -237,7 +278,7 @@ function ProjectDisplay({ specific }) {
     }
     if (filters.searchPattern) {
       console.log(filters.type);
-      specific === "all"
+      specific !== "saved"
         ? (query = query.like("name", `%${filters.searchPattern}%`))
         : (query = query.like("Projects.name", `%${filters.searchPattern}%`)); // Filter by salary
     }
@@ -311,9 +352,18 @@ function ProjectDisplay({ specific }) {
   //Counts projects quantity to define how many pages it will need
   useEffect(() => {
     (async () => {
-      const info = JSON.parse(localStorage.getItem(localKey));
-      setUId((u) => info.user.id);
-      const { count, error } = await BASE_QUERY[specific].count(info.user.id);
+      let userId;
+      if (localStorage.getItem(localKey)) {
+        userId = JSON.parse(localStorage.getItem(localKey)).user.id;
+      } else {
+        if (specific === "saved") {
+          return undefined;
+        } else {
+          userId = null;
+        }
+      }
+      setUId((u) => userId);
+      const { count, error } = await BASE_QUERY[specific].count(userId);
       if (error) {
         console.log(error);
       } else {
@@ -330,7 +380,7 @@ function ProjectDisplay({ specific }) {
     const params = Object.fromEntries(searchParams.entries());
     setPage(currPage);
     (async () => {
-      if (currPage && uId) {
+      if (currPage && (uId || specific === "all")) {
         const start = (currPage - 1) * perPage;
         const end = start - 1 + perPage;
         if (Object.keys(params).length < 2) {
@@ -392,7 +442,6 @@ function ProjectDisplay({ specific }) {
         <div>
           <h2 onClick={clearFilters}>Очистить фильтры</h2>
         </div>
-        <button>remedy</button>
       </div>
       {projectInfo &&
         projectInfo.map((item) => (
@@ -427,7 +476,7 @@ function ProjectDisplay({ specific }) {
           />
         )}
       </div>
-      <div className={styles.filter_cont} ref={filterContRef}>
+      <div className="popup_middle_long" ref={filterContRef}>
         <button
           className={styles.close_filter_cont}
           onClick={toggleFilter}
@@ -481,7 +530,7 @@ function ProjectDisplay({ specific }) {
           setSelected={setFilters}
         />
         <button
-          className={styles.apply}
+          className="apply"
           onClick={() => {
             applyFilter();
             toggleFilter();

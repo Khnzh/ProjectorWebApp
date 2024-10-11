@@ -49,7 +49,7 @@ const PortfolioTab = ({
                 <button
                   index={index}
                   onClick={(e) => decrementProjectQuantity(e)}
-                  className={styles.section_deletion}
+                  className="cross_button"
                 ></button>
               )}
             </div>
@@ -126,7 +126,7 @@ const PortfolioTab = ({
         ))}
 
       {mode == 0 && (
-        <button className={styles.add} onClick={incrementProjectQuantity}>
+        <button className="add_button" onClick={incrementProjectQuantity}>
           Добавить
         </button>
       )}

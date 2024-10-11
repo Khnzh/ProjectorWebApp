@@ -8,9 +8,6 @@ $color-cloud-text: #fff5da99;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // div {
-  //   display: flex;
-  // }
 }
 .landing__ {
   &about,
@@ -229,8 +226,6 @@ $color-cloud-text: #fff5da99;
 
     img {
       object-fit: contain;
-      // margin-top: 3vh;
-      // margin-bottom: 3vh;
       width: 100%;
     }
     ol,
@@ -243,6 +238,12 @@ $color-cloud-text: #fff5da99;
     }
     ul {
       list-style: disc;
+    }
+  }
+  &__third_width_element {
+    img {
+      margin-top: 2em;
+      margin-bottom: 2em;
     }
   }
   &__half_width_element {
@@ -336,16 +337,6 @@ div .cloud_text {
     content: "";
     display: block;
     margin-top: 25%;
-  }
-}
-
-.signup {
-  @include my_btn(2rem);
-
-  & {
-    color: $color-cloud-text;
-    align-self: center;
-    margin-bottom: 2%;
   }
 }
 

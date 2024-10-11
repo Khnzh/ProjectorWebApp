@@ -1,11 +1,14 @@
 import React, { useRef } from "react";
 import styles from "./ProjectDetailedView.module.scss";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import cn from "classnames";
+import { useAuth } from "../../context/AuthContext";
 
 const ProjectDetailedView = () => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const navigate = useNavigate();
   const likeButton = useRef();
   const [likeButtonDisabled, setLikedButtonDisabled] = useState(false);
   const { prId } = useParams();
@@ -34,22 +37,36 @@ const ProjectDetailedView = () => {
       .insert([
         {
           project_id: prId,
-          user_id: uId,
+          user_id: JSON.parse(localStorage.getItem(localKey)).user.id,
         },
       ])
       .select();
 
     if (error) {
+      console.log();
       console.error("Error fetching data:", error);
     } else {
       console.log(data);
     }
   };
+  useEffect(() => {
+    const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
 
+    if (!isLoggedIn) {
+      if (localStorage.getItem(localKey)) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    }
+  }, [isLoggedIn, setIsLoggedIn]);
   useEffect(() => {
     if (prId)
       (async (prId) => {
-        const info = JSON.parse(localStorage.getItem(localKey));
+        let userId;
+        if (localStorage.getItem(localKey)) {
+          userId = JSON.parse(localStorage.getItem(localKey)).user.id;
+        }
         const { data, error } = await supabase
           .from("Projects")
           .select(
@@ -69,21 +86,25 @@ const ProjectDetailedView = () => {
           console.error("Error fetching data:", error);
         } else {
           setProjectInfo(data);
-        }
-        const {
-          data: { length: dl },
-          error: failure,
-        } = await supabase
-          .from("Saved_projects")
-          .select()
-          .eq("project_id", prId)
-          .eq("user_id", info.user.id);
-        if (failure) {
-          console.error("Error fetching succes:", failure);
-        } else {
-          if (dl) {
-            setLikedButtonDisabled(true);
-            likeButton.current.style.fill = "#dd9e28";
+          let userId;
+          if (localStorage.getItem(localKey)) {
+            userId = JSON.parse(localStorage.getItem(localKey)).user.id;
+            const {
+              data: { length: dl },
+              error: failure,
+            } = await supabase
+              .from("Saved_projects")
+              .select()
+              .eq("project_id", prId)
+              .eq("user_id", userId);
+            if (failure) {
+              console.error("Error fetching succes:", failure);
+            } else {
+              if (dl) {
+                setLikedButtonDisabled(true);
+                likeButton.current.style.fill = "#dd9e28";
+              }
+            }
           }
         }
       })(prId);
@@ -100,9 +121,15 @@ const ProjectDetailedView = () => {
           )}
         >
           <svg
-            onClick={likeButtonDisabled ? () => {} : addToSaved}
+            onClick={
+              likeButtonDisabled
+                ? () => {}
+                : () => {
+                    isLoggedIn ? addToSaved : navigate("/login");
+                  }
+            }
             ref={likeButton}
-            className="save_svg_outline"
+            className={styles.save_svg_outline}
             width="51"
             height="60"
             viewBox="0 0 51 60"
@@ -136,7 +163,9 @@ const ProjectDetailedView = () => {
           <button
             key={item.qualification_id.name}
             className={styles.qualification}
-            onClick={() => setActive(index)}
+            onClick={() => {
+              isLoggedIn ? setActive(index) : navigate("/login");
+            }}
           >
             {item.qualification_id.name}
           </button>
@@ -149,7 +178,7 @@ const ProjectDetailedView = () => {
       <h2>ФАЙЛ ПРОЕКТА</h2>
       {projectInfo[0].project_qualifications.map((item, index) => (
         <div
-          className={styles.filter_cont}
+          className="popup_middle_long"
           key={item.qualification_id.id}
           style={{ display: active === index ? "flex" : "none" }}
         >

@@ -26,6 +26,36 @@
 .flex_col {
   display: flex;
   flex-direction: column;
+  ul {
+    li {
+      padding-left: 2em;
+      position: relative;
+      &:hover a {
+        color: $highlight;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.25rem; /* Adjust vertical alignment */
+        width: 1rem;
+        height: 1rem;
+        background-image: url(/assets/e2eb7164ddaa335cc3d6e67781eeceda.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+      &:nth-child(2):before {
+        background-image: url(/assets/9453e8c218b9d080e60d081dcc90771c.svg);
+      }
+      &:nth-child(3):before {
+        background-image: url(/assets/6fad9b44cb0964bb4ba8adad213b29c2.svg);
+      }
+      &:nth-child(4):before {
+        background-image: url(/assets/34278ddd79993269b66817f2d5d5ed8e.svg);
+      }
+    }
+  }
 }
 
 .avatar {

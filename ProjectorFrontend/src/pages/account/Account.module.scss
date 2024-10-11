@@ -8,6 +8,12 @@
   overflow: visible;
 }
 
+.alt_navbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
 .toggle_btn_cnt {
   width: 20%;
 }

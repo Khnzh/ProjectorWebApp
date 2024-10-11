@@ -79,10 +79,6 @@
   text-decoration: underline;
 }
 
-.section_deletion {
-  @include cross_button();
-}
-
 div .radio_no_underline {
   @include signup__radio__cnt();
   display: flex;
@@ -103,10 +99,6 @@ label {
     font-size: 1em;
     color: $color;
   }
-}
-
-.add {
-  @include add_button();
 }
 
 .custom_profile_pic_upload {

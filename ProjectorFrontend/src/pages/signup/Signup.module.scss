@@ -1,4 +1,4 @@
-@import '../../index';
+@import "../../index";
 
 .signup {
   margin-bottom: 5em;
@@ -10,31 +10,15 @@
 }
 
 .signup__cnt {
-  @include blurred_bg();
+  @extend .blurred_bg;
   text-align: left;
   width: 88%;
   margin: 5vh 6% 0 6%;
   padding: 3% 0 5vh 5%;
-
-  &::before {
-    @include blurred_before();
-  }
 }
 
 .sign__label {
   margin-left: 0.5em;
   text-decoration: underline;
   font-size: 1.5em;
-}
-
-.enter_button {
-    @include custom_button();
-
-    &::before {
-      content: attr(data-content);
-    }
-  }
-
-.enter_button {
-  width: 20%
 }

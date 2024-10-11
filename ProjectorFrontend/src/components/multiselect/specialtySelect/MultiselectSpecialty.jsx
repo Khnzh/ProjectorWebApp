@@ -30,7 +30,7 @@ export default function Multiselect({ profile, setProfile, mode = 0 }) {
           return person.name.toLowerCase().includes(query.toLowerCase());
         });
 
-  if ((mode = 0)) {
+  if (mode) {
     return (
       <>
         {selectedPeople.length > 0 && (

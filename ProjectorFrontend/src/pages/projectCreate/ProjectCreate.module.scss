@@ -194,30 +194,10 @@ textarea {
   margin-top: 0;
 }
 
-.save_button {
-  @include custom_button();
-
-  & {
-    align-self: center;
-    margin-top: 2%;
-    margin-bottom: 2%;
-    padding: 0;
-
-    &::before {
-      content: attr(data-content);
-    }
-  }
-}
-
 .roles_cnt {
   & > :nth-child(2) > :first-child {
     display: none;
   }
-}
-
-.add_role {
-  align-self: center;
-  @include add_button();
 }
 
 .role_header {
@@ -230,13 +210,8 @@ textarea {
   justify-content: space-between;
 }
 
-.role_deletion_button {
-  align-self: center;
-  @include cross_button();
-}
-
 .popup {
-  @include blurred_bg();
+  @extend .blurred_bg;
   position: fixed;
   top: 0;
   left: 0;
@@ -245,10 +220,6 @@ textarea {
   align-items: center;
   justify-content: center;
   display: none;
-
-  &::before {
-    @include blurred_before();
-  }
 }
 
 .succes_message {

@@ -29,35 +29,38 @@ export default function Header() {
       <div className={styles.header}>
         <ul className={styles.header__navbar}>
           <li className={styles.header__navlink}>
-            <Link to="/#about">О НАС</Link>
+            <div className={styles.dropdown}>
+              <a href="/">ГЛАВНАЯ</a>
+              <div className={styles.dropdown_content}>
+                <a href="/#about">О НАС</a>
+                <a href="/#forUsers">ПОЛЬЗОВАТЕЛЯМ</a>
+                <a href="/#partnership">ПАРТНЕРАМ</a>
+                <a href="/#contactUs">КОНТАКТЫ</a>
+              </div>
+            </div>
           </li>
           <li className={styles.header__navlink}>
-            {/* <Link to="/#forUsers">ПОЛЬЗОВАТЕЛЯМ</Link> */}
-            <a href="/#forUsers">ПОЛЬЗОВАТЕЛЯМ</a>
+            <a href="/projects">ПРОЕКТЫ</a>
           </li>
-          <li className={styles.header__navlink}>
-            {/* <Link to="/">ПАРТНЕРАМ</Link> */}
-            <a href="/#partnership">ПАРТНЕРАМ</a>
-          </li>
-          <li className={styles.header__navlink}>
-            {/* <Link to="/">КОНТАКТЫ</Link> */}
-            <a href="/#contactUs">КОНТАКТЫ</a>
-          </li>
-          {isLoggedIn ? (
-            <>
-              <li className={styles.header__sign_10percent_left}>
-                <Link to="/profile/0">ПРОФИЛЬ</Link>
-              </li>
-              <li className={styles.header__sign}>
-                <a onClick={logoutUser}>ВЫЙТИ</a>
-              </li>
-            </>
-          ) : (
-            <li className={styles.header__sign_10percent_left}>
+        </ul>
+        {isLoggedIn ? (
+          <ul className={styles.header__navbar}>
+            <li className={styles.header__navlink}>
+              <Link to="/profile/0">ПРОФИЛЬ</Link>
+            </li>
+            <li className={styles.header__navlink}>
+              <a onClick={logoutUser} href="">
+                ВЫЙТИ
+              </a>
+            </li>
+          </ul>
+        ) : (
+          <ul className={styles.header__navbar}>
+            <li className={styles.header__navlink}>
               <Link to="/login">ВОЙТИ В АККАУНТ</Link>
             </li>
-          )}
-        </ul>
+          </ul>
+        )}
       </div>
     </>
   );

@@ -2,11 +2,11 @@
 @use "../../index" as *;
 
 .close_filter_cont {
+  @extend .cross_button;
+
   position: absolute;
   right: 25px;
   top: 25px;
-
-  @include cross_button();
 }
 
 .button_accent {
@@ -85,10 +85,6 @@ input.searchbar {
 .filter {
   display: flex;
   align-items: center;
-}
-
-.filter_cont {
-  @include popup_middle_long();
 }
 
 .filters_cnt {

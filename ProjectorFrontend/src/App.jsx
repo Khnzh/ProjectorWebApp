@@ -36,6 +36,10 @@ function AppInside() {
             element={<ProjectDisplay specific="saved" />}
           />
           <Route path="/project/:prId" element={<ProjectDetailedView />} />
+          <Route
+            path="/projects/mine"
+            element={<ProjectDisplay specific="mine" />}
+          />
           <Route path="/project/create" element={<ProjectCreate />} />
         </Route>
       </Routes>

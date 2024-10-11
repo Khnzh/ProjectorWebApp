@@ -7,9 +7,11 @@ import DropdownSpecs from "../dropdownSpecs/DropdownSpecs";
 
 import styles from "./Sidebar.module.scss";
 import ProjectorSbButton from "../projectorSbButton/ProjectorSbButton";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Sidebar({ sb, toggle }) {
   const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
+  const navigate = useNavigate();
   const [uId, setUId] = useState(null);
   const [email, setEmail] = useState(null);
   const [name, setName] = useState(null);
@@ -19,7 +21,12 @@ export default function Sidebar({ sb, toggle }) {
   const [avatarURL, setAvatarURL] = useState("/profilePicPlaceholder.png");
 
   useEffect(() => {
-    const info = JSON.parse(localStorage.getItem(localKey));
+    let info = localStorage.getItem(localKey);
+    if (info) {
+      info = JSON.parse(info);
+    } else {
+      return undefined;
+    }
     setUId((u) => info.user.id);
     setEmail((e) => info.user.email);
   }, []);
@@ -71,23 +78,9 @@ export default function Sidebar({ sb, toggle }) {
     };
 
     if (uId) {
-      if (!localStorage.getItem("name") || !localStorage.getItem("lastName")) {
-        fetchName(uId);
-      } else {
-        setName(localStorage.getItem("name"));
-        setLastName(localStorage.getItem("lastName"));
-      }
-      if (!localStorage.getItem("specs")) {
-        fetchSpecs();
-      } else {
-        setSpecs(JSON.parse(localStorage.getItem("specs")));
-        setMainSpec(JSON.parse(localStorage.getItem("specs"))[0]);
-      }
-      if (!localStorage.getItem("avatar")) {
-        fetchAvatarURL();
-      } else {
-        setAvatarURL(localStorage.getItem("avatar"));
-      }
+      fetchName(uId);
+      fetchSpecs();
+      fetchAvatarURL();
     }
   }, [uId]);
 
@@ -102,13 +95,14 @@ export default function Sidebar({ sb, toggle }) {
         <h2 className={styles.medium_title}>{email}</h2>
 
         <div className={styles.flex_row_info}>
-          {specs && (
+          {/* {specs && (
             <DropdownSpecs
               specs={specs}
               mainSpec={mainSpec}
               setMainSpec={setMainSpec}
             />
-          )}
+          )} */}
+          {specs && <h1>{specs[0].name}</h1>}
           <img
             className={styles.role_image}
             src={"/assets/ef1f380df79efdee8d12fa47e080a734.svg"}
@@ -117,12 +111,51 @@ export default function Sidebar({ sb, toggle }) {
         </div>
 
         <h2 className={styles.medium_title1}>
-          <span className={styles.no_wrap}>Редактировать профиль</span>
+          <span className={styles.no_wrap}>
+            <a href="/profile/1">Редактировать профиль</a>
+          </span>
         </h2>
 
-        <button className={styles.full_length_button}>ДОБАВИТЬ ЗАЯВКУ</button>
+        <button
+          className={styles.full_length_button}
+          onClick={() => navigate("/project/create")}
+        >
+          ДОБАВИТЬ ЗАЯВКУ
+        </button>
 
-        <div className={styles.flex_row}>
+        <ul>
+          <li>
+            <a className={styles.title1} href="/projects">
+              КАТАЛОГ ЗАЯВОК
+            </a>
+          </li>
+          <li>
+            <a className={styles.title1} href="/projects">
+              МОИ ПРОЕКТЫ
+            </a>
+          </li>
+          <li>
+            <a className={styles.title1} href="/projects/saved">
+              ИЗБРАННОЕ
+            </a>
+          </li>
+          {/* <li>
+            <a className={styles.title1} href="/projects">
+              ОТКЛИКИ
+            </a>
+          </li>
+          <li>
+            <a className={styles.title1} href="/projects">
+              СПЕЦИАЛИСТЫ
+            </a>
+          </li>
+          <li>
+            <a className={styles.title1} href="/projects">
+              УВЕДОМЛЕНЯ
+            </a>
+          </li> */}
+        </ul>
+        {/* <div className={styles.flex_row}>
           <img
             className={styles.image17}
             src={"/assets/e2eb7164ddaa335cc3d6e67781eeceda.svg"}
@@ -130,7 +163,6 @@ export default function Sidebar({ sb, toggle }) {
           />
           <a className={styles.title1}>КАТАЛОГ</a>
         </div>
-
         <div className={styles.flex_row1}>
           <div className={styles.flex_row_info}>
             <img
@@ -163,7 +195,7 @@ export default function Sidebar({ sb, toggle }) {
             alt="alt text"
           />
           <a className={styles.title1}>УВЕДОМЛЕНИЯ</a>
-        </div>
+        </div> */}
       </div>
     </div>
   );

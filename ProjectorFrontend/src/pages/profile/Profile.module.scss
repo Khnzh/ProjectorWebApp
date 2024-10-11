@@ -1,31 +1,13 @@
 @import "../../index";
 
 .tab_container {
-  @include blurred_bg();
+  @extend .blurred_bg;
   padding-top: 1%;
   width: 60%;
   margin: 10vh 20% 0 20%;
   display: flex;
   flex-direction: column;
   position: relative;
-  &::before {
-    @include blurred_before();
-  }
-
-  .save_button,
-  .change_button {
-    @include custom_button();
-
-    & {
-      align-self: center;
-      margin-bottom: 2%;
-      width: 50%;
-
-      &::before {
-        content: attr(data-content);
-      }
-    }
-  }
 }
 
 .tab_toggle {

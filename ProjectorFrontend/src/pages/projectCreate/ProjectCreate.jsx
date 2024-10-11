@@ -245,7 +245,7 @@ export default function ProjectCreate() {
               <button
                 index={i}
                 onClick={(e) => rmRole(e)}
-                className={styles.role_deletion_button}
+                className="cross_button align-center"
               ></button>
             </div>
             <FilterInput
@@ -358,14 +358,14 @@ export default function ProjectCreate() {
           </div>
         ))}
       </div>
-      <button className={styles.add_role} onClick={addRole}>
+      <button className="add_button align_center" onClick={addRole}>
         Добавить
       </button>
-      <button
-        onClick={createProject}
-        className={styles.save_button}
-        data-content="СОХРАНИТЬ"
-      ></button>
+      <div className="outline_btn align-center" onClick={createProject}>
+        <p>СОХРАНИТЬ</p>
+        <span>СОХРАНИТЬ</span>
+        <button></button>
+      </div>
     </>
   );
 }

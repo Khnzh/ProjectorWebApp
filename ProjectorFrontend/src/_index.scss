@@ -8,6 +8,16 @@ $background-blur: rgba(0, 0, 0, 0.4);
 $box-shadow-color: rgba(0, 0, 0, 0.5);
 $blur-radius: 10px;
 
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 @mixin button_accent {
   text-transform: uppercase;
   display: flex;
@@ -40,11 +50,14 @@ $blur-radius: 10px;
   margin-bottom: 2rem;
 }
 
-@mixin my_btn($fs) {
+.outline_btn {
   display: inline-block;
   position: relative;
-  font-size: $fs;
+  font-size: 2rem;
   text-transform: uppercase;
+  color: $color;
+  align-self: flex-start;
+  margin-bottom: 2%;
   &:hover {
     &::before {
       content: "";
@@ -58,7 +71,7 @@ $blur-radius: 10px;
       background-position: center;
       pointer-events: none;
       background-image: url("/assets/8600a001ef57bae75a23ca4f8dbe7a1e.svg");
-      filter: blur(100px);
+      filter: blur(50px);
       cursor: pointer;
     }
   }
@@ -136,86 +149,11 @@ $blur-radius: 10px;
   }
 }
 
-@mixin custom_button {
-  position: relative;
-  display: block;
-  padding: 20px 40px;
-  background-color: transparent;
-  color: $color;
-  font-size: 36px;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  transform: rotate(0deg);
-  // p {
-  //   color: red;
-  // }
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: -35%;
-    left: -50%;
-    width: 200%;
-    height: 180%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    pointer-events: none;
-    transition: transform 0.5s;
-    background-image: url("/outter-border.svg");
-    transform: rotate(0deg);
-  }
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: -35%;
-    left: -50%;
-    width: 200%;
-    height: 180%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    pointer-events: none;
-    transition: transform 0.5s;
-    background-image: url("/inner-border.svg");
-    transform: rotate(0deg);
-  }
-
-  &:hover {
-    &::before {
-      transform: rotate(3deg);
-    }
-    &::after {
-      transform: rotate(-1deg);
-    }
-  }
+.align-center {
+  align-self: center;
 }
 
-@mixin blurred_bg {
-  background-color: $background-blur;
-  border-radius: 25px;
-  position: relative;
-  background: inherit;
-  z-index: 1;
-}
-
-@mixin blurred_before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 25px;
-  box-shadow: inset 0 0 2000px $box-shadow-color;
-  -webkit-backdrop-filter: blur($blur-radius);
-  backdrop-filter: blur($blur-radius);
-  z-index: -1;
-}
-
-@mixin cross_button {
+.cross_button {
   height: 40px;
   width: 40px;
   background-color: transparent;
@@ -273,6 +211,7 @@ html {
   color: $color;
   font-family: $font;
   place-items: center;
+  // overflow: hidden;
 }
 
 body {
@@ -317,7 +256,7 @@ a {
 }
 
 .blurred_bg {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: $background-blur;
   border-radius: 25px;
   position: relative;
   background: inherit;
@@ -331,9 +270,9 @@ a {
     right: 0;
     bottom: 0;
     border-radius: 25px;
-    box-shadow: inset 0 0 2000px rgba(0, 0, 0, 0.5);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 2000px $box-shadow-color;
+    -webkit-backdrop-filter: blur($blur-radius);
+    backdrop-filter: blur($blur-radius);
     z-index: -1;
   }
 }
@@ -342,16 +281,12 @@ a {
   margin-bottom: 7vh;
 }
 
-.margin_bottom_1em {
+.margin_bottom_2em {
   margin-bottom: 2em;
 }
 
 .margin_top_negative10 {
   margin-top: -10vh;
-}
-
-.signup {
-  margin-bottom: 0.5em;
 }
 
 ul {
@@ -434,12 +369,6 @@ div .validation-message {
   position: static;
 }
 
-.test_borders {
-  border: 1px $highlight solid;
-  border-radius: 10px 10px 10px 0;
-  width: 100%;
-}
-
 a.css-q7jpt8-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
   background-color: $highlight;
 
@@ -465,10 +394,10 @@ section {
   width: 100%;
 }
 
-@mixin popup_middle_long {
-  @include blurred_bg();
+.popup_middle_long {
+  @extend .blurred_bg;
   padding: 2%;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: flex-start;
   position: fixed;
@@ -479,10 +408,7 @@ section {
   background-color: rgba(rgb(64, 75, 95), 0.4);
   max-width: 25%;
   min-width: 328px;
-
-  &::before {
-    @include blurred_before();
-  }
+  z-index: 2;
 
   h1 {
     text-transform: uppercase;
@@ -507,7 +433,7 @@ section {
   width: 20em;
 }
 
-@mixin add_button {
+.add_button {
   margin-top: 5vh;
   margin-bottom: 3vh;
   background-color: transparent;
@@ -533,20 +459,4 @@ section {
   &:hover {
     cursor: pointer;
   }
-}
-
-.save_svg_outline {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  cursor: pointer;
-
-  &:hover {
-    fill: $highlight;
-  }
-}
-
-.save_svg_filled {
-  @extend .save_svg_outline;
-  fill: highlight;
 }

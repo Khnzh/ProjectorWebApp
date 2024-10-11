@@ -50,7 +50,7 @@ const EducationTab = ({
                 <button
                   index={index}
                   onClick={(e) => decrementEduQuantity(e)}
-                  className={styles.section_deletion}
+                  className="cross_button"
                 ></button>
               )}
             </div>
@@ -166,7 +166,7 @@ const EducationTab = ({
         ))}
 
       {mode == 0 && (
-        <p className={styles.add} onClick={incrementEduQuantity}>
+        <p className="add_button" onClick={incrementEduQuantity}>
           Добавить
         </p>
       )}
