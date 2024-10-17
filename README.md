@@ -4,32 +4,32 @@
 
 # Главная страница
 
-<img src="public/introduction.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/introduction.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
 
 ## О нас
 
-<img src="public/aboutUs.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/aboutUs.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
 
 ## Возможности
 
-<img src="public/opportunities.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/opportunities.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
 
 # Профиль
 
-<img src="public/Profile.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/Profile.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
 
 # Проекты
 
-<img src="public/projects.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/projects.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
 
 ## Возможность фильтрации и поиска
 
-<img src="public/projectFilters.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/projectFilters.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
 
 ## Обзор проекта и доступных вакансий
 
-<img src="public/detailedView.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/detailedView.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
 
 ## Создание своего проекта
 
-<img src="public/projectCreate.png" width="1519" height="1000" style="width: 100%; object-fit: contain;">
+<img src="public/projectCreate.png" width="1519" height="500" style="width: 100%; height: auto; object-fit: contain;">
