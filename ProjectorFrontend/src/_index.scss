@@ -18,7 +18,7 @@ $blur-radius: 10px;
   flex-direction: row;
 }
 
-@mixin button_accent {
+.button_accent {
   text-transform: uppercase;
   display: flex;
   justify-content: center;
@@ -44,12 +44,6 @@ $blur-radius: 10px;
   font-size: 2em;
 }
 
-@mixin signup__radio__cnt {
-  border-bottom: 2px solid $highlight;
-  width: 90%;
-  margin-bottom: 2rem;
-}
-
 .outline_btn {
   display: inline-block;
   position: relative;
@@ -58,7 +52,8 @@ $blur-radius: 10px;
   color: $color;
   align-self: flex-start;
   margin-bottom: 2%;
-  &:hover {
+  &:hover,
+  &:focus-within {
     &::before {
       content: "";
       position: absolute;
@@ -153,6 +148,10 @@ $blur-radius: 10px;
   align-self: center;
 }
 
+.align-start {
+  align-self: flex-start;
+}
+
 .cross_button {
   height: 40px;
   width: 40px;
@@ -169,6 +168,35 @@ $blur-radius: 10px;
   }
 }
 
+.bigger_paragraph {
+  font-size: 1.5em;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+.accent {
+  color: $highlight;
+}
+
+.light {
+  font-weight: 100;
+}
+
+.light_accent {
+  color: $highlight;
+  font-weight: 100;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -176,42 +204,8 @@ $blur-radius: 10px;
   font-family: $font;
 }
 
-input,
-button,
-textarea {
-  color: inherit;
-  font-family: inherit;
-  box-sizing: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: #ffffff;
-  transition: background-color 5000s ease-in-out 0s;
-  box-shadow: inset 0 0 20px 20px #23232329;
-}
-
 html {
   scroll-behavior: smooth;
-}
-
-#root {
-  position: relative;
-  top: 0;
-  padding-bottom: 0;
-  width: 100%;
-  background-color: transparent;
-  color: $color;
-  font-family: $font;
-  place-items: center;
-  // overflow: hidden;
 }
 
 body {
@@ -229,9 +223,48 @@ body {
   width: 100%;
 }
 
+#root {
+  position: relative;
+  top: 0;
+  padding-bottom: 0;
+  width: 100%;
+  background-color: transparent;
+  color: $color;
+  font-family: $font;
+  place-items: center;
+  // overflow: hidden;
+}
+
+input,
+button,
+textarea {
+  color: inherit;
+  font-family: inherit;
+  box-sizing: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
 a {
   text-decoration: none;
   color: inherit;
+}
+
+label {
+  font-size: 1.5em;
+  color: $highlight;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
 }
 
 .login__input {
@@ -283,6 +316,14 @@ a {
 
 .margin_bottom_2em {
   margin-bottom: 2em;
+}
+
+.margin_top_1em {
+  margin-top: 1em;
+}
+
+.margin_bottom_1em {
+  margin-bottom: 1em;
 }
 
 .margin_top_negative10 {

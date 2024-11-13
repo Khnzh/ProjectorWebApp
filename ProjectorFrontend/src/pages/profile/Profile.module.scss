@@ -1,6 +1,6 @@
 @import "../../index";
 
-.tab_container {
+.profile {
   @extend .blurred_bg;
   padding-top: 1%;
   width: 60%;
@@ -8,29 +8,29 @@
   display: flex;
   flex-direction: column;
   position: relative;
-}
 
-.tab_toggle {
-  height: 5vh;
-  width: calc(1 / 3 * 100%);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  font-family: $font;
-  font-size: 1.5rem;
+  &__tabs {
+    display: flex;
+    flex-flow: row nowrap;
+
+    &_header {
+      height: 5vh;
+      width: calc(1 / 3 * 100%);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      font-family: $font;
+      font-size: 1.5rem;
+    }
+  }
 }
 
 .active_tab {
-  @extend .tab_toggle;
+  @extend .profile__tabs_header;
   color: $highlight;
   text-decoration: underline;
-}
-
-.tab_positioning {
-  display: flex;
-  flex-flow: row nowrap;
 }
 
 hr {

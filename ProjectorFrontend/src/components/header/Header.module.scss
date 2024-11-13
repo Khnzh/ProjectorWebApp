@@ -97,7 +97,8 @@ $color-sign: #fff5da;
   position: relative;
   display: inline-block;
   border-radius: 0;
-  &:hover {
+  &:hover,
+  &:focus-within {
     .dropdown_content {
       max-height: 500px;
     }

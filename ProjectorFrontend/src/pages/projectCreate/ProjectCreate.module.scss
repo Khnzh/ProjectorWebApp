@@ -1,12 +1,32 @@
 @use "../../utils" as *;
 @use "../../index" as *;
 
-.project_detail_column {
+.create {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px 0;
   width: 97.93%;
+  &__row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-bottom: 10px;
+
+    .button_accent,
+    button {
+      @extend .button_accent;
+
+      width: 255px;
+      margin-right: 0.75em;
+    }
+
+    .black_bg {
+      background-color: black;
+    }
+  }
 }
 
 .project_add_title {
@@ -17,6 +37,7 @@
 }
 
 .flex_row_input_container {
+  margin-top: 2em;
   display: flex;
   justify-content: space-between;
   gap: 0 10px;
@@ -55,7 +76,8 @@ textarea {
   flex-direction: column;
   align-items: center;
   margin: 0 0 37px;
-  width: 639px;
+  gap: 2em;
+  width: 50%;
   min-width: 0;
 }
 
@@ -81,12 +103,12 @@ textarea {
   flex-direction: column;
   align-items: center;
   gap: 7px 0;
-  margin: 49px 0 0;
-  width: 499px;
   min-width: 0;
+  width: 35%;
 }
 
 .project_image_comment {
+  width: 100%;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -94,39 +116,26 @@ textarea {
   border-radius: 30px;
   outline: 3px solid rgb(222 158 40 / 90.1%);
   outline-offset: -3px;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
 }
 
 .project_image {
-  margin: 45px auto;
-  width: 74.55%;
-}
-
-.project_type_column {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+  height: 100%;
+  align-self: center;
   width: 100%;
-  margin-bottom: 10px;
-
-  .button_accent,
-  button {
-    @include button_accent();
-
-    width: 255px;
-    margin-right: 0.75em;
-  }
-
-  button {
-    background-color: black;
-  }
 }
 
 .role_cnt {
   display: flex;
   flex-direction: column;
   ul {
-    @extend .project_type_column;
+    @extend .create__row;
     margin-bottom: 0;
 
     li {
@@ -230,4 +239,9 @@ textarea {
   justify-content: center;
   background-color: $highlight;
   border-radius: 15px;
+}
+
+.radio_label {
+  font-size: 1em;
+  margin-left: 1em;
 }

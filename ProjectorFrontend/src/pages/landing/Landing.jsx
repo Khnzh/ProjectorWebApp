@@ -8,9 +8,9 @@ function Landing() {
   const navigate = useNavigate();
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.landing}>
         <div className={styles.paperOverlay}></div>
-        <div className={styles.page_top}>
+        <div className={styles.landing__header}>
           <Header />
         </div>
         <section id="about" className={styles.landing__about}>
@@ -19,9 +19,9 @@ function Landing() {
             alt=""
             width={1493}
             height={335}
-            className={styles.sign_big_header}
+            className={styles.full_width_img}
           />
-          <div className={styles.landing_cmps}>
+          <div className={styles.landing_components}>
             <div className={styles.cloud_text}>
               <p>
                 Камера, мотор… ПРОЖЕКТОР!
@@ -47,10 +47,15 @@ function Landing() {
           </div>
         </section>
         <section id="forUsers" className={styles.landing__info_for_users}>
-          <div className={cn(styles.forusers_row1, styles.curve_top_bg)}>
+          <div
+            className={cn(
+              styles.landing__info_for_users__row1,
+              styles.curve_top_bg
+            )}
+          >
             <div className={styles.sign_projector_is}>
               <img src="sign_projector_is.png" alt="" width={511} height={74} />
-              <p>
+              <p className="bigger_paragraph">
                 Платформа для начинающих специалистов в сфере киноиндустрии,
                 которые хотят найти команду для реализации своего видеопроекта
               </p>
@@ -60,7 +65,7 @@ function Landing() {
               alt=""
               width={412}
               height={633}
-              className={styles.forusers_img1}
+              className={styles.landing__info_for_users__img1}
             />
             <img
               src="/assets/bottom_curve.svg"
@@ -69,35 +74,43 @@ function Landing() {
             />
           </div>
           <div className={styles.margin_div}>
-            <div className={styles.forusers_row2}>
+            <div className={styles.landing__info_for_users__row2}>
               <img
                 src="/two_fellas.png"
                 alt=""
                 width={519}
                 height={587}
-                className={styles.forusers_img2}
+                className={styles.landing__info_for_users__img2}
               />
               <div className={styles.sign_why_us}>
                 <img src="sign_why_us.png" alt="" width={440} height={110} />
                 <ul>
                   <li>
-                    <p>Предлагаем юридически закрепить трудовые отношения</p>
+                    <p className="bigger_paragraph">
+                      Предлагаем юридически закрепить трудовые отношения
+                    </p>
                   </li>
                   <li>
-                    <p>Создаем неформальное коммьюнити специалистов</p>
+                    <p className="bigger_paragraph">
+                      Создаем неформальное коммьюнити специалистов
+                    </p>
                   </li>
                   <li>
-                    <p>Помогаем найти подходящих специалистов</p>
+                    <p className="bigger_paragraph">
+                      Помогаем найти подходящих специалистов
+                    </p>
                   </li>
                   <li>
-                    <p>Даем возможность развить себя как личный бренд</p>
+                    <p className="bigger_paragraph">
+                      Даем возможность развить себя как личный бренд
+                    </p>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
           <button
-            className={styles.minimalistic_button}
+            className={styles.landing__signup_button}
             onClick={() => {
               navigate("/signup");
             }}
@@ -111,11 +124,11 @@ function Landing() {
             alt=""
             width={1509}
             height={202}
-            className={cn(styles.sign_big_header, "margin_bottom_7")}
+            className={cn(styles.full_width_img, "margin_bottom_7")}
           />
-          <div className={styles.landing_cmps}>
-            <div className={styles.landing_cmps__third_width_element}>
-              <h2>РЕЖИССЕРА</h2>
+          <div className={styles.landing_components}>
+            <div className={styles.landing_components__element__third}>
+              <h2 className="accent">РЕЖИССЕРА</h2>
               <img
                 src="/assets/hlopushka.svg"
                 alt=""
@@ -130,8 +143,8 @@ function Landing() {
                 <li>заключить договор об оказании услуг с подрядчиками</li>
               </ol>
             </div>
-            <div className={styles.landing_cmps__third_width_element}>
-              <h2>ПРОДЮСЕРА</h2>
+            <div className={styles.landing_components__element__third}>
+              <h2 className="accent">ПРОДЮСЕРА</h2>
               <img src="/dollar_bill.png" alt="" width={256} height={194} />
               <ol>
                 <li>рассказать о своей идее на сайте</li>
@@ -140,8 +153,8 @@ function Landing() {
                 <li>заключить договор об оказании услуг с подрядчиками</li>
               </ol>
             </div>
-            <div className={styles.landing_cmps__third_width_element}>
-              <h2>ДРУГИХ ЧЛЕНОВ КОМАНДЫ</h2>
+            <div className={styles.landing_components__element__third}>
+              <h2 className="accent">ДРУГИХ ЧЛЕНОВ КОМАНДЫ</h2>
               <img src="/three_fellas.png" alt="" width={304} height={196} />
               <ol>
                 <li>организовать депонирование сценариев</li>
@@ -152,7 +165,7 @@ function Landing() {
             </div>
           </div>
           <button
-            className={styles.minimalistic_button}
+            className={styles.landing__signup_button}
             onClick={() => {
               navigate("/signup");
             }}
@@ -164,20 +177,20 @@ function Landing() {
             alt=""
             width={1511}
             height={370}
-            className={cn(styles.sign_big_header)}
+            className={cn(styles.full_width_img)}
           />
         </section>
-        <section className={styles.landing__opportunities} id="partnership">
+        <section className={styles.landing__partnership} id="partnership">
           <img
             src="sign_collaborating_with.png"
             alt=""
             width={1484}
             height={204}
-            className={cn(styles.sign_big_header, "margin_bottom_7")}
+            className={cn(styles.full_width_img, "margin_bottom_7")}
           />
-          <div className={styles.landing_cmps}>
-            <div className={styles.landing_cmps__half_width_element}>
-              <h2>УНИВЕРСИТЕТАМИ</h2>
+          <div className={styles.landing_components}>
+            <div className={styles.landing_components__element__half}>
+              <h2 className="accent">УНИВЕРСИТЕТАМИ</h2>
               <ul>
                 <li>
                   повышение эффективности коммуникации между студентами внутри
@@ -190,8 +203,8 @@ function Landing() {
                 <li>единая корпоративная система для вуза</li>
               </ul>
             </div>
-            <div className={styles.landing_cmps__half_width_element}>
-              <h2>ПАРТНЕРАМИ ИЗ КИНОСФЕРЫ</h2>
+            <div className={styles.landing_components__element__half}>
+              <h2 className="accent">ПАРТНЕРАМИ ИЗ КИНОСФЕРЫ</h2>
               <ul>
                 <li>разработка взаимовыгодной стратегии продвижения</li>
                 <li>
@@ -202,7 +215,7 @@ function Landing() {
             </div>
           </div>
           <button
-            className={styles.minimalistic_button}
+            className={styles.landing__signup_button}
             onClick={() => {
               navigate("/signup");
             }}
@@ -210,13 +223,13 @@ function Landing() {
             Зарегистрироваться
           </button>
         </section>
-        <section className={styles.landing__opportunities} id="contactUs">
-          <div className={styles.questions_bg}>
-            <div className={styles.questions_cmps}>
+        <section className={styles.landing__contact} id="contactUs">
+          <div className={styles.landing__contact_bg}>
+            <div className={styles.landing__contact_content}>
               <svg
                 width="1498"
                 height="844"
-                className={styles.questions_frame}
+                className={styles.landing__contact_frame}
                 viewBox="0 0 1498 844"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -229,46 +242,48 @@ function Landing() {
                   strokeLinecap="round"
                 />
               </svg>
-              <div className={cn(styles.questions_cmps__half_width_element)}>
+              <div
+                className={cn(styles.landing__contact_content__element__half)}
+              >
                 <img
                   src="questions.png"
                   alt=""
                   width={395}
                   height={70}
-                  className={styles.sign_big_header}
+                  className={styles.full_width_img}
                 />
-                <h2 className={styles.contact_h2}>Предложения?</h2>
+                <h2 className="light">Предложения?</h2>
                 <p>Свяжитесь с нами!</p>
-                <div className={cn(styles.landing_cmps, styles.gap)}>
+                <div className={cn(styles.landing_components, styles.gap)}>
                   <img
                     src="whatsapp_icon.png"
                     alt=""
                     width={71}
                     height={77}
-                    className={styles.sign_big_header}
+                    className={styles.full_width_img}
                   />
                   <img
                     src="instagram_icon.png"
                     alt=""
                     width={71}
                     height={77}
-                    className={styles.sign_big_header}
+                    className={styles.full_width_img}
                   />
                   <img
                     src="telegram_icon.png"
                     alt=""
                     width={71}
                     height={77}
-                    className={styles.sign_big_header}
+                    className={styles.full_width_img}
                   />
                 </div>
               </div>
-              <div className={styles.questions_cmps__half_width_element}>
-                <p className={styles.margin_bottom_1em}>
+              <div className={styles.landing__contact_content__element__half}>
+                <p className="margin_bottom_1em">
                   Пользователям <br />
                   projector.inform@gmail.com
                 </p>
-                <p className={styles.margin_bottom_1em}>
+                <p className="margin_bottom_1em">
                   Партнёрам <br />
                   partner@projector.ru
                 </p>
@@ -285,7 +300,7 @@ function Landing() {
               alt=""
               width={200}
               height={300}
-              className={styles.sign_big_header}
+              className={styles.full_width_img}
             />
           </div>
           <img
@@ -293,7 +308,7 @@ function Landing() {
             alt=""
             width={200}
             height={300}
-            className={cn(styles.sign_big_header, "margin_top_negative10")}
+            className={cn(styles.full_width_img, "margin_top_negative10")}
           />
         </section>
         <footer className={styles.landing__footer}>

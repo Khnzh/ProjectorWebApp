@@ -24,9 +24,9 @@ const EducationTab = ({
       {/* MAPS THROUGH ALL EDUCATION INSTANCES AND RENDERS THEM */}
       {education &&
         education.map((item, index) => (
-          <div key={`edu${index}`} className={styles.additional_edu}>
-            <div className={styles.edu_header}>
-              <p>ВИД ОБРАЗОВАНИЯ*</p>
+          <div key={`edu${index}`} className={styles.additional_content}>
+            <div className={styles.additional_content__header}>
+              <h2 className="accent light">ВИД ОБРАЗОВАНИЯ*</h2>
               {index == 0 ? (
                 activeEdu > 0 &&
                 mode == 0 && (
@@ -54,7 +54,7 @@ const EducationTab = ({
                 ></button>
               )}
             </div>
-            <div className={styles.radio_no_underline}>
+            <div>
               <CustomRadio
                 id={`general${index}`}
                 lbl="Основное"

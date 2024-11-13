@@ -23,8 +23,8 @@ const PortfolioTab = ({
       {/* MAPS THROUGH ALL PROJECT INSTANCES AND RENDERS THEM */}
       {project &&
         project.map((item, index) => (
-          <div key={`portf${index}`} className={styles.additional_edu}>
-            <div className={styles.edu_header}>
+          <div key={`portf${index}`} className={styles.additional_content}>
+            <div className={styles.additional_content__header}>
               <label htmlFor={index + "prName"}>НАЗВАНИЕ*</label>
               {index == 0 ? (
                 activeProjects > 0 &&

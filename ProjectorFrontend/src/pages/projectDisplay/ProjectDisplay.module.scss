@@ -10,7 +10,7 @@
 }
 
 .button_accent {
-  @include button_accent();
+  @extend .button_accent;
 
   margin-top: 0;
 }

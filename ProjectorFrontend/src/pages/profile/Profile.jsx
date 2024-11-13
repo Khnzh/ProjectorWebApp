@@ -9,10 +9,10 @@ import {
   hasOnlySpecificStrings,
 } from "../../utilityFunctions/Validation";
 import { useAuth } from "../../context/AuthContext";
-import ProfileTab from "../../components/tabs/ProfileTab/ProfileTab";
 import EducationTab from "../../components/tabs/EducationTab/EducationTab";
 import PortfolioTab from "../../components/tabs/PortfolioTab/PortfolioTab";
 import { unauthorizedRedirect } from "../../utilityFunctions/unauthorizedRedirect";
+import GeneralTab from "../../components/tabs/GeneralTab/GeneralTab";
 
 export default function Profile() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
@@ -430,30 +430,36 @@ export default function Profile() {
   useEffect(() => console.log(project), [project]);
   return (
     <>
-      <div className={styles.tab_container}>
-        <div className={styles.tab_positioning}>
+      <div className={styles.profile}>
+        <div className={styles.profile__tabs}>
           <div
             onClick={() => changeActive(1)}
-            className={active === 1 ? styles.active_tab : styles.tab_toggle}
+            className={
+              active === 1 ? styles.active_tab : styles.profile__tabs_header
+            }
           >
             <p>О себе</p>
           </div>
           <div
             onClick={() => changeActive(2)}
-            className={active === 2 ? styles.active_tab : styles.tab_toggle}
+            className={
+              active === 2 ? styles.active_tab : styles.profile__tabs_header
+            }
           >
             <p>Портфолио</p>
           </div>
           <div
             onClick={() => changeActive(3)}
-            className={active === 3 ? styles.active_tab : styles.tab_toggle}
+            className={
+              active === 3 ? styles.active_tab : styles.profile__tabs_header
+            }
           >
             <p>Образование</p>
           </div>
         </div>
 
-        {/* PROFILE */}
-        <ProfileTab
+        {/* GENERAL INFORMATION */}
+        <GeneralTab
           active={active}
           uId={uId}
           profile={profile}

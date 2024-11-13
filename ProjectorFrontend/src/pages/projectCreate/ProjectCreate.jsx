@@ -167,17 +167,12 @@ export default function ProjectCreate() {
           <p>Succes!</p>
         </div>
       </div>
-      <div className={styles.project_detail_column}>
-        <h1
-          className={styles.project_add_title}
-          onClick={() => console.log(availableRoles)}
-        >
-          Добавьте ваш проект
-        </h1>
+      <div className={styles.create}>
+        <h1>Добавьте ваш проект</h1>
 
         <div className={styles.flex_row_input_container}>
           <div className={styles.project_name_column}>
-            <h1 className={styles.project_name_label}>НАЗВАНИЕ*</h1>
+            <h2 className="align-start accent">НАЗВАНИЕ*</h2>
             <input
               onChange={(e) =>
                 setPrInfo((s) => {
@@ -190,7 +185,7 @@ export default function ProjectCreate() {
               placeholder="Введите..."
             />
 
-            <h1 className={styles.project_description_label}>ОПИСАНИЕ*</h1>
+            <h2 className="align-start accent">ОПИСАНИЕ*</h2>
             <input
               onChange={(e) =>
                 setPrInfo((s) => {
@@ -206,23 +201,25 @@ export default function ProjectCreate() {
 
           <div className={styles.image_display_column}>
             <div className={styles.project_image_comment}>
-              <img
+              {/* <img
                 className={styles.project_image}
                 src={"/assets/77006753426b76f21dd172823dc531bc.svg"}
                 alt="alt text"
-              />
+              /> */}
             </div>
           </div>
         </div>
       </div>
       {/* project types */}
-      <h1 className={styles.project_type_label}>ТИП ПРОЕКТА*</h1>
-      <div className={styles.project_type_column}>
+      <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+        ТИП ПРОЕКТА*
+      </h2>
+      <div className={styles.create__row}>
         {types.map((type) => (
           <button
             key={type.id}
             className={`${
-              prInfo.type.id === type.id ? styles.button_accent : ""
+              prInfo.type.id === type.id ? "button_accent" : styles.black_bg
             }`}
             onClick={() =>
               setPrInfo((s) => {
@@ -237,11 +234,15 @@ export default function ProjectCreate() {
 
       {/* popular qualifications */}
       <div className={styles.roles_cnt}>
-        <h1 className={styles.project_type_label}>СПЕЦИАЛИСТЫ*</h1>
+        <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+          СПЕЦИАЛИСТЫ*
+        </h2>
         {availableRoles.map((qual, i) => (
           <div className={styles.role_cnt} key={`role${i}`} id={`role${i}`}>
             <div className={styles.role_header}>
-              <h1 className={styles.project_type_label}>СПЕЦИАЛИСТ №{i + 1}</h1>
+              <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+                СПЕЦИАЛИСТ №{i + 1}
+              </h2>
               <button
                 index={i}
                 onClick={(e) => rmRole(e)}
@@ -260,8 +261,10 @@ export default function ProjectCreate() {
               setSelected={setAvailableRoles}
               iteration={i}
             />
-            <h1 className={styles.project_type_label}>ПОПУЛЯРНОЕ</h1>
-            <div className={styles.project_type_column}>
+            <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+              ПОПУЛЯРНОЕ
+            </h2>
+            <div className={styles.create__row}>
               <ul>
                 {popularQualifications.map((item) => (
                   <li key={item.id}>
@@ -277,6 +280,7 @@ export default function ProjectCreate() {
                       changeFn={(e) =>
                         changeRoleProperty(i, "qualification", item)
                       }
+                      style={styles.radio_label}
                     />
                   </li>
                 ))}
@@ -284,13 +288,17 @@ export default function ProjectCreate() {
             </div>
 
             {/* specialist experience */}
-            <h1 className={styles.project_type_label}>СТАЖ*</h1>
-            <div className={styles.project_type_column}>
+            <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+              СТАЖ*
+            </h2>
+            <div className={styles.create__row}>
               {experiences.map((type) => (
                 <button
                   key={type.id}
                   className={`${
-                    qual.experience.id === type.id ? styles.button_accent : ""
+                    qual.experience.id === type.id
+                      ? "button_accent"
+                      : styles.black_bg
                   }`}
                   onClick={() => changeRoleProperty(i, "experience", type)}
                 >
@@ -300,13 +308,17 @@ export default function ProjectCreate() {
             </div>
 
             {/* specialist employment */}
-            <h1 className={styles.project_type_label}>ЗАНЯТОСТЬ*</h1>
-            <div className={styles.project_type_column}>
+            <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+              ЗАНЯТОСТЬ*
+            </h2>
+            <div className={styles.create__row}>
               {employmentTypes.map((type) => (
                 <button
                   key={type.id}
                   className={`${
-                    qual.employment.id === type.id ? styles.button_accent : ""
+                    qual.employment.id === type.id
+                      ? "button_accent"
+                      : styles.black_bg
                   }`}
                   onClick={() => changeRoleProperty(i, "employment", type)}
                 >
@@ -316,13 +328,17 @@ export default function ProjectCreate() {
             </div>
 
             {/* specialist shift */}
-            <h1 className={styles.project_type_label}>ВРЕМЯ СМЕНЫ*</h1>
-            <div className={styles.project_type_column}>
+            <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+              ВРЕМЯ СМЕНЫ*
+            </h2>
+            <div className={styles.create__row}>
               {shifts.map((type) => (
                 <button
                   key={type.id}
                   className={`${
-                    qual.shift.id === type.id ? styles.button_accent : ""
+                    qual.shift.id === type.id
+                      ? "button_accent"
+                      : styles.black_bg
                   }`}
                   onClick={() => changeRoleProperty(i, "shift", type)}
                 >
@@ -332,13 +348,17 @@ export default function ProjectCreate() {
             </div>
 
             {/* specialist salary */}
-            <h1 className={styles.project_type_label}>ОПЛАТА*</h1>
-            <div className={styles.project_type_column}>
+            <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+              ОПЛАТА*
+            </h2>
+            <div className={styles.create__row}>
               {salaries.map((type) => (
                 <button
                   key={type.id}
                   className={`${
-                    qual.salary.id === type.id ? styles.button_accent : ""
+                    qual.salary.id === type.id
+                      ? "button_accent"
+                      : styles.black_bg
                   }`}
                   onClick={() => changeRoleProperty(i, "salary", type)}
                 >
@@ -347,7 +367,9 @@ export default function ProjectCreate() {
               ))}
             </div>
 
-            <h1 className={styles.project_name_label}>ТРЕБОВАНИЯ</h1>
+            <h2 className="uppercase accent margin_bottom_1em margin_top_1em">
+              ТРЕБОВАНИЯ
+            </h2>
             <textarea
               type="text"
               placeholder="Введите..."

@@ -1,24 +1,85 @@
 @use "../../index" as *;
 
-$font: "Overpass Mono", monospace;
 $color-cloud-text: #fff5da99;
 
-.container {
+.landing {
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.landing__ {
-  &about,
-  &info_for_users,
-  &opportunities {
+
+  &__about,
+  &__info_for_users,
+  &__partnership,
+  &__contact,
+  &__opportunities {
     background-color: $background-color;
     display: flex;
     flex-direction: column;
     padding: 7vh 10% 0 10%;
   }
-  &about {
+
+  &__contact {
+    &_bg {
+      background-position: center;
+      background-size: 100% 110%;
+      background-repeat: no-repeat;
+      background-image: url("assets/Polygon 1.png");
+      padding: 10vh 0 10vh 0;
+    }
+
+    &_frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &_content {
+      @extend .landing_components;
+      justify-content: space-between;
+      margin: 0 15% 0 15%;
+      padding: 2em;
+      align-items: flex-start;
+      &__element__half {
+        width: 50%;
+        padding: 1em 0 0 0;
+        text-align: left;
+        align-items: flex-start;
+
+        .gap {
+          display: flex;
+          justify-content: flex-start;
+          gap: 2em;
+          margin-top: 1em;
+          img {
+            width: 15%;
+          }
+        }
+
+        &:nth-child(3) {
+          text-align: right;
+          align-items: flex-end;
+        }
+
+        img {
+          object-fit: contain;
+          width: 100%;
+          object-position: left;
+        }
+      }
+
+      h2 {
+        align-self: flex-start;
+        margin-top: 1em;
+        margin-bottom: 1.5em;
+      }
+    }
+  }
+
+  &__about {
     background-image: url(/lamp.svg), url(/lightTriangle.svg);
     background-size: 20%, cover;
     background-position: -2px 16px, 2% 1.5;
@@ -28,66 +89,158 @@ $color-cloud-text: #fff5da99;
     margin-bottom: 0;
     padding-top: 15vh;
   }
-  &info_for_users {
+
+  &__info_for_users {
     background-image: url(/assets/light_rect.png);
     background-size: 100% 100%, cover;
     background-position: top, center;
     background-repeat: no-repeat, no-repeat;
     padding: 0 0 7vh 0;
-    p {
-      font-size: 1.5em;
+    &__img1 {
+      float: right;
+      margin-right: 10%;
+      object-fit: contain;
+      height: 70vh;
+    }
+
+    &__img2 {
+      object-fit: contain;
+      float: left;
+      width: 40%;
+      position: relative;
+      bottom: 150px;
+      left: 0;
+    }
+
+    &__row1 {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      position: relative;
+      padding: 0 10% 0 10%;
+    }
+
+    &__row2 {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      position: relative;
     }
   }
-}
-.page_top {
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
 
-.paperOverlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-repeat: repeat, repeat-y;
-  background-size: 100%, calc(100% - 40px);
-  background-position: center, center;
-  background-image: url("/noise&Texture.png"), url("/sidesFrame.svg");
-  pointer-events: none;
-}
+  &__header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
 
-.flex_col_between {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+  &__footer {
+    display: flex;
+    background-color: $highlight;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 20vh;
+    font-size: 1.2em;
+    a {
+      text-decoration: underline;
+    }
+  }
 
-.forusers_row1 {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  position: relative;
-  padding: 0 10% 0 10%;
-}
+  &__signup_button {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    color: $highlight;
+    position: relative;
+    margin: 3em auto 0 auto;
+    &:hover,
+    &:focus {
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        pointer-events: none;
+        background-image: url("/assets/8600a001ef57bae75a23ca4f8dbe7a1e.svg");
+        filter: blur(30px);
+        cursor: pointer;
+      }
+    }
+  }
 
-.margin_div {
-  margin: 0 10% 0 10%;
-}
+  &_components {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
 
-.padding_div {
-  padding: 0 10% 0 10%;
-}
+    img {
+      width: 40%;
+    }
 
-.forusers_row2 {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  position: relative;
-  padding-bottom: 7em;
+    &__element {
+      &__third,
+      &__half {
+        align-self: flex-start;
+        text-align: center;
+        width: calc(100% * 1 / 3);
+        overflow: hidden;
+        padding: 1em 3% 0 3%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-center;
+
+        h2 {
+          text-align: center;
+        }
+
+        img {
+          object-fit: contain;
+          width: 100%;
+        }
+        ol,
+        ul {
+          text-align: left;
+          width: 100%;
+          li::marker {
+            color: $highlight;
+          }
+        }
+        ul {
+          list-style: disc;
+        }
+      }
+      &__third {
+        img {
+          margin-top: 2em;
+          margin-bottom: 2em;
+        }
+      }
+      &__half {
+        width: 50%;
+        padding: 1em 10% 0 10%;
+        text-align: center;
+        align-items: flex-start;
+        img {
+          object-fit: contain;
+          width: 100%;
+          object-position: left;
+        }
+      }
+    }
+  }
 }
 
 .curve_top_bg {
@@ -159,20 +312,23 @@ $color-cloud-text: #fff5da99;
   }
 }
 
-.forusers_img1 {
-  float: right;
-  margin-right: 10%;
-  object-fit: contain;
-  height: 70vh;
-}
+// UTILITY CLASSES
 
-.forusers_img2 {
-  object-fit: contain;
-  float: left;
-  width: 40%;
+.paperOverlay {
   position: absolute;
+  top: 0;
   bottom: 0;
   left: 0;
+  right: 0;
+  background-repeat: repeat, repeat-y;
+  background-size: 100%, calc(100% - 40px);
+  background-position: center, center;
+  background-image: url("/noise&Texture.png"), url("/sidesFrame.svg");
+  pointer-events: none;
+}
+
+.margin_div {
+  margin: 0 10% 0 10%;
 }
 
 .big_header {
@@ -180,135 +336,6 @@ $color-cloud-text: #fff5da99;
   width: 85%;
   padding-top: 170px;
   padding-left: 40px;
-}
-
-.landing_cmps {
-  display: flex;
-  flex-flow: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-
-  .questions_frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  img {
-    width: 40%;
-  }
-  &__third_width_element,
-  &__half_width_element {
-    align-self: flex-start;
-    text-align: center;
-    width: calc(100% * 1 / 3);
-    overflow: hidden;
-    padding: 1em 3% 0 3%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-center;
-    h2 {
-      color: $highlight;
-      text-align: center;
-    }
-    .contact_h2 {
-      text-align: left;
-      align-self: flex-start;
-      color: $color;
-      font-weight: 100;
-      margin-top: 1em;
-      margin-bottom: 1.5em;
-    }
-
-    img {
-      object-fit: contain;
-      width: 100%;
-    }
-    ol,
-    ul {
-      text-align: left;
-      width: 100%;
-      li::marker {
-        color: $highlight;
-      }
-    }
-    ul {
-      list-style: disc;
-    }
-  }
-  &__third_width_element {
-    img {
-      margin-top: 2em;
-      margin-bottom: 2em;
-    }
-  }
-  &__half_width_element {
-    width: 50%;
-    padding: 1em 10% 0 10%;
-    text-align: center;
-    align-items: flex-start;
-    img {
-      object-fit: contain;
-      width: 100%;
-      object-position: left;
-    }
-  }
-}
-
-.questions_bg {
-  background-position: center;
-  background-size: 100% 110%;
-  background-repeat: no-repeat;
-  background-image: url("assets/Polygon 1.png");
-  padding: 10vh 0 10vh 0;
-}
-
-.questions_cmps {
-  @extend .landing_cmps;
-  justify-content: space-between;
-  margin: 0 15% 0 15%;
-  padding: 2em;
-  align-items: flex-start;
-  h2 {
-    text-align: left;
-    align-self: flex-start;
-    color: $color;
-    font-weight: 100;
-    margin-top: 1em;
-    margin-bottom: 1.5em;
-  }
-
-  &__half_width_element {
-    width: 50%;
-    padding: 1em 0 0 0;
-    text-align: left;
-    align-items: flex-start;
-
-    .gap {
-      display: flex;
-      justify-content: flex-start;
-      gap: 2em;
-      margin-top: 1em;
-      img {
-        width: 15%;
-      }
-    }
-
-    &:nth-child(3) {
-      text-align: right;
-      align-items: flex-end;
-    }
-
-    img {
-      object-fit: contain;
-      width: 100%;
-      object-position: left;
-    }
-  }
 }
 
 div .cloud_text {
@@ -340,48 +367,7 @@ div .cloud_text {
   }
 }
 
-.minimalistic_button {
-  background-color: transparent;
-  outline: none;
-  border: none;
-  font-size: 1.5em;
-  text-transform: uppercase;
-  color: $highlight;
-  position: relative;
-  margin: 3em auto 0 auto;
-  &:hover {
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      pointer-events: none;
-      background-image: url("/assets/8600a001ef57bae75a23ca4f8dbe7a1e.svg");
-      filter: blur(30px);
-      cursor: pointer;
-    }
-  }
-}
-
-.sign_big_header {
+.full_width_img {
   width: 100%;
   object-fit: contain;
-}
-
-.landing__footer {
-  display: flex;
-  background-color: $highlight;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-  height: 20vh;
-  font-size: 1.2em;
-  a {
-    text-decoration: underline;
-  }
 }

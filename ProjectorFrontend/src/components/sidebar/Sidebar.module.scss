@@ -194,10 +194,6 @@
   margin-top: 3%;
 }
 
-.full_length_button {
-  @include button_accent();
-}
-
 @media screen and (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);

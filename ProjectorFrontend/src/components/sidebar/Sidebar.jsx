@@ -117,7 +117,7 @@ export default function Sidebar({ sb, toggle }) {
         </h2>
 
         <button
-          className={styles.full_length_button}
+          className="button_accent"
           onClick={() => navigate("/project/create")}
         >
           ДОБАВИТЬ ЗАЯВКУ
