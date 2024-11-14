@@ -33,7 +33,7 @@ export default function Multiselect({ profile, setProfile, mode = 0 }) {
   if (mode) {
     return (
       <>
-        {selectedPeople.length > 0 && (
+        {selectedPeople.length > 0 ? (
           <ul className={styles.horizontal_list}>
             {selectedPeople.map((person) => (
               <li className={styles.list_item} key={person.id}>
@@ -49,6 +49,8 @@ export default function Multiselect({ profile, setProfile, mode = 0 }) {
               </li>
             ))}
           </ul>
+        ) : (
+          <input type="text" disabled></input>
         )}
       </>
     );

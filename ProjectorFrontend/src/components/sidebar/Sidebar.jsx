@@ -9,51 +9,26 @@ import styles from "./Sidebar.module.scss";
 import ProjectorSbButton from "../projectorSbButton/ProjectorSbButton";
 import { Navigate, useNavigate } from "react-router-dom";
 
-export default function Sidebar({ sb, toggle }) {
-  const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
+export default function Sidebar({
+  uId,
+  pId,
+  name,
+  lastName,
+  email,
+  sb,
+  toggle,
+}) {
   const navigate = useNavigate();
-  const [uId, setUId] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [name, setName] = useState(null);
-  const [lastName, setLastName] = useState(null);
   const [specs, setSpecs] = useState(null);
   const [mainSpec, setMainSpec] = useState(null);
   const [avatarURL, setAvatarURL] = useState("/profilePicPlaceholder.png");
 
   useEffect(() => {
-    let info = localStorage.getItem(localKey);
-    if (info) {
-      info = JSON.parse(info);
-    } else {
-      return undefined;
-    }
-    setUId((u) => info.user.id);
-    setEmail((e) => info.user.email);
-  }, []);
-
-  useEffect(() => {
-    const fetchName = async (uId) => {
-      let { data: Profile, error } = await supabase
-        .from("Profile")
-        .select("name, lastName")
-        // Filters
-        .eq("user_id", uId);
-
-      if (error) {
-        console.log(error);
-      } else {
-        setName((n) => Profile[0].name);
-        localStorage.setItem("name", Profile[0].name);
-        setLastName((l) => Profile[0].lastName);
-        localStorage.setItem("lastName", Profile[0].lastName);
-      }
-    };
-
     const fetchSpecs = async () => {
       const { data, error } = await supabase
-        .from("user_qualifications")
+        .from("user_qualification")
         .select("qualification_id(*)")
-        .eq("user_id", uId);
+        .eq("profile_id", pId);
       if (error) {
         console.log(error);
       } else {
@@ -77,12 +52,13 @@ export default function Sidebar({ sb, toggle }) {
       }
     };
 
-    if (uId) {
-      fetchName(uId);
+    if (pId) {
       fetchSpecs();
+    }
+    if (uId) {
       fetchAvatarURL();
     }
-  }, [uId]);
+  }, [uId, pId]);
 
   return (
     <div className={cn(styles.root, styles.sidebar)} ref={sb}>
@@ -130,12 +106,12 @@ export default function Sidebar({ sb, toggle }) {
             </a>
           </li>
           <li>
-            <a className={styles.title1} href="/projects">
+            <a className={styles.title1} href={`/projects/mine/${pId}`}>
               МОИ ПРОЕКТЫ
             </a>
           </li>
           <li>
-            <a className={styles.title1} href="/projects/saved">
+            <a className={styles.title1} href={`/projects/saved/${pId}`}>
               ИЗБРАННОЕ
             </a>
           </li>

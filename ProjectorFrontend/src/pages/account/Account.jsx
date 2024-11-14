@@ -12,15 +12,55 @@ import ProjectorSbButton from "../../components/projectorSbButton/ProjectorSbBut
 import Header from "../../components/header/Header";
 import { unauthorizedRedirect } from "../../utilityFunctions/unauthorizedRedirect";
 import { useAuth } from "../../context/AuthContext";
+import supabase from "../../config/supabaseClient";
 
 export default function Account(props) {
   const location = useLocation();
   const [sbDisplay, setSbDisplay] = useState(false);
+  const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
+  const [uId, setUId] = useState(null);
+  const [pId, setPId] = useState(null);
+  const [name, setName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
 
   const sb = useRef(null);
   const mainDiv = useRef(null);
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+
+  const fetchProfileInfo = async (userId) => {
+    let { data: profile, error } = await supabase
+      .from("Profile")
+      .select("id, name, lastName")
+      // Filters
+      .eq("user_id", userId);
+
+    if (error) {
+      console.log(error);
+    } else {
+      setPId(profile[0].id);
+      localStorage.setItem("profile", profile[0].id);
+      setName(profile[0].name);
+      localStorage.setItem("name", profile[0].name);
+      setLastName(profile[0].lastName);
+      localStorage.setItem("lastName", profile[0].lastName);
+    }
+  };
+
+  useEffect(() => {
+    let info = localStorage.getItem(localKey);
+    if (info) {
+      info = JSON.parse(info);
+    } else {
+      return undefined;
+    }
+    setUId((u) => info.user.id);
+    setEmail((e) => info.user.email);
+
+    fetchProfileInfo(info.user.id);
+  }, []);
+
   useEffect(() => {
     if (
       !(
@@ -62,7 +102,15 @@ export default function Account(props) {
       )}
     >
       <div className={styles.flex_row_container} ref={mainDiv}>
-        <Sidebar sb={sb} toggle={toggleSb} />
+        <Sidebar
+          uId={uId}
+          pId={pId}
+          name={name}
+          lastName={lastName}
+          email={email}
+          sb={sb}
+          toggle={toggleSb}
+        />
         <div className={styles.flex_column_container}>
           <div className={styles.alt_navbar}>
             <div className={styles.toggle_btn_cnt}>

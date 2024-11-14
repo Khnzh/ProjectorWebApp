@@ -11,7 +11,12 @@ import cn from "classnames";
 import supabase from "../../config/supabaseClient";
 
 import styles from "./ProjectDisplay.module.scss";
-import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import {
+  useSearchParams,
+  Link,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import FilterInput from "../../components/filterInput/FilterInput";
@@ -65,7 +70,7 @@ function ProjectDisplay({ specific }) {
         return supabase
           .from("Projects")
           .select("*", { count: "exact", head: true })
-          .eq("user_id", id);
+          .eq("profile_id", id);
       },
       fetch: (id) => {
         return supabase
@@ -89,7 +94,7 @@ function ProjectDisplay({ specific }) {
             { count: "exact" }
           ) // Request the exact count of matching rows
           .order("id", { ascending: true })
-          .eq("user_id", id);
+          .eq("profile_id", id);
       },
       urlQuery: (item) => {
         return `/projects/mine${
@@ -106,7 +111,7 @@ function ProjectDisplay({ specific }) {
         return supabase
           .from("Saved_projects")
           .select("*", { count: "exact", head: true })
-          .eq("user_id", id);
+          .eq("profile_id", id);
       },
       fetch: (id) => {
         return supabase
@@ -130,7 +135,7 @@ function ProjectDisplay({ specific }) {
             { count: "exact" }
           ) // Request the exact count of matching rows
           .order("project_id", { ascending: true })
-          .eq("user_id", id);
+          .eq("profile_id", id);
       },
       urlQuery: (item) => {
         return `/projects/saved${
@@ -144,6 +149,7 @@ function ProjectDisplay({ specific }) {
   };
 
   // constants
+  const { pId } = useParams();
   const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
   const perPage = 5;
   const navigate = useNavigate();
@@ -352,18 +358,8 @@ function ProjectDisplay({ specific }) {
   //Counts projects quantity to define how many pages it will need
   useEffect(() => {
     (async () => {
-      let userId;
-      if (localStorage.getItem(localKey)) {
-        userId = JSON.parse(localStorage.getItem(localKey)).user.id;
-      } else {
-        if (specific === "saved") {
-          return undefined;
-        } else {
-          userId = null;
-        }
-      }
-      setUId((u) => userId);
-      const { count, error } = await BASE_QUERY[specific].count(userId);
+      console.log(pId);
+      const { count, error } = await BASE_QUERY[specific].count(pId);
       if (error) {
         console.log(error);
       } else {
@@ -372,7 +368,7 @@ function ProjectDisplay({ specific }) {
     })();
 
     filterContRef.current.style.display = "none";
-  }, []);
+  }, [pId]);
 
   // Fetches another 5 projects according to the filters every time searchparams changes it's value
   useEffect(() => {
@@ -380,11 +376,11 @@ function ProjectDisplay({ specific }) {
     const params = Object.fromEntries(searchParams.entries());
     setPage(currPage);
     (async () => {
-      if (currPage && (uId || specific === "all")) {
+      if (currPage && (pId || specific === "all")) {
         const start = (currPage - 1) * perPage;
         const end = start - 1 + perPage;
         if (Object.keys(params).length < 2) {
-          let query = BASE_QUERY[specific].fetch(uId);
+          let query = BASE_QUERY[specific].fetch(pId);
           query = query.range(start, end);
           const { data, count, error } = await query;
 
@@ -397,7 +393,7 @@ function ProjectDisplay({ specific }) {
             setTotal(Math.ceil(count / perPage));
           }
         } else {
-          const result = await queryProjects(supabase, params, start, end, uId);
+          const result = await queryProjects(supabase, params, start, end, pId);
           console.log(result);
           if (result) {
             if (specific == "saved") {
@@ -414,9 +410,7 @@ function ProjectDisplay({ specific }) {
         }
       }
     })();
-  }, [searchParams, uId]);
-
-  useEffect(() => console.log(filters), [filters]);
+  }, [searchParams, pId]);
 
   return (
     <>

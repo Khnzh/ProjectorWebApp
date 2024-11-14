@@ -34,6 +34,7 @@ export default function Profile() {
   // localStorage and state variables
   const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
   const [uId, setUId] = useState(null);
+  const [pId, setPId] = useState(null);
   const [email, setEmail] = useState(null);
   const [mode, setMode] = useState(true);
 
@@ -164,12 +165,12 @@ export default function Profile() {
 
   // FETCHING PORTFOLIO INFORMATION FROM DATABASE
 
-  const fetchPortfolio = async (uId) => {
+  const fetchPortfolio = async (pId) => {
     let { data: Portfolio, error } = await supabase
       .from("Portfolio")
       .select("name, desc, role, link, year, id")
       // Filters
-      .eq("user_id", uId);
+      .eq("profile_id", pId);
 
     if (error) {
       console.log(error);
@@ -190,12 +191,12 @@ export default function Profile() {
 
   // FETCHING EDUCATION INFORMATION FROM DATABASE
 
-  const fetchEducation = async (uId) => {
+  const fetchEducation = async (pId) => {
     let { data: Education, error } = await supabase
       .from("Education")
       .select("mastery, eduType, enrollment, facility, faculty, grad, id")
       // Filters
-      .eq("user_id", uId);
+      .eq("profile_id", pId);
 
     if (error) {
       console.log(error);
@@ -245,16 +246,19 @@ export default function Profile() {
       setProfile((p) => {
         return { ...p, tg: Profile[0].telegram };
       });
+      setPId(Profile[0].id);
+      localStorage.setItem("profile", Profile[0].id);
     };
 
     const fetchLangs = async () => {
       const { data, error } = await supabase
-        .from("user_languages")
+        .from("user_language")
         .select("language_id(*)")
-        .eq("user_id", uId);
+        .eq("profile_id", pId);
       if (error) {
         console.log(error);
       } else {
+        console.log(data);
         const langsData = data.map((item) => item.language_id);
         setProfile((p) => {
           return { ...p, langs: langsData };
@@ -264,9 +268,9 @@ export default function Profile() {
 
     const fetchSpecs = async () => {
       const { data, error } = await supabase
-        .from("user_qualifications")
+        .from("user_qualification")
         .select("qualification_id(*)")
-        .eq("user_id", uId);
+        .eq("profile_id", pId);
       if (error) {
         console.log(error);
       } else {
@@ -279,12 +283,15 @@ export default function Profile() {
 
     if (uId && email) {
       fetchProfile();
+    }
+    if (pId) {
+      fetchProfile();
       fetchLangs();
       fetchSpecs();
-      fetchPortfolio(uId);
-      fetchEducation(uId);
+      fetchPortfolio(pId);
+      fetchEducation(pId);
     }
-  }, [uId]);
+  }, [uId, pId]);
 
   // UPDATING AND EDITING PROFILE
 
