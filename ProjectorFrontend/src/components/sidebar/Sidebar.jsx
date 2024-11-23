@@ -34,6 +34,7 @@ export default function Sidebar({
       } else {
         let specsData = data.map((item) => item.qualification_id);
         setSpecs(specsData);
+        console.log(specsData)
         setMainSpec(specsData[0]);
         localStorage.setItem("specs", JSON.stringify(specsData));
       }

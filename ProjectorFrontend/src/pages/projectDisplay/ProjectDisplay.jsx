@@ -358,7 +358,6 @@ function ProjectDisplay({ specific }) {
   //Counts projects quantity to define how many pages it will need
   useEffect(() => {
     (async () => {
-      console.log(pId);
       const { count, error } = await BASE_QUERY[specific].count(pId);
       if (error) {
         console.log(error);

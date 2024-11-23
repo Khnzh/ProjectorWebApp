@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../Tabs.module.scss";
 import ImageInput from "../../profilePictureUpload/ImageInput";
 import Multiselect from "../../multiselect/specialtySelect/MultiselectSpecialty";
 import MultiselectLang from "../../multiselect/languageSelect/MultiselectLanguage";
+import SearchSelect from "../../searchSelect/SearchSelect";
+import { languages } from "../../../utilityFunctions/utilityObjects";
+import MultiSelectSearch from "../../multiSelectSearch/MultiSelectSearch";
 
 const GeneralTab = ({
   active,
@@ -13,6 +16,13 @@ const GeneralTab = ({
   mode,
   errors,
   email,
+  innerText,
+  setInnerText,
+  showList,
+  setShowList,
+  selectCountry,
+  selectedCountry,
+  setSelectedCountry,
 }) => {
   return (
     <div
@@ -64,7 +74,23 @@ const GeneralTab = ({
       ></textarea>
       {errors.bio && <p className="validation-message">{errors.bio}</p>}
       <h2 className="accent light">Выберите специальность*</h2>
-      <Multiselect profile={profile} setProfile={setProfile} mode={mode} />
+      {/* <Multiselect profile={profile} setProfile={setProfile} mode={mode} /> */}
+      {profile.langs.length != 0 && (
+        <MultiSelectSearch
+          innerText={innerText}
+          setInnerText={setInnerText}
+          showList={showList}
+          setShowList={setShowList}
+          selectCountry={selectCountry}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
+          countries={languages}
+          profile={profile}
+          setProfile={setProfile}
+          mode={mode}
+          specKey={"langs"}
+        />
+      )}
       {errors.specialties && (
         <p className="validation-message">{errors.specialties}</p>
       )}

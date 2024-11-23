@@ -1,5 +1,5 @@
 import styles from "./Profile.module.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import {
@@ -39,6 +39,11 @@ export default function Profile() {
   const [mode, setMode] = useState(true);
 
   // PROFILE VARIABLES
+  const [selectedCountry, setSelectedCountry] = useState({});
+  const [innerText, setInnerText] = useState("");
+  const [showList, setShowList] = useState(false);
+  const selectCountry = useRef(null);
+
   useEffect(
     () => unauthorizedRedirect(isLoggedIn, setIsLoggedIn, navigate),
     [isLoggedIn, setIsLoggedIn, navigate]
@@ -201,7 +206,6 @@ export default function Profile() {
     if (error) {
       console.log(error);
     } else {
-      console.log(Education);
       setActiveEdu(Education.length);
       if (Education.length > 0) {
         setEducation(() => {
@@ -258,7 +262,6 @@ export default function Profile() {
       if (error) {
         console.log(error);
       } else {
-        console.log(data);
         const langsData = data.map((item) => item.language_id);
         setProfile((p) => {
           return { ...p, langs: langsData };
@@ -310,7 +313,7 @@ export default function Profile() {
       ])
       .eq("user_id", uId)
       .select();
-    error ? console.log(error) : console.log(data);
+    error && console.log(error);
 
     const multiSelectQuery = (value, specification) => {
       let list = "[";
@@ -372,18 +375,14 @@ export default function Profile() {
           .update(updProject)
           .eq("id", updProject.id)
           .select();
-        error ? console.log(error) : console.log(data);
+        error && console.log(error);
       } else {
         delete updProject.id;
         const { data: insData, error: specsInsErr } = await supabase
           .from(table)
           .insert(updProject)
           .select();
-        if (specsInsErr) {
-          console.log(specsInsErr);
-        } else {
-          console.log(insData);
-        }
+        specsInsErr && console.log(specsInsErr);
       }
     });
     table == "Portfolio" ? fetchPortfolio(uId) : fetchEducation(uId);
@@ -434,7 +433,6 @@ export default function Profile() {
     setActive((a) => n);
   };
 
-  useEffect(() => console.log(project), [project]);
   return (
     <>
       <div className={styles.profile}>
@@ -475,6 +473,13 @@ export default function Profile() {
           mode={mode}
           errors={errors}
           email={email}
+          innerText={innerText}
+          setInnerText={setInnerText}
+          showList={showList}
+          setShowList={setShowList}
+          selectCountry={selectCountry}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
         />
 
         {/* EDUCATION */}
