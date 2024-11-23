@@ -47,9 +47,6 @@ const ProjectCard = ({ item, coverImg, index, isLoading }) => {
     };
   }, [item.id]);
 
-  if (isLoading) {
-    return <Loader />;  // Показываем индикатор загрузки
-  }
 
   return (
     <div
