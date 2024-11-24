@@ -22,7 +22,7 @@ import PaginationItem from "@mui/material/PaginationItem";
 import FilterInput from "../../components/filterInput/FilterInput";
 import { useAuth } from "../../context/AuthContext";
 import ProjectCard from "../../components/projecCard/ProjectCard";
-import Loader from "../../components/projecCard/Loader";
+import Loader from "../../components/loader/Loader";
 
 function ProjectDisplay({ specific }) {
   //queries collection
@@ -333,6 +333,12 @@ function ProjectDisplay({ specific }) {
     setPage(1);
   }
 
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      applyFilter();
+    }
+  }
+
   // converts filters object to url query
   function objectToQueryString(filters, page) {
     const queryString = Object.keys(filters)
@@ -415,7 +421,7 @@ function ProjectDisplay({ specific }) {
     })();
   }, [searchParams, pId]);
 
-  useEffect(()=>console.log(projectInfo), projectInfo)
+
 
   return (
     <>
@@ -426,6 +432,7 @@ function ProjectDisplay({ specific }) {
             className={cn("login__input", styles.searchbar)}
             placeholder="Поиск"
             onChange={(e) => setSearchPattern(e)}
+            onKeyDown={handleKeyDown}
           />
           <button className={styles.inv_search_button} onClick={applyFilter}>
             {" "}
@@ -460,7 +467,7 @@ function ProjectDisplay({ specific }) {
       )): <Loader/> )
       }
       <div className={styles.whitebg}>
-        {projectInfo != ("none") && projectInfo && (total && (
+        {projectInfo != ("none") && projectInfo && (total > 0 ? (
           <Pagination
             page={page || 1}
             count={total}
@@ -482,7 +489,11 @@ function ProjectDisplay({ specific }) {
               />
             )}
           />
-        ))}
+        ): <SvgContainer
+        width="100%"                   
+        height="100%"                
+        className="custom-svg-class"              
+      />)}
       </div>
       <div className="popup_middle_long" ref={filterContRef}>
         <button
