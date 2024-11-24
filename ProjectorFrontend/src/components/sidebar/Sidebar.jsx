@@ -70,7 +70,7 @@ export default function Sidebar({
         <h2 className={styles.medium_title}>{email}</h2>
 
         <div className={styles.flex_row_info}>
-          {specs && <h1>{specs[0].name}</h1>}
+          {specs.length != 0 && <h1>{specs[0].name}</h1>}
           <img
             className={styles.role_image}
             src={"/assets/ef1f380df79efdee8d12fa47e080a734.svg"}
@@ -107,22 +107,24 @@ export default function Sidebar({
               ИЗБРАННОЕ
             </a>
           </li>
-          {/* <li>
+          {
+            /* <li>
             <a className={styles.title1} href="/projects">
               ОТКЛИКИ
             </a>
           </li>*/
-          <li>
-            <a className={styles.title1} href="/users">
-              СПЕЦИАЛИСТЫ
-            </a>
-          </li>
-          /*
+            <li>
+              <a className={styles.title1} href="/users">
+                СПЕЦИАЛИСТЫ
+              </a>
+            </li>
+            /*
           <li>
             <a className={styles.title1} href="/projects">
               УВЕДОМЛЕНЯ
             </a>
-          </li> */}
+          </li> */
+          }
         </ul>
         {/* <div className={styles.flex_row}>
           <img
