@@ -153,8 +153,9 @@ $blur-radius: 10px;
 }
 
 .cross_button {
-  height: 40px;
+  height: auto;
   width: 40px;
+  aspect-ratio: 1/1;
   background-color: transparent;
   border: none;
   background-image: url(../cross.svg);

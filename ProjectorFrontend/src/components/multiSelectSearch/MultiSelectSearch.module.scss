@@ -51,24 +51,16 @@
 
 .inputSearch {
   position: relative;
-  width: 100%;
-  height: 38px;
+  width: 90%;
   margin-bottom: 24px;
 
   .input {
     width: 100%;
-    height: 38px;
-    padding: 13px 40px 13px 12px;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 1em;
     outline: none;
-    background: #10194b;
     transition: border-color 0.15s;
-    color: #6c79a7;
-
-    &::placeholder {
-      color: #6c79a7;
-    }
+    color: $highlight;
   }
 
   .searchIcon {
@@ -81,18 +73,20 @@
   .options {
     visibility: hidden;
     ul {
-      border-left: 1px solid #1d34a2;
-      border-right: 1px solid #1d34a2;
-      border-top: 1px solid #1d34a2;
-
       position: absolute;
       bottom: -0.25rem;
       left: 0;
       right: 0;
       transform: translateY(100%);
-      background-color: #d8dfee;
-      color: #000000;
+      background-color: $color;
+      color: $highlight;
       font-size: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1em;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
       border-radius: 10px;
       border-bottom: none;
       max-height: 28.6vh;
@@ -105,12 +99,7 @@
       }
 
       li {
-        padding: 0.75rem 1rem;
-
-        &:hover {
-          background-color: #c8d2e7;
-          color: #07246e;
-        }
+        margin-bottom: 0;
       }
     }
   }

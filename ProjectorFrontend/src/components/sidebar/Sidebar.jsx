@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 import { useState, useEffect } from "react";
 import supabase from "../../config/supabaseClient";
-import DropdownSpecs from "../dropdownSpecs/DropdownSpecs";
 
 import styles from "./Sidebar.module.scss";
 import ProjectorSbButton from "../projectorSbButton/ProjectorSbButton";
@@ -34,7 +33,7 @@ export default function Sidebar({
       } else {
         let specsData = data.map((item) => item.qualification_id);
         setSpecs(specsData);
-        console.log(specsData)
+        console.log(specsData);
         setMainSpec(specsData[0]);
         localStorage.setItem("specs", JSON.stringify(specsData));
       }
@@ -72,13 +71,6 @@ export default function Sidebar({
         <h2 className={styles.medium_title}>{email}</h2>
 
         <div className={styles.flex_row_info}>
-          {/* {specs && (
-            <DropdownSpecs
-              specs={specs}
-              mainSpec={mainSpec}
-              setMainSpec={setMainSpec}
-            />
-          )} */}
           {specs && <h1>{specs[0].name}</h1>}
           <img
             className={styles.role_image}

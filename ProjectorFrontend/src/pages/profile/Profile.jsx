@@ -38,12 +38,6 @@ export default function Profile() {
   const [email, setEmail] = useState(null);
   const [mode, setMode] = useState(true);
 
-  // PROFILE VARIABLES
-  const [selectedCountry, setSelectedCountry] = useState({});
-  const [innerText, setInnerText] = useState("");
-  const [showList, setShowList] = useState(false);
-  const selectCountry = useRef(null);
-
   useEffect(
     () => unauthorizedRedirect(isLoggedIn, setIsLoggedIn, navigate),
     [isLoggedIn, setIsLoggedIn, navigate]
@@ -322,46 +316,49 @@ export default function Profile() {
         if (o == value.length - 1) {
           list =
             list +
-            `{"user_id": "${uId}","${specification}_id": ${value[o].id}}]`;
+            `{"profile_id": "${pId}","${specification}_id": ${value[o].id}}]`;
         } else {
           list =
             list +
-            `{"user_id": "${uId}","${specification}_id": ${value[o].id}},`;
+            `{"profile_id": "${pId}","${specification}_id": ${value[o].id}},`;
         }
       }
       return list;
     };
 
-    const langsList = multiSelectQuery(profile.langs, "language");
-
     const { error: langsErr } = await supabase
-      .from("user_languages")
+      .from("user_language")
       .delete()
-      .eq("user_id", uId)
+      .eq("profile_id", pId)
       .select();
     if (langsErr) console.log(langsErr);
 
-    const { error: langsInsErr } = await supabase
-      .from("user_languages")
-      .insert(JSON.parse(langsList))
-      .select();
-    if (langsInsErr) console.log(langsInsErr);
-
-    const specsList = multiSelectQuery(profile.specialties, "qualification");
+    if (profile.langs.length != 0) {
+      const langsList = multiSelectQuery(profile.langs, "language");
+      const { error: langsInsErr } = await supabase
+        .from("user_language")
+        .insert(JSON.parse(langsList))
+        .select();
+      if (langsInsErr) console.log(langsInsErr);
+    }
 
     const { error: specsErr } = await supabase
-      .from("user_qualifications")
+      .from("user_qualification")
       .delete()
-      .eq("user_id", uId)
+      .eq("profile_id", pId)
       .select();
     if (specsErr) console.log(specsErr);
 
-    const { error: specsInsErr } = await supabase
-      .from("user_qualifications")
-      .insert(JSON.parse(specsList))
-      .select();
-    if (specsInsErr) console.log(specsInsErr);
+    if (profile.specialties.length != 0) {
+      const specsList = multiSelectQuery(profile.specialties, "qualification");
+      const { error: specsInsErr } = await supabase
+        .from("user_qualification")
+        .insert(JSON.parse(specsList))
+        .select();
+      if (specsInsErr) console.log(specsInsErr);
+    }
     navigate("/profile/0");
+    window.location.reload();
   };
   // UPDATING AND EDITING PORTFOLIO
 
@@ -386,6 +383,7 @@ export default function Profile() {
       }
     });
     table == "Portfolio" ? fetchPortfolio(uId) : fetchEducation(uId);
+    window.location.reload();
   };
 
   // DELETING EDUCATION OR PORTFOLIO INSTANCE, DEPENDS ON INPUT PARAMETERS
@@ -473,13 +471,6 @@ export default function Profile() {
           mode={mode}
           errors={errors}
           email={email}
-          innerText={innerText}
-          setInnerText={setInnerText}
-          showList={showList}
-          setShowList={setShowList}
-          selectCountry={selectCountry}
-          selectedCountry={selectedCountry}
-          setSelectedCountry={setSelectedCountry}
         />
 
         {/* EDUCATION */}
@@ -513,7 +504,9 @@ export default function Profile() {
         {mode ? (
           <div
             className="outline_btn align-center"
-            onClick={() => navigate("/profile/1")}
+            onClick={() => {
+              navigate("/profile/1");
+            }}
           >
             <p>ИЗМЕНИТЬ</p>
             <span>ИЗМЕНИТЬ</span>
