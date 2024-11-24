@@ -16,6 +16,7 @@ const ProjectDetailedView = () => {
 
   const [projectInfo, setProjectInfo] = useState();
   const [active, setActive] = useState(null);
+  const [pId, setPId] = useState(null);
 
   const coverProjectImage = (imgURL) => {
     return {
@@ -77,7 +78,7 @@ const ProjectDetailedView = () => {
               type,
               created_at,
               Profile ( id, name, lastName ),
-              project_qualifications( qualification_id(id, name), experience, employment, shift, salary, requirements)
+              project_qualifications( qualification_id(id, name), experience, employment, shift, salary, requirements, active)
             `
           )
           .eq("id", prId);
@@ -86,6 +87,7 @@ const ProjectDetailedView = () => {
           console.error("Error fetching data:", error);
         } else {
           setProjectInfo(data);
+          setPId(data[0].Profile.id);
           let userId;
           if (localStorage.getItem(localKey)) {
             userId = JSON.parse(localStorage.getItem(localKey)).user.id;
@@ -96,7 +98,7 @@ const ProjectDetailedView = () => {
               .from("Saved_projects")
               .select()
               .eq("project_id", prId)
-              .eq("user_id", userId);
+              .eq("profile_id", data[0].Profile.id);
             if (failure) {
               console.error("Error fetching succes:", failure);
             } else {
@@ -162,12 +164,15 @@ const ProjectDetailedView = () => {
         {projectInfo[0].project_qualifications.map((item, index) => (
           <button
             key={item.qualification_id.name}
-            className={styles.qualification}
+            className={
+              item.active ? styles.qualification : styles.qualification
+            }
             onClick={() => {
               isLoggedIn ? setActive(index) : navigate("/login");
             }}
           >
-            {item.qualification_id.name}
+            {/* {item.qualification_id.name} */}
+            {item.id}
           </button>
         ))}
       </div>
