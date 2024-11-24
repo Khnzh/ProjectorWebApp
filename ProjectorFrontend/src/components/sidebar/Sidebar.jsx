@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import cn from "classnames";
 import { useState, useEffect } from "react";
 import supabase from "../../config/supabaseClient";
-
 import styles from "./Sidebar.module.scss";
 import ProjectorSbButton from "../projectorSbButton/ProjectorSbButton";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -18,7 +17,7 @@ export default function Sidebar({
   toggle,
 }) {
   const navigate = useNavigate();
-  const [specs, setSpecs] = useState(null);
+  const [specs, setSpecs] = useState([]);
   const [mainSpec, setMainSpec] = useState(null);
   const [avatarURL, setAvatarURL] = useState("/profilePicPlaceholder.png");
 
@@ -112,12 +111,13 @@ export default function Sidebar({
             <a className={styles.title1} href="/projects">
               ОТКЛИКИ
             </a>
-          </li>
+          </li>*/
           <li>
-            <a className={styles.title1} href="/projects">
+            <a className={styles.title1} href="/users">
               СПЕЦИАЛИСТЫ
             </a>
           </li>
+          /*
           <li>
             <a className={styles.title1} href="/projects">
               УВЕДОМЛЕНЯ

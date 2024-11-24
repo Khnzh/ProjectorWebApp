@@ -9,7 +9,7 @@ import {
 } from "../../utilityFunctions/utilityObjects";
 import cn from "classnames";
 import supabase from "../../config/supabaseClient";
-
+import SvgContainer from "../../components/Svg/SvgContainer";
 import styles from "./ProjectDisplay.module.scss";
 import {
   useSearchParams,
@@ -21,7 +21,10 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import { useAuth } from "../../context/AuthContext";
 import ProjectCard from "../../components/projecCard/ProjectCard";
+
 import SearchSelect from "../../components/searchSelect/SearchSelect";
+import Loader from "../../components/loader/Loader";
+
 
 function ProjectDisplay({ specific }) {
   //queries collection
@@ -52,6 +55,7 @@ function ProjectDisplay({ specific }) {
     `,
             { count: "exact" }
           ) // Request the exact count of matching rows
+          //.eq("profile_id", "555") // для проверок роняет проекты
           .order("promotion", { ascending: true })
           .order("id", { ascending: true });
       },
@@ -158,7 +162,7 @@ function ProjectDisplay({ specific }) {
   const { isLoggedIn } = useAuth();
   const [uId, setUId] = useState(null);
   const [searchFilter, setSearchFilter] = useState();
-  const [projectInfo, setProjectInfo] = useState();
+  const [projectInfo, setProjectInfo] = useState(null);
   const [filters, setFilters] = useState([
     {
       qualification: "",
@@ -331,6 +335,12 @@ function ProjectDisplay({ specific }) {
     setPage(1);
   }
 
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      applyFilter();
+    }
+  }
+
   // converts filters object to url query
   function objectToQueryString(filters, page) {
     const queryString = Object.keys(filters)
@@ -385,6 +395,7 @@ function ProjectDisplay({ specific }) {
 
           if (error) {
             console.error("Error fetching data:", error);
+            setProjectInfo('none')
           } else {
             specific === "saved"
               ? setProjectInfo(data.map((item) => item.Projects))
@@ -411,6 +422,8 @@ function ProjectDisplay({ specific }) {
     })();
   }, [searchParams, pId]);
 
+
+
   return (
     <>
       <div className={styles.search_and_add}>
@@ -420,6 +433,7 @@ function ProjectDisplay({ specific }) {
             className={cn("login__input", styles.searchbar)}
             placeholder="Поиск"
             onChange={(e) => setSearchPattern(e)}
+            onKeyDown={handleKeyDown}
           />
           <button className={styles.inv_search_button} onClick={applyFilter}>
             {" "}
@@ -436,16 +450,25 @@ function ProjectDisplay({ specific }) {
           <h2 onClick={clearFilters}>Очистить фильтры</h2>
         </div>
       </div>
-      {projectInfo &&
-        projectInfo.map((item) => (
-          <ProjectCard
-            key={item.id}
-            item={item}
-            coverImg={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`}
-          />
-        ))}
+      {projectInfo == ("none") ?
+      (
+        <SvgContainer
+          width="100%"                   
+          height="100%"                
+          className="custom-svg-class"              
+        />
+    )
+      : 
+      (projectInfo && projectInfo!=='none'? (projectInfo.map((item) => (
+        <ProjectCard
+          key={item.id}
+          item={item}
+          coverImg={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`}
+        />)
+      )): <Loader/> )
+      }
       <div className={styles.whitebg}>
-        {total && (
+        {projectInfo != ("none") && projectInfo && (total > 0 ? (
           <Pagination
             page={page || 1}
             count={total}
@@ -467,7 +490,11 @@ function ProjectDisplay({ specific }) {
               />
             )}
           />
-        )}
+        ): <SvgContainer
+        width="100%"                   
+        height="100%"                
+        className="custom-svg-class"              
+      />)}
       </div>
       <div className="popup_middle_long" ref={filterContRef}>
         <button
@@ -535,5 +562,4 @@ function ProjectDisplay({ specific }) {
     </>
   );
 }
-
 export default ProjectDisplay;
