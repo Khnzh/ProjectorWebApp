@@ -11,8 +11,8 @@ import {
   types,
 } from "../../utilityFunctions/utilityObjects";
 import CustomRadio from "../../components/customRadio/CustomRadio";
-import FilterInput from "../../components/filterInput/FilterInput";
 import supabase from "../../config/supabaseClient";
+import SearchSelect from "../../components/searchSelect/SearchSelect";
 
 export default function ProjectCreate() {
   const [prInfo, setPrInfo] = useState({
@@ -30,7 +30,7 @@ export default function ProjectCreate() {
 
   const [availableRoles, setAvailableRoles] = useState([
     {
-      qualification: qualifications[0],
+      qualification: "",
       experience: experiences[0],
       employment: employmentTypes[0],
       shift: shifts[0],
@@ -153,9 +153,6 @@ export default function ProjectCreate() {
     });
 
   useEffect(() => {
-    console.log(availableRoles);
-  }, [availableRoles]);
-  useEffect(() => {
     const info = JSON.parse(localStorage.getItem(localKey));
     setUId((u) => info.user.id);
   }, []);
@@ -249,12 +246,8 @@ export default function ProjectCreate() {
                 className="cross_button align-center"
               ></button>
             </div>
-            <FilterInput
-              pageStyles={[
-                styles.qual_input,
-                styles.qual_opts,
-                styles.qual_opt,
-              ]}
+            <SearchSelect
+              parentstyles={styles}
               i={"qualification"}
               data={qualifications}
               selected={availableRoles}

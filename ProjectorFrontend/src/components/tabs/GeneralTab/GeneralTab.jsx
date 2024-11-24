@@ -1,8 +1,11 @@
 import React from "react";
 import styles from "../Tabs.module.scss";
 import ImageInput from "../../profilePictureUpload/ImageInput";
-import Multiselect from "../../multiselect/specialtySelect/MultiselectSpecialty";
-import MultiselectLang from "../../multiselect/languageSelect/MultiselectLanguage";
+import {
+  languages,
+  qualifications,
+} from "../../../utilityFunctions/utilityObjects";
+import MultiSelectSearch from "../../multiSelectSearch/MultiSelectSearch";
 
 const GeneralTab = ({
   active,
@@ -64,12 +67,25 @@ const GeneralTab = ({
       ></textarea>
       {errors.bio && <p className="validation-message">{errors.bio}</p>}
       <h2 className="accent light">Выберите специальность*</h2>
-      <Multiselect profile={profile} setProfile={setProfile} mode={mode} />
+      {/* <Multiselect profile={profile} setProfile={setProfile} mode={mode} /> */}
+      <MultiSelectSearch
+        valueList={qualifications}
+        profile={profile}
+        setProfile={setProfile}
+        mode={mode}
+        specKey={"specialties"}
+      />
       {errors.specialties && (
         <p className="validation-message">{errors.specialties}</p>
       )}
       <h2 className="accent light">ЯЗЫКИ</h2>
-      <MultiselectLang profile={profile} setProfile={setProfile} mode={mode} />
+      <MultiSelectSearch
+        valueList={languages}
+        profile={profile}
+        setProfile={setProfile}
+        mode={mode}
+        specKey={"langs"}
+      />
       {errors.langs && <p className="validation-message">{errors.langs}</p>}
       <label htmlFor="mobile">ТЕЛЕФОН</label>
       <input

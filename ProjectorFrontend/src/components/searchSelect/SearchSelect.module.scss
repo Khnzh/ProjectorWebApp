@@ -1,0 +1,69 @@
+@import "../../index";
+
+.inputSearch {
+  position: relative;
+  width: 90%;
+
+  .input {
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    background: rgba($highlight, 0.58);
+    transition: border-color 0.15s;
+    border-color: $color;
+    color: $color;
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+
+    &::placeholder {
+      color: $color;
+    }
+  }
+
+  .searchIcon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .options {
+    visibility: hidden;
+    ul {
+      position: absolute;
+      bottom: -0.25rem;
+      left: 0;
+      right: 0;
+      transform: translateY(100%);
+      color: $highlight;
+      background-color: rgb(64, 75, 95);
+      font-size: 1em;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+      padding: 1em;
+      padding-top: 0.3em;
+      padding-bottom: 0.3em;
+      border-radius: 10px;
+      border-bottom: none;
+      max-height: 28.6vh;
+      overflow: scroll;
+      z-index: 100;
+      li {
+        margin-bottom: 0;
+      }
+
+      &::-webkit-scrollbar {
+        height: 0;
+        width: 0;
+      }
+    }
+  }
+}
+
+.inputSearch:focus-within {
+  .options {
+    visibility: visible;
+  }
+}

@@ -19,10 +19,12 @@ import {
 } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import FilterInput from "../../components/filterInput/FilterInput";
 import { useAuth } from "../../context/AuthContext";
 import ProjectCard from "../../components/projecCard/ProjectCard";
+
+import SearchSelect from "../../components/searchSelect/SearchSelect";
 import Loader from "../../components/loader/Loader";
+
 
 function ProjectDisplay({ specific }) {
   //queries collection
@@ -163,12 +165,12 @@ function ProjectDisplay({ specific }) {
   const [projectInfo, setProjectInfo] = useState(null);
   const [filters, setFilters] = useState([
     {
-      qualification: undefined,
-      type: undefined,
-      experience: undefined,
-      emplType: undefined,
-      shift: undefined,
-      salary: undefined,
+      qualification: "",
+      type: "",
+      experience: "",
+      emplType: "",
+      shift: "",
+      salary: "",
       searchPattern: "",
     },
   ]);
@@ -202,12 +204,12 @@ function ProjectDisplay({ specific }) {
   function clearFilters() {
     setFilters([
       {
-        qualification: undefined,
-        type: undefined,
-        experience: undefined,
-        emplType: undefined,
-        shift: undefined,
-        salary: undefined,
+        qualification: "",
+        type: "",
+        experience: "",
+        emplType: "",
+        shift: "",
+        salary: "",
         searchPattern: "",
       },
     ]);
@@ -366,7 +368,6 @@ function ProjectDisplay({ specific }) {
   //Counts projects quantity to define how many pages it will need
   useEffect(() => {
     (async () => {
-      console.log(pId);
       const { count, error } = await BASE_QUERY[specific].count(pId);
       if (error) {
         console.log(error);
@@ -501,7 +502,7 @@ function ProjectDisplay({ specific }) {
           onClick={toggleFilter}
         ></button>
         <h1>СПЕЦИАЛЬНОСТЬ</h1>
-        <FilterInput
+        <SearchSelect
           i={"qualification"}
           placeholder={"Выберите специальность"}
           data={qualifications}
@@ -509,7 +510,7 @@ function ProjectDisplay({ specific }) {
           setSelected={setFilters}
         />
         <h1>ТИП ПРОЕКТА</h1>
-        <FilterInput
+        <SearchSelect
           i={"type"}
           placeholder={"Выберите тип проекта"}
           data={types}
@@ -517,7 +518,7 @@ function ProjectDisplay({ specific }) {
           setSelected={setFilters}
         />
         <h1>СТАЖ</h1>
-        <FilterInput
+        <SearchSelect
           i={"experience"}
           placeholder={"Выберите стаж"}
           data={experiences}
@@ -525,7 +526,7 @@ function ProjectDisplay({ specific }) {
           setSelected={setFilters}
         />
         <h1>ЗАНЯТОСТЬ</h1>
-        <FilterInput
+        <SearchSelect
           placeholder={"Выберите занятость"}
           i={"emplType"}
           data={employmentTypes}
@@ -533,7 +534,7 @@ function ProjectDisplay({ specific }) {
           setSelected={setFilters}
         />
         <h1>ВРЕМЯ СМЕНЫ</h1>
-        <FilterInput
+        <SearchSelect
           placeholder={"Выберите смену"}
           i={"shift"}
           data={shifts}
@@ -541,7 +542,7 @@ function ProjectDisplay({ specific }) {
           setSelected={setFilters}
         />
         <h1>ОПЛАТА</h1>
-        <FilterInput
+        <SearchSelect
           placeholder={"Выберите оплату"}
           i={"salary"}
           data={salaries}
