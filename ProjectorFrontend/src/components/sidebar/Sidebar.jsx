@@ -4,7 +4,6 @@ import cn from "classnames";
 import { useState, useEffect } from "react";
 import supabase from "../../config/supabaseClient";
 import DropdownSpecs from "../dropdownSpecs/DropdownSpecs";
-
 import styles from "./Sidebar.module.scss";
 import ProjectorSbButton from "../projectorSbButton/ProjectorSbButton";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ export default function Sidebar({
   toggle,
 }) {
   const navigate = useNavigate();
-  const [specs, setSpecs] = useState(null);
+  const [specs, setSpecs] = useState([]);
   const [mainSpec, setMainSpec] = useState(null);
   const [avatarURL, setAvatarURL] = useState("/profilePicPlaceholder.png");
 
@@ -78,7 +77,7 @@ export default function Sidebar({
               setMainSpec={setMainSpec}
             />
           )} */}
-          {specs && <h1>{specs[0].name}</h1>}
+          {(specs.length!=0) && <h1>{specs[0].name}</h1>}
           <img
             className={styles.role_image}
             src={"/assets/ef1f380df79efdee8d12fa47e080a734.svg"}
@@ -119,12 +118,13 @@ export default function Sidebar({
             <a className={styles.title1} href="/projects">
               ОТКЛИКИ
             </a>
-          </li>
+          </li>*/
           <li>
-            <a className={styles.title1} href="/projects">
+            <a className={styles.title1} href="/users">
               СПЕЦИАЛИСТЫ
             </a>
           </li>
+          /*
           <li>
             <a className={styles.title1} href="/projects">
               УВЕДОМЛЕНЯ
