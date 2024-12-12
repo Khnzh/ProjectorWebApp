@@ -8,42 +8,28 @@
   height: 30vh;
   position: relative;
   transition: opacity 0.3s ease;
+  border-bottom: $highlight solid 2px;
 
   &:hover {
     cursor: pointer;
-
-    .card_border {
-      fill: rgba($highlight, 0.2);
-    }
-
-    .img_frame {
-      border: 1px white solid;
-      border-radius: 50%;
-    }
+    background-color: rgba($highlight, 0.2);
   }
 }
-.img_frame{
+
+.img_frame {
   border-radius: 50%;
   background-color: transparent;
+  height: 184px;
+  width: auto;
+  aspect-ratio: 1;
+
+  &:hover {
+    border-color: $color;
+  }
 }
-.defImg{
-  width: 60%;
-  height: 60%;
-  margin-top: 35px;
-}
-.card_border {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+.defImg {
   height: 100%;
-  object-fit: cover;
-  border-bottom: 2px solid #DD9E28;
-  opacity: 0.6;
-  
-}
-.card_border:hover {
-  background-color: #DD9E28; 
+  object-fit: contain;
 }
 
 .highText {
