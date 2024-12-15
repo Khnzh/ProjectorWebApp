@@ -332,12 +332,7 @@ input:-webkit-autofill:active {
 }
 
 ul {
-  margin-top: 1em;
   list-style: none;
-}
-
-li {
-  margin-bottom: 1em;
 }
 
 input[type="checkbox"] {
@@ -422,12 +417,11 @@ a.css-q7jpt8-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
 .img_frame {
   display: flex;
   justify-content: center;
-  margin: 2.5% 2% 3% 2%;
   background-color: rgba($highlight, 0.2);
   border: 1px $highlight solid;
   border-radius: 20px;
-  height: 174px;
-  min-width: 182px;
+  height: 299px;
+  width: 361px;
   overflow: hidden;
   position: relative;
 }

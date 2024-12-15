@@ -27,7 +27,7 @@ export default function Account(props) {
   const sb = useRef(null);
   const mainDiv = useRef(null);
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, state, dispatch } = useAuth();
 
   const fetchProfileInfo = async (userId) => {
     let { data: profile, error } = await supabase
@@ -40,6 +40,7 @@ export default function Account(props) {
       console.log(error);
     } else {
       setPId(profile[0].id);
+      dispatch({ type: "define_pId", payload: profile[0].id });
       localStorage.setItem("profile", profile[0].id);
       setName(profile[0].name);
       localStorage.setItem("name", profile[0].name);

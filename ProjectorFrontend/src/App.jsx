@@ -11,6 +11,8 @@ import ProjectCreate from "./pages/projectCreate/ProjectCreate";
 import { AuthProvider } from "./context/AuthContext";
 import SavedProjects from "./pages/savedProjects/SavedProjects";
 import UserDisplay from "./pages/userDisplay/UserDisplay";
+import UserDetailedView from "./pages/userDetailedView/UserDetailedView";
+import Notifications from "./pages/notifications/Notifications";
 
 function AppInside() {
   const location = useLocation();
@@ -32,7 +34,9 @@ function AppInside() {
         <Route path="/profile/:emode" element={<Profile />} />
         <Route element={<Account />}>
           <Route path="/users" element={<UserDisplay />} />
+          <Route path="/user/:UPID" element={<UserDetailedView />} />
           <Route path="/projects" element={<ProjectDisplay specific="all" />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route
             path="/projects/saved/:pId"
             element={<ProjectDisplay specific="saved" />}

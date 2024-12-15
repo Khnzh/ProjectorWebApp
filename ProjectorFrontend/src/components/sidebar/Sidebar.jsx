@@ -6,6 +6,7 @@ import supabase from "../../config/supabaseClient";
 import styles from "./Sidebar.module.scss";
 import ProjectorSbButton from "../projectorSbButton/ProjectorSbButton";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Sidebar({
   uId,
@@ -16,6 +17,7 @@ export default function Sidebar({
   sb,
   toggle,
 }) {
+  const { state, dispatch } = useAuth();
   const navigate = useNavigate();
   const [specs, setSpecs] = useState([]);
   const [mainSpec, setMainSpec] = useState(null);
@@ -32,6 +34,7 @@ export default function Sidebar({
       } else {
         let specsData = data.map((item) => item.qualification_id);
         setSpecs(specsData);
+        dispatch({ type: "define_quals", payload: specsData });
         console.log(specsData);
         setMainSpec(specsData[0]);
         localStorage.setItem("specs", JSON.stringify(specsData));

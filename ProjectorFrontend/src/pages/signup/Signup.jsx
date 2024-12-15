@@ -5,7 +5,7 @@ import { signupValidation } from "../../utilityFunctions/Validation";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-function Signup() {
+const Signup = () => {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -331,6 +331,6 @@ function Signup() {
       </div>
     </div>
   );
-}
+};
 
 export default Signup;

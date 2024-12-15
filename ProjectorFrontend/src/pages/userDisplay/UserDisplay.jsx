@@ -10,11 +10,7 @@ import cn from "classnames";
 
 const UserDisplay = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState([
-    {
-      searchPattern: "",
-    },
-  ]);
+  const [filters, setFilters] = useState([""]);
 
   const [page, setPage] = useState(
     parseInt(searchParams.get("page") || "1", 10)
@@ -25,10 +21,10 @@ const UserDisplay = () => {
 
   const QUERIES = {
     all: () => {
-      const searchPattern = filters[0].searchPattern || "";
       let query = supabase
         .from("Profile")
-        .select(`
+        .select(
+          `
           id,
           user_id,
           name,
@@ -36,25 +32,29 @@ const UserDisplay = () => {
           bio,
           user_qualification(qualifications(name)),
           Education(facility)
-        `)
-        .eq("user_qualification.main", true);
-
-      if (searchPattern) {
-        query = query.ilike("name", `%${searchPattern}%`);
-      }
-
+        `
+        )
+        .eq("user_qualification.main", true)
+        .or(
+          `name.ilike.%${filters[0]}%,name.ilike.%${
+            filters[filters.length - 1]
+          }%,lastName.ilike.%${filters[0]}%,lastName.ilike.%${
+            filters[filters.length - 1]
+          }%`
+        );
       return query;
     },
     count: () => {
-      const searchPattern = filters[0].searchPattern || "";
       let query = supabase
         .from("Profile")
-        .select("*", { count: "exact", head: true });
-
-      if (searchPattern) {
-        query = query.ilike("name", `%${searchPattern}%`);
-      }
-
+        .select("*", { count: "exact", head: true })
+        .or(
+          `name.ilike.%${filters[0]}%,name.ilike.%${
+            filters[filters.length - 1]
+          }%,lastName.ilike.%${filters[0]}%,lastName.ilike.%${
+            filters[filters.length - 1]
+          }%`
+        );
       return query;
     },
   };
@@ -87,23 +87,12 @@ const UserDisplay = () => {
   }
 
   function clearFilters() {
-    setFilters([
-      {
-        searchPattern: "",
-      },
-    ]);
+    setFilters([""]);
     applyFilter();
   }
 
   function setSearchPattern(e) {
-    const value = e.target.value.trim();
-    setFilters((ar) => {
-      let updatedRoles = [...ar];
-      let updatedRole = { ...updatedRoles[0] };
-      updatedRole["searchPattern"] = value;
-      updatedRoles[0] = updatedRole;
-      return updatedRoles;
-    });
+    setFilters(e.target.value.trim().split(/\s+/));
   }
 
   function applyFilter() {
@@ -113,11 +102,7 @@ const UserDisplay = () => {
       if (destrFilters.searchPattern) {
         existingFilters.searchPattern = destrFilters.searchPattern;
       }
-      for (const [key, value] of Object.entries(destrFilters)) {
-        if (key !== "searchPattern" && value) {
-          existingFilters[key] = value["name"];
-        }
-      }
+      filters.map((it, i) => (existingFilters[i] = it));
 
       return {
         page: "1",
@@ -172,8 +157,10 @@ const UserDisplay = () => {
             onChange={(e) => setSearchPattern(e)}
             onKeyDown={handleKeyDown}
           />
-          <button className={styles.inv_search_button} onClick={applyFilter}>
-          </button>
+          <button
+            className={styles.inv_search_button}
+            onClick={applyFilter}
+          ></button>
         </div>
       </div>
 
@@ -207,7 +194,15 @@ const UserDisplay = () => {
                 onClick={() => {
                   setSearchParams({ page: item.page });
                 }}
-                to={`/users?page=${item.page}`}
+                to={(() => {
+                  if (filters.length > 1) {
+                    return `/users?0=${filters[0]}&1=${filters[1]}&page=${item.page}`;
+                  } else if (filters.length > 0 && filters[0]) {
+                    return `/users?0=${filters[0]}&page=${item.page}`;
+                  } else {
+                    return `/users?page=${item.page}`;
+                  }
+                })()}
                 {...item}
               />
             )}
@@ -219,4 +214,3 @@ const UserDisplay = () => {
 };
 
 export default UserDisplay;
-

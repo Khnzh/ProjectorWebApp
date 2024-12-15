@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
-import ProjectCard from "../../components/projecCard/ProjectCard";
+import ProjectCard from "../../components/projectCard/ProjectCard";
 
 const SavedProjects = () => {
   const localKey = "sb-rotyixpntplxytekbeuz-auth-token";

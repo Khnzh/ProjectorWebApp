@@ -10,6 +10,12 @@
   top: 20px;
 }
 
+.projects__container {
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+}
+
 .button_accent {
   @extend .button_accent;
 

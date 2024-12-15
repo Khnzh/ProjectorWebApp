@@ -1,5 +1,7 @@
 .logo_container {
   position: relative;
+  width: 219px;
+  height: 47px;
   cursor: pointer;
 
   &:hover {
@@ -15,14 +17,17 @@
 
 .second_decorator_image {
   position: absolute;
-  top: -30%;
-  left: -75px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: blur(70px);
   width: 120%;
-  filter: blur(100px);
+  z-index: 0;
   display: none;
 }
 
 .image {
   margin: 0 0 0 2px;
-  width: calc(100% - 13px);
+  object-fit: contain;
+  height: 100%;
 }

@@ -7,7 +7,7 @@ import cn from "classnames";
 import { useAuth } from "../../context/AuthContext";
 
 const ProjectDetailedView = () => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, state } = useAuth();
   const navigate = useNavigate();
   const likeButton = useRef();
   const [likeButtonDisabled, setLikedButtonDisabled] = useState(false);
@@ -49,9 +49,36 @@ const ProjectDetailedView = () => {
       console.log(data);
     }
   };
+
+  const applyForRole = async (qualId) => {
+    const matchingQual = state.qualifications.filter(
+      (item) => item.id == qualId
+    );
+    if (matchingQual.length > 0 && state.pId) {
+      const currentDate = new Date().toISOString();
+      const { data, error } = await supabase
+        .from("Notifications")
+        .insert([
+          {
+            sender: state.pId,
+            receiver: projectInfo[0].Profile.id,
+            project: prId,
+            type: "role",
+            status: "pending",
+            read: false,
+            edited_at: currentDate,
+            qualification_id: qualId,
+          },
+        ])
+        .select("id");
+      !error ? console.log(data[0].id) : console.log(error);
+    } else {
+      console.log("error");
+    }
+  };
+
   useEffect(() => {
     const localKey = "sb-rotyixpntplxytekbeuz-auth-token";
-
     if (!isLoggedIn) {
       if (localStorage.getItem(localKey)) {
         setIsLoggedIn(true);
@@ -208,6 +235,12 @@ const ProjectDetailedView = () => {
               ></div>
             </>
           )}
+          <button
+            className={styles.min_underlined}
+            onClick={() => applyForRole(item.qualification_id.id)}
+          >
+            ОТКЛИКНУТЬСЯ
+          </button>
         </div>
       ))}
     </div>

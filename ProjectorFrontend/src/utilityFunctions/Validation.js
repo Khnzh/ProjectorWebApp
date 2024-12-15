@@ -159,7 +159,7 @@ export function signupValidation(value) {
 export function portfolioValidation(value) {
   const errors = {
     prName: [],
-    desc: [],
+    description: [],
     role: [],
     link: [],
     year: [],
@@ -181,20 +181,26 @@ export function portfolioValidation(value) {
       errors.prName = [...errors.prName, "Заполните поле"];
     }
 
-    if (item.desc) {
-      if (whitelistRegex.test(item.desc) && !blacklistRegex.test(item.desc)) {
-        if (item.desc.length > 250) {
-          errors.desc = [...errors.desc, "Используйте не больше 250 символов"];
+    if (item.description) {
+      if (
+        whitelistRegex.test(item.description) &&
+        !blacklistRegex.test(item.description)
+      ) {
+        if (item.description.length > 250) {
+          errors.description = [
+            ...errors.description,
+            "Используйте не больше 250 символов",
+          ];
         } else {
-          errors.desc = [...errors.desc, ""];
+          errors.description = [...errors.description, ""];
         }
       } else
-        errors.desc = [
-          ...errors.desc,
+        errors.description = [
+          ...errors.description,
           `Используйте только буквы и специальные символы`,
         ];
     } else {
-      errors.desc = [...errors.desc, ""];
+      errors.description = [...errors.description, ""];
     }
 
     if (item.role) {

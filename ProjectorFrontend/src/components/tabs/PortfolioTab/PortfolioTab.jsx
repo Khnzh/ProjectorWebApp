@@ -69,15 +69,15 @@ const PortfolioTab = ({
             <label htmlFor={index + "prDesc"}>ОПИСАНИЕ</label>
             <textarea
               onChange={(e) =>
-                changeProperty(setProject, index, "desc", e.target.value)
+                changeProperty(setProject, index, "description", e.target.value)
               }
               disabled={mode}
               name="prDesc"
               id={index + "prDesc"}
-              defaultValue={item.desc}
+              defaultValue={item.description}
             ></textarea>
-            {Array.isArray(errors.desc) && errors.desc[index] && (
-              <p className="validation-message">{errors.desc[index]}</p>
+            {Array.isArray(errors.description) && errors.description[index] && (
+              <p className="validation-message">{errors.description[index]}</p>
             )}
             <label htmlFor={index + "prRole"}>РОЛЬ В ПРОЕКТЕ*</label>
             <input

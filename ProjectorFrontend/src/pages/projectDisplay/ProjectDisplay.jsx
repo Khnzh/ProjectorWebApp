@@ -20,11 +20,10 @@ import {
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import { useAuth } from "../../context/AuthContext";
-import ProjectCard from "../../components/projecCard/ProjectCard";
+import ProjectCard from "../../components/projectCard/ProjectCard";
 
 import SearchSelect from "../../components/searchSelect/SearchSelect";
 import Loader from "../../components/loader/Loader";
-
 
 function ProjectDisplay({ specific }) {
   //queries collection
@@ -36,10 +35,11 @@ function ProjectDisplay({ specific }) {
           .select("*", { count: "exact", head: true });
       },
       fetch: () => {
-        return supabase
-          .from("Projects")
-          .select(
-            `
+        return (
+          supabase
+            .from("Projects")
+            .select(
+              `
       id,
       name,
       description,
@@ -53,11 +53,12 @@ function ProjectDisplay({ specific }) {
         salary
       )
     `,
-            { count: "exact" }
-          ) // Request the exact count of matching rows
-          //.eq("profile_id", "555") // для проверок роняет проекты
-          .order("promotion", { ascending: true })
-          .order("id", { ascending: true });
+              { count: "exact" }
+            ) // Request the exact count of matching rows
+            //.eq("profile_id", "555") // для проверок роняет проекты
+            .order("promotion", { ascending: true })
+            .order("id", { ascending: true })
+        );
       },
       urlQuery: (item) => {
         return `/projects${
@@ -395,7 +396,7 @@ function ProjectDisplay({ specific }) {
 
           if (error) {
             console.error("Error fetching data:", error);
-            setProjectInfo('none')
+            setProjectInfo("none");
           } else {
             specific === "saved"
               ? setProjectInfo(data.map((item) => item.Projects))
@@ -421,8 +422,6 @@ function ProjectDisplay({ specific }) {
       }
     })();
   }, [searchParams, pId]);
-
-
 
   return (
     <>
@@ -450,51 +449,57 @@ function ProjectDisplay({ specific }) {
           <h2 onClick={clearFilters}>Очистить фильтры</h2>
         </div>
       </div>
-      {projectInfo == ("none") ?
-      (
-        <SvgContainer
-          width="100%"                   
-          height="100%"                
-          className="custom-svg-class"              
-        />
-    )
-      : 
-      (projectInfo && projectInfo!=='none'? (projectInfo.map((item) => (
-        <ProjectCard
-          key={item.id}
-          item={item}
-          coverImg={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`}
-        />)
-      )): <Loader/> )
-      }
-      <div className={styles.whitebg}>
-        {projectInfo != ("none") && projectInfo && (total > 0 ? (
-          <Pagination
-            page={page || 1}
-            count={total}
-            renderItem={(item) => (
-              <PaginationItem
-                component={Link}
-                onChange={(event, value) => {
-                  setSearchParams((previous) => {
-                    const params = Object.fromEntries(previous.entries());
-
-                    return {
-                      ...params,
-                      page: item.page,
-                    };
-                  });
-                }}
-                to={BASE_QUERY[specific].urlQuery(item)}
-                {...item}
-              />
-            )}
+      <div className={styles.projects__container}>
+        {projectInfo == "none" ? (
+          <SvgContainer
+            width="100%"
+            height="100%"
+            className="custom-svg-class"
           />
-        ): <SvgContainer
-        width="100%"                   
-        height="100%"                
-        className="custom-svg-class"              
-      />)}
+        ) : projectInfo && projectInfo !== "none" ? (
+          projectInfo.map((item) => (
+            <ProjectCard
+              key={item.id}
+              item={item}
+              coverImg={`https://rotyixpntplxytekbeuz.supabase.co/storage/v1/object/public/project_photos/${item.Profile.id}/${item.id}/Project_pic.png`}
+            />
+          ))
+        ) : (
+          <Loader />
+        )}
+      </div>
+      <div className={styles.whitebg}>
+        {projectInfo != "none" &&
+          projectInfo &&
+          (total > 0 ? (
+            <Pagination
+              page={page || 1}
+              count={total}
+              renderItem={(item) => (
+                <PaginationItem
+                  component={Link}
+                  onChange={(event, value) => {
+                    setSearchParams((previous) => {
+                      const params = Object.fromEntries(previous.entries());
+
+                      return {
+                        ...params,
+                        page: item.page,
+                      };
+                    });
+                  }}
+                  to={BASE_QUERY[specific].urlQuery(item)}
+                  {...item}
+                />
+              )}
+            />
+          ) : (
+            <SvgContainer
+              width="100%"
+              height="100%"
+              className="custom-svg-class"
+            />
+          ))}
       </div>
       <div className="popup_middle_long" ref={filterContRef}>
         <button

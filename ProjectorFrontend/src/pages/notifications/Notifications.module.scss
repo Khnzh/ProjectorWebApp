@@ -1,0 +1,45 @@
+@use "../../utils" as *;
+@use "../../index" as *;
+
+.notifications {
+  display: flex;
+  flex-direction: column;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    border-top: 2px $highlight solid;
+    .notification {
+      border-bottom: 2px $highlight solid;
+      padding: 56px 123px 40px 20px;
+      display: flex;
+      width: 100%;
+      height: 200px;
+      flex-direction: column;
+      gap: 25px;
+      overflow: hidden; /* Add this to limit overflow */
+      text-overflow: clip;
+      p {
+        font-size: 20px;
+        line-height: 25px;
+        color: $color;
+        overflow: hidden; /* Add this to limit overflow */
+        text-overflow: clip;
+      }
+
+      h1 {
+        color: $highlight;
+        font-weight: 900;
+        font-size: 30px;
+        line-height: 25px;
+
+        span {
+          color: $highlight;
+          font-weight: 100;
+          font-size: 30px;
+          line-height: 25px;
+        }
+      }
+    }
+  }
+}

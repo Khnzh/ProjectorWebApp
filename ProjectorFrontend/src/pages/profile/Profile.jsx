@@ -66,7 +66,7 @@ export default function Profile() {
   const [project, setProject] = useState([
     {
       name: "",
-      desc: "",
+      description: "",
       role: "",
       link: "",
       year: "",
@@ -81,7 +81,7 @@ export default function Profile() {
         let resArr = [...p];
         resArr.push({
           name: "",
-          desc: "",
+          description: "",
           role: "",
           link: "",
           year: "",
@@ -167,7 +167,7 @@ export default function Profile() {
   const fetchPortfolio = async (pId) => {
     let { data: Portfolio, error } = await supabase
       .from("Portfolio")
-      .select("name, desc, role, link, year, id")
+      .select("name, description, role, link, year, id")
       // Filters
       .eq("profile_id", pId);
 
