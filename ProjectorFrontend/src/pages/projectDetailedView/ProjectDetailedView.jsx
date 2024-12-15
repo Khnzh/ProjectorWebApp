@@ -236,7 +236,7 @@ const ProjectDetailedView = () => {
             </>
           )}
           <button
-            className={styles.min_underlined}
+            className="min_underlined"
             onClick={() => applyForRole(item.qualification_id.id)}
           >
             ОТКЛИКНУТЬСЯ

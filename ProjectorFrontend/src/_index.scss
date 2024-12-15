@@ -469,6 +469,16 @@ section {
   width: 20em;
 }
 
+.min_underlined {
+  font-size: 30px;
+  line-height: 60px;
+  font-weight: 900;
+  text-decoration: underline;
+  background-color: transparent;
+  border: none;
+  color: $highlight;
+}
+
 .add_button {
   margin-top: 5vh;
   margin-bottom: 3vh;
