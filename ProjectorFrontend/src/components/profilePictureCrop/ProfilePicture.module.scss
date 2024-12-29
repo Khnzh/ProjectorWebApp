@@ -1,0 +1,39 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Черный полупрозрачный фон */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cropContainer {
+  position: relative;
+  width: 80%; /* Устанавливаем изображение на 80% от ширины */
+  height: 80%; /* Устанавливаем изображение на 80% от высоты */
+}
+
+.saveButton {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
